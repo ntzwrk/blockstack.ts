@@ -73,12 +73,12 @@ export function redirectToSignInWithAuthRequest(authRequest: string = makeAuthRe
 
   function failCallback() {
     console.log('protocol handler not detected')
-    window.location = httpsURI
+    window.location.href = httpsURI
   }
 
   function unsupportedBrowserCallback() { // Safari is unsupported by protocolCheck
     console.log('can not detect custom protocols on this browser')
-    window.location = protocolURI
+    window.location.href = protocolURI
   }
 
   protocolCheck(protocolURI, failCallback, successCallback, unsupportedBrowserCallback)
@@ -241,6 +241,6 @@ export function signUserOut(redirectURL: ?string = null) {
   window.localStorage.removeItem(BLOCKSTACK_GAIA_HUB_LABEL)
 
   if (redirectURL !== null) {
-    window.location = redirectURL
+    window.location.href = redirectURL
   }
 }

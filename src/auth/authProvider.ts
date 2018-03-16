@@ -73,5 +73,5 @@ export function redirectUserToApp(authRequest, authResponse) {
   } else {
     throw new Error('Invalid redirect URI')
   }
-  window.location = redirectURI
+  window.location.href = redirectURI
 }
