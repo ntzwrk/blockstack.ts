@@ -4,7 +4,7 @@ import FormData from 'form-data'
 
 import { MissingParameterError, RemoteServiceError } from './errors'
 
-type UTXO = { value?: number,
+export type UTXO = { value?: number,
               confirmations?: number,
               tx_hash: string,
               tx_output_n: number }
