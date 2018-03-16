@@ -1,6 +1,6 @@
 /* @flow */
 
-import bitcoin from 'bitcoinjs-lib'
+import * as bitcoin from 'bitcoinjs-lib'
 import { decodeB40, hash160, hash128, DUST_MINIMUM } from './utils'
 import { config } from '../config'
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-import bitcoinjs from 'bitcoinjs-lib'
+import * as bitcoinjs from 'bitcoinjs-lib'
 
 import { addUTXOsToFund, DUST_MINIMUM,
          estimateTXBytes, sumOutputValues, hash160 } from './utils'

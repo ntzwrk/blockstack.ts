@@ -1,7 +1,7 @@
 /* @flow */
 import { randomBytes } from 'crypto'
 import { ECPair, address as baddress, crypto as bcrypto } from 'bitcoinjs-lib'
-import bigi from 'bigi'
+import * as bigi from 'bigi'
 
 export function getEntropy(numberOfBytes: number) {
   if (!numberOfBytes) {

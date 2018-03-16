@@ -1,8 +1,8 @@
 /* @flow */
 
-import bitcoinjs from 'bitcoinjs-lib'
+import * as bitcoinjs from 'bitcoinjs-lib'
 import RIPEMD160 from 'ripemd160'
-import bigi from 'bigi'
+import * as bigi from 'bigi'
 
 import { NotEnoughFundsError } from '../errors'
 import { UTXO } from '../network'

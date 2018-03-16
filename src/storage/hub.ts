@@ -1,5 +1,5 @@
-import bitcoin from 'bitcoinjs-lib'
-import bigi from 'bigi'
+import * as bitcoin from 'bitcoinjs-lib'
+import * as bigi from 'bigi'
 
 import { loadUserData } from '../auth/authApp'
 import { BLOCKSTACK_DEFAULT_GAIA_HUB_URL, BLOCKSTACK_STORAGE_LABEL } from '../auth/authConstants'
