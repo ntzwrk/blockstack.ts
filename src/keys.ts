@@ -11,7 +11,7 @@ export function getEntropy(numberOfBytes: number) {
 }
 
 export function makeECPrivateKey() {
-  const keyPair = new ECPair.makeRandom({ rng: getEntropy })
+  const keyPair = ECPair.makeRandom({ rng: getEntropy })
   return keyPair.d.toBuffer(32).toString('hex')
 }
 
