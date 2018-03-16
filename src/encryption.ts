@@ -62,10 +62,11 @@ export function getHexFromBN(bnInput: Object) {
  */
 export function encryptECIES(publicKey: string, content: string | Buffer) {
   const isString = (typeof(content) === 'string')
+  var plainText
   if(isString) {
-    const plainText = new Buffer(<string>content)
+    plainText = new Buffer(<string>content)
   } else {
-    const plainText = content
+    plainText = content
   }
 
   const ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic()
