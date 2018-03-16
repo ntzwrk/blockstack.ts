@@ -20,6 +20,8 @@
     "document": "typedoc --out ./docs/code/ ./src/ --sourcefile-url-prefix https://github.com/ntzwrk/blockstack.ts/blob/master/src/"
   },
   "dependencies": {
+    "@types/bigi": "^1.4.0",
+    "@types/bitcoinjs-lib": "^3.3.2",
     "@types/node": "^9.4.7",
     "bigi": "^1.4.2",
     "bitcoinjs-lib": "^3.3.2",
