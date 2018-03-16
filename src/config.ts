@@ -1,5 +1,3 @@
-import { network } from './network'
+import { network, BlockstackNetwork } from './network'
 
-const config = { network: network.defaults.MAINNET_DEFAULT }
-
-export { config }
+export const config = { network: network.defaults.MAINNET_DEFAULT }
