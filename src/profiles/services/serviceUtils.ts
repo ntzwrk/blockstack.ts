@@ -1,4 +1,13 @@
 /* @flow */
+
+export interface Proof {
+	identifier: string
+	service: string
+	proof_url: string
+	valid: boolean
+}
+
+
 export function containsValidProofStatement(searchText: string, name?: string) {
   if (!name) {
     return false

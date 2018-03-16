@@ -1,9 +1,9 @@
 /* @flow */
 import 'isomorphic-fetch'
-import { containsValidProofStatement, containsValidAddressProofStatement } from './serviceUtils'
+import { containsValidProofStatement, containsValidAddressProofStatement, Proof } from './serviceUtils'
 
 export class Service {
-  static validateProof(proof: Object,
+  static validateProof(proof: Proof,
                         ownerAddress: string,
                         name?: string) {
     return new Promise((resolve) => {
@@ -67,7 +67,7 @@ export class Service {
     }
   }
 
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     const baseUrls = this.getBaseUrls()
 
     let proofUrl = proof.proof_url.toLowerCase()

@@ -14,4 +14,4 @@ export const profileServices = {
   linkedIn: LinkedIn
 }
 
-export { containsValidProofStatement, containsValidAddressProofStatement } from './serviceUtils'
+export { containsValidProofStatement, containsValidAddressProofStatement, Proof } from './serviceUtils'
