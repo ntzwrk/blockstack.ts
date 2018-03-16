@@ -5,6 +5,7 @@ import RIPEMD160 from 'ripemd160'
 import bigi from 'bigi'
 
 import { NotEnoughFundsError } from '../errors'
+import { UTXO } from '../network'
 
 export const DUST_MINIMUM = 5500
 
@@ -125,7 +126,7 @@ export function decodeB40(input: string) {
  * @private
  */
 export function addUTXOsToFund(txBuilderIn: bitcoinjs.TransactionBuilder,
-                               utxos: Array<{value: number, tx_hash: string, tx_output_n: number}>,
+                               utxos: UTXO[],
                                amountToFund: number, feeRate: number,
                                fundNewFees: boolean = true) {
   if (utxos.length === 0) {

@@ -9,12 +9,13 @@ import { makePreorderSkeleton, makeRegisterSkeleton,
 import { config } from '../config'
 import { hexStringToECPair } from '../utils'
 import { InvalidAmountError, InvalidParameterError } from '../errors'
+import { UTXO } from '../network'
 
 const dummyBurnAddress   = '1111111111111111111114oLvT2'
 const dummyConsensusHash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 const dummyZonefileHash  = 'ffffffffffffffffffffffffffffffffffffffff'
 
-function addOwnerInput(utxos: Object,
+function addOwnerInput(utxos: UTXO[],
                        ownerAddress: string,
                        txB: bitcoinjs.TransactionBuilder,
                        addChangeOut: boolean = true) {
@@ -33,7 +34,7 @@ function addOwnerInput(utxos: Object,
 }
 
 function fundTransaction(txB: bitcoinjs.TransactionBuilder, paymentAddress: string,
-                         utxos: Array<{value: number, tx_hash: string, tx_output_n: number}>,
+                         utxos: UTXO[],
                          feeRate: number, inAmounts: number, changeIndex: number | null = null) {
   // change index for the payer.
   if (changeIndex === null) {
