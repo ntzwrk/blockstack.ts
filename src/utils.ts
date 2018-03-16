@@ -2,7 +2,7 @@
 import { parse as uriParse } from 'uri-js'
 import { ECPair } from 'bitcoinjs-lib'
 import { config } from './config'
-import BigInteger from 'bigi'
+import * as BigInteger from 'bigi'
 
 export const BLOCKSTACK_HANDLER = 'blockstack'
 /**
