@@ -1,5 +1,7 @@
 # Maintaining
 
+This repository uses [`yarn`](https://yarnpkg.com/en/docs/getting-started) to manage NPM-related things.
+
 ## Releasing a new version
 
 ```bash
