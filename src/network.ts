@@ -17,7 +17,7 @@ const TX_BROADCAST_SERVICE_TX_ENDPOINT = 'transaction'
 export class BlockstackNetwork {
   blockstackAPIUrl: string
   broadcastServiceUrl: string
-  layer1: Object
+  layer1: bitcoinjs.Network
   DUST_MINIMUM: number
   includeUtxoMap: Object
   excludeUtxoSet: Array<UTXO>
@@ -472,7 +472,7 @@ export class BitcoinNetwork {
 
 export class BitcoindAPI extends BitcoinNetwork {
   bitcoindUrl: string
-  bitcoindCredentials: Object
+  bitcoindCredentials: {username: string, password: string}
 
   constructor(bitcoindUrl: string, bitcoindCredentials: {username: string, password: string}) {
     super()
