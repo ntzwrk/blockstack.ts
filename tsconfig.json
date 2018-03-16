@@ -4,7 +4,7 @@
 		"module": "commonjs",
 		"target": "es2015",
 		"sourceMap": false,
-		"strict": true,
+		"strict": false,
 		"declaration": true,
 		"lib": [
 			"es2017.object",
