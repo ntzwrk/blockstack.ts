@@ -44,7 +44,7 @@ export function makeCoreSessionRequest(appDomain: string,
 
   // make token
   const tokenSigner = new TokenSigner('ES256k', appPrivateKey)
-  const token = tokenSigner.sign(authBody)
+  const token = <string>tokenSigner.sign(authBody, false)
 
   return token
 }

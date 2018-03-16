@@ -75,7 +75,7 @@ export function makeAuthRequest(transitPrivateKey: string = generateAndStoreTran
 
   /* Sign and return the token */
   const tokenSigner = new TokenSigner('ES256k', transitPrivateKey)
-  const token = tokenSigner.sign(payload)
+  const token = <string>tokenSigner.sign(payload, false)
 
   return token
 }
@@ -182,5 +182,5 @@ export function makeAuthResponse(privateKey: string,
 
   /* Sign and return the token */
   const tokenSigner = new TokenSigner('ES256k', privateKey)
-  return tokenSigner.sign(payload)
+  return <string>tokenSigner.sign(payload, false)
 }
