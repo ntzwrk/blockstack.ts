@@ -247,7 +247,7 @@ export function verifyAuthRequestAndLoadManifest(token: string) {
       })
     } else {
       reject()
-      return Promise.reject()
+      return Promise.reject(null)
     }
   }))
 }
