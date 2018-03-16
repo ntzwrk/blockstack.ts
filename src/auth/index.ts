@@ -5,7 +5,7 @@ export {
   generateAndStoreTransitKey, getTransitKey
 } from './authApp'
 export {
-  makeAuthRequest, makeAuthResponse
+  makeAuthRequest, makeAuthResponse, AuthMetadata
 } from './authMessages'
 export {
   getAuthRequestFromURL, fetchAppManifest, redirectUserToApp

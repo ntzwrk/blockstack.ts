@@ -19,7 +19,7 @@ import { encryptECIES, decryptECIES } from '../encryption'
 
 const VERSION = '1.1.0'
 
-type AuthMetadata = {
+export type AuthMetadata = {
   email?: string,
   profileUrl?: string
 }
