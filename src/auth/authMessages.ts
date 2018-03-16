@@ -104,7 +104,7 @@ export function encryptPrivateKey(publicKey: string,
  * @throws {Error} if unable to decrypt
  */
 export function decryptPrivateKey(privateKey: string,
-                                  hexedEncrypted: string): string | null {
+                                  hexedEncrypted: string): string | Buffer {
   const unhexedString = new Buffer(hexedEncrypted, 'hex').toString()
   const encryptedObj = JSON.parse(unhexedString)
   return decryptECIES(privateKey, encryptedObj)
