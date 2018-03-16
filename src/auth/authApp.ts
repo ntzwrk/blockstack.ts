@@ -2,7 +2,7 @@
 import queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
 import { makeAuthRequest, verifyAuthResponse } from './index'
-import protocolCheck from 'custom-protocol-detection-blockstack'
+import { protocolCheck } from 'custom-protocol-detection-blockstack'
 import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils'
 import { makeECPrivateKey } from '../index'
 import { decryptPrivateKey } from './authMessages'
