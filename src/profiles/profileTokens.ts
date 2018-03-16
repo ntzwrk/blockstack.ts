@@ -1,6 +1,6 @@
 import ecurve from 'ecurve'
 import { ECPair } from 'bitcoinjs-lib'
-import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier } from 'jsontokens'
+import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier, JWT } from 'jsontokens'
 
 import { nextYear, makeUUID4 } from '../utils'
 
@@ -55,7 +55,7 @@ export function signProfileToken(profile,
 /**
   * Wraps a token for a profile token file
   * @param {String} token - the token to be wrapped
-  * @returns {Object} - including `token` and `decodedToken` 
+  * @returns {Object} - including `token` and `decodedToken`
   */
 export function wrapProfileToken(token) {
   return {
