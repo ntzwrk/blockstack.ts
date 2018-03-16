@@ -19,13 +19,13 @@ export class BlockstackNetwork {
   broadcastServiceUrl: string
   layer1: bitcoinjs.Network
   DUST_MINIMUM: number
-  includeUtxoMap: Object
+  includeUtxoMap: { [address: string]: UTXO[] }
   excludeUtxoSet: Array<UTXO>
   btc: BitcoinNetwork
 
   constructor(apiUrl: string, broadcastServiceUrl: string,
               bitcoinAPI: BitcoinNetwork,
-              network: Object = bitcoinjs.networks.bitcoin) {
+              network: bitcoinjs.Network = bitcoinjs.networks.bitcoin) {
     this.blockstackAPIUrl = apiUrl
     this.broadcastServiceUrl = broadcastServiceUrl
     this.layer1 = network
