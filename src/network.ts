@@ -58,7 +58,7 @@ export class BlockstackNetwork {
       })
   }
 
-  getGracePeriod(fullyQualifiedName: string) {
+  getGracePeriod() {
     return new Promise((resolve) => resolve(5000))
   }
 

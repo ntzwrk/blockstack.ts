@@ -53,7 +53,7 @@ function isInGracePeriod(fullyQualifiedName: string) {
   const network = config.network
   return Promise.all([network.getNameInfo(fullyQualifiedName),
                       network.getBlockHeight(),
-                      network.getGracePeriod(fullyQualifiedName)])
+                      network.getGracePeriod()])
     .then(([nameInfo, blockHeight, gracePeriod]) => {
       const expiresAt = nameInfo.expires_block
       return (blockHeight >= expiresAt) && (blockHeight < (gracePeriod + expiresAt))
