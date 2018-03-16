@@ -131,7 +131,7 @@ export function isSameOriginAbsoluteUrl(uri1: string, uri2: string) {
 
   const match = {
     scheme: parsedUri1.scheme === parsedUri2.scheme,
-    hostname: parsedUri1.hostname === parsedUri2.hostname,
+    hostname: parsedUri1.host === parsedUri2.host,
     port: port1 === port2,
     absolute: (parsedUri1.reference === 'absolute') && (parsedUri2.reference === 'absolute')
   }
