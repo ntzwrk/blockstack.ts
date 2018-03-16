@@ -7,7 +7,7 @@ export const ERROR_CODES = {
 
 Object.freeze(ERROR_CODES)
 
-type ErrorType = {
+export type ErrorType = {
   code: string,
 	parameter?: string,
 	message: string
@@ -54,7 +54,7 @@ export class RemoteServiceError extends BlockstackError {
 
 export class InvalidDIDError extends BlockstackError {
   constructor(message: string = '') {
-    super({ code: 'invalid_did_error', message, param: '' })
+    super({ code: 'invalid_did_error', message, parameter: '' })
     this.name = 'InvalidDIDError'
     this.message = message
   }
