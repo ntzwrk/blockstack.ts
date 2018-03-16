@@ -1,6 +1,7 @@
 /* @flow */
 import { Service } from './service'
 import cheerio from 'cheerio'
+import { Proof } from '.';
 
 class Instagram extends Service {
   static getBaseUrls() {
@@ -8,7 +9,7 @@ class Instagram extends Service {
     return baseUrls
   }
 
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     const baseUrls = this.getBaseUrls()
     const normalizedProofUrl = this.normalizeInstagramUrl(proof)
 
@@ -20,7 +21,7 @@ class Instagram extends Service {
     throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`)
   }
 
-  static normalizeInstagramUrl(proof: Object) {
+  static normalizeInstagramUrl(proof: Proof) {
     let proofUrl = proof.proof_url
     proofUrl = super.prefixScheme(proofUrl)
 

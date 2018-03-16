@@ -1,18 +1,19 @@
 /* @flow */
 import { Service } from './service'
 import cheerio from 'cheerio'
+import { Proof } from '.';
 
 class HackerNews extends Service {
   static getBaseUrls() {
     const baseUrls = [
-      'https://news.ycombinator.com/user?id=', 
+      'https://news.ycombinator.com/user?id=',
       'http://news.ycombinator.com/user?id=',
       'news.ycombinator.com/user?id='
     ]
     return baseUrls
   }
 
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     const baseUrls = this.getBaseUrls()
 
     let proofUrl = proof.proof_url.toLowerCase()
@@ -51,7 +52,7 @@ class HackerNews extends Service {
           })
         }
       })
-    } 
+    }
 
     return statement
   }

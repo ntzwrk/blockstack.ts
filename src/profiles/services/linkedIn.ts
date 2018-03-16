@@ -1,6 +1,7 @@
 /* @flow */
 import { Service } from './service'
 import cheerio from 'cheerio'
+import { Proof } from '.';
 
 class LinkedIn extends Service {
   static getBaseUrls() {
@@ -12,9 +13,9 @@ class LinkedIn extends Service {
     return baseUrls
   }
 
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     const baseUrls = this.getBaseUrls()
-    
+
     let proofUrl = proof.proof_url.toLowerCase()
     proofUrl = super.prefixScheme(proofUrl)
 

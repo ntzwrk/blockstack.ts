@@ -1,5 +1,6 @@
 /* @flow */
 import { Service } from './service'
+import { Proof } from '.';
 
 class Github extends Service {
   static getBaseUrls() {
@@ -7,7 +8,7 @@ class Github extends Service {
     return baseUrls
   }
 
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     const baseUrls = this.getBaseUrls()
     let proofUrl = proof.proof_url.toLowerCase()
 

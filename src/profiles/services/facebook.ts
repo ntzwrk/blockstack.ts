@@ -1,13 +1,14 @@
 /* @flow */
 import { Service } from './service'
 import cheerio from 'cheerio'
+import { Proof } from '.';
 
 class Facebook extends Service {
-  static getProofUrl(proof: Object) {
+  static getProofUrl(proof: Proof) {
     return this.normalizeFacebookUrl(proof)
   }
 
-  static normalizeFacebookUrl(proof: Object) {
+  static normalizeFacebookUrl(proof: Proof) {
     let proofUrl = proof.proof_url.toLowerCase()
     const urlRegex = /(?:http[s]*:\/\/){0,1}(?:[a-zA-Z0-9\-]+\.)+facebook\.com/
 
