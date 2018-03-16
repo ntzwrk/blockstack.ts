@@ -236,11 +236,11 @@ export function loadUserData() {
  * @param  {String} [redirectURL=null] Location to redirect user to after sign out.
  * @return {void}
  */
-export function signUserOut(redirectURL: ?string = null) {
+export function signUserOut(redirectURL?: string) {
   window.localStorage.removeItem(BLOCKSTACK_STORAGE_LABEL)
   window.localStorage.removeItem(BLOCKSTACK_GAIA_HUB_LABEL)
 
-  if (redirectURL !== null) {
+  if (redirectURL !== undefined) {
     window.location.href = redirectURL
   }
 }

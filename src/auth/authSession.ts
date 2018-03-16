@@ -19,8 +19,8 @@ import fetch from 'isomorphic-fetch'
 export function makeCoreSessionRequest(appDomain: string,
                                        appMethods: Array<string>,
                                        appPrivateKey: string,
-                                       blockchainID: ?string = null,
-                                       thisDevice: ?string = null) {
+                                       blockchainID: string = null,
+                                       thisDevice: string = null) {
   if (thisDevice === null) {
     thisDevice = '.default'
   }
@@ -130,8 +130,8 @@ export function getCoreSession(coreHost: string,
                                corePort: number,
                                apiPassword: string,
                                appPrivateKey: string,
-                               blockchainId: ?string = null,
-                               authRequest: ?string = null,
+                               blockchainId: string = null,
+                               authRequest: string = null,
                                deviceId: string = '0') {
   if (!authRequest) {
     return Promise.reject('No authRequest provided')

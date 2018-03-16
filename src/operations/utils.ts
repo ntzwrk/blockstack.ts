@@ -127,7 +127,7 @@ export function decodeB40(input: string) {
 export function addUTXOsToFund(txBuilderIn: bitcoinjs.TransactionBuilder,
                                utxos: Array<{value: number, tx_hash: string, tx_output_n: number}>,
                                amountToFund: number, feeRate: number,
-                               fundNewFees: ?boolean = true) {
+                               fundNewFees: boolean = true) {
   if (utxos.length === 0) {
     throw new NotEnoughFundsError(amountToFund)
   }

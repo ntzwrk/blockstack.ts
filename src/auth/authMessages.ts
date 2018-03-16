@@ -20,8 +20,8 @@ import { encryptECIES, decryptECIES } from '../encryption'
 const VERSION = '1.1.0'
 
 type AuthMetadata = {
-  email: ?string,
-  profileUrl: ?string
+  email?: string,
+  profileUrl?: string
 }
 
 /**
@@ -128,19 +128,19 @@ export function decryptPrivateKey(privateKey: string,
  * @param  {Number} expiresAt an integer in the same format as
  * `new Date().getTime()`, milliseconds since the Unix epoch
  * @param {String} transitPublicKey the public key provide by the app
- * in its authentication request with which secrets will be encrypted 
+ * in its authentication request with which secrets will be encrypted
  * @param {String} hubUrl URL to the write path of the user's Gaia hub
  * @return {String} signed and encoded authentication response token
  */
 export function makeAuthResponse(privateKey: string,
                                  profile: {} = {},
-                                 username: ?string = null,
+                                 username: string = null,
                                  metadata: AuthMetadata,
-                                 coreToken: ?string = null,
-                                 appPrivateKey: ?string = null,
+                                 coreToken?: string,
+                                 appPrivateKey?: string,
                                  expiresAt: number = nextMonth().getTime(),
-                                 transitPublicKey: ?string = null,
-                                 hubUrl: ?string = null): string {
+                                 transitPublicKey?: string,
+                                 hubUrl: string = null): string {
   /* Convert the private key to a public key to an issuer */
   const publicKey = SECP256K1Client.derivePublicKey(privateKey)
   const address = publicKeyToAddress(publicKey)

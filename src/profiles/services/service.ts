@@ -3,9 +3,9 @@ import 'isomorphic-fetch'
 import { containsValidProofStatement, containsValidAddressProofStatement } from './serviceUtils'
 
 export class Service {
-  static validateProof(proof: Object, 
+  static validateProof(proof: Object,
                         ownerAddress: string,
-                        name: ?string = null) {
+                        name?: string) {
     return new Promise((resolve) => {
       try {
         const proofUrl = this.getProofUrl(proof)
@@ -13,12 +13,12 @@ export class Service {
           if (res.status === 200) {
             res.text().then((text) => {
               // Validate identity in provided proof body/tags if required
-              if (this.shouldValidateIdentityInBody() 
+              if (this.shouldValidateIdentityInBody()
                 && proof.identifier !== this.getProofIdentity(text)) {
                 return resolve(proof)
               }
               const proofText = this.getProofStatement(text)
-              proof.valid = containsValidProofStatement(proofText, name) || 
+              proof.valid = containsValidProofStatement(proofText, name) ||
                 containsValidAddressProofStatement(proofText, ownerAddress)
               return resolve(proof)
             })

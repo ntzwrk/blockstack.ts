@@ -336,10 +336,10 @@ function makeUpdate(fullyQualifiedName: string,
 function makeRegister(fullyQualifiedName: string,
                       registerAddress: string,
                       paymentKeyHex: string,
-                      zonefile: ?string = null) {
+                      zonefile?: string) {
   const network = config.network
   let valueHash = undefined
-  if (!!zonefile) {
+  if (zonefile !== undefined) {
     valueHash = hash160(Buffer.from(zonefile)).toString('hex')
   }
 
@@ -428,11 +428,11 @@ function makeRenewal(fullyQualifiedName: string,
                      destinationAddress: string,
                      ownerKeyHex: string,
                      paymentKeyHex: string,
-                     zonefile: ?string = null) {
+                     zonefile?: string) {
   let valueHash = undefined
   const network = config.network
 
-  if (!!zonefile) {
+  if (zonefile !== undefined) {
     valueHash = hash160(Buffer.from(zonefile)).toString('hex')
   }
 

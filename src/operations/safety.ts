@@ -2,7 +2,7 @@
 
 import { config } from '../config'
 
-function isNameValid(fullyQualifiedName: ?string = '') {
+function isNameValid(fullyQualifiedName: string = '') {
   const NAME_PART_RULE = /^[a-z0-9\-_+]+$/
   const LENGTH_MAX_NAME = 37
 

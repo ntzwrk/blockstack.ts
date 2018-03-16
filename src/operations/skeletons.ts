@@ -10,7 +10,7 @@ import { config } from '../config'
 export function makePreorderSkeleton(
   fullyQualifiedName: string, consensusHash : string, preorderAddress: string,
   burnAddress : string, burnAmount: number,
-  registerAddress: ?string = null) {
+  registerAddress?: string) {
   // Returns a preorder tx skeleton.
   //   with 3 outputs : 1. the Blockstack Preorder OP_RETURN data
   //                    2. the Preorder's change address (5500 satoshi minimum)
@@ -54,7 +54,7 @@ export function makePreorderSkeleton(
 
 export function makeRegisterSkeleton(
   fullyQualifiedName: string, ownerAddress: string,
-  valueHash: ?string = null) {
+  valueHash?: string) {
   // Returns a register tx skeleton.
   //   with 2 outputs : 1. The register OP_RETURN
   //                    2. The owner address (can be different from REGISTER address on renewals)
@@ -92,7 +92,7 @@ export function makeRegisterSkeleton(
 
 export function makeRenewalSkeleton(
   fullyQualifiedName: string, nextOwnerAddress: string, lastOwnerAddress: string,
-  burnAddress: string, burnAmount: string, valueHash: ?string = null) {
+  burnAddress: string, burnAmount: string, valueHash?: string) {
   const network = config.network
   const registerTX = makeRegisterSkeleton(
     fullyQualifiedName, nextOwnerAddress, valueHash)

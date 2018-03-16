@@ -16,7 +16,7 @@ type ErrorType = {
 export class BlockstackError extends Error {
   message: string
   code: string
-  parameter: ?string
+  parameter?: string
   constructor(error: ErrorType) {
     super(error.message)
     this.code = error.code

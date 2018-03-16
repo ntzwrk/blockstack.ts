@@ -1,5 +1,5 @@
 /* @flow */
-export function containsValidProofStatement(searchText: string, name: ?string = null) {
+export function containsValidProofStatement(searchText: string, name?: string) {
   if (!name) {
     return false
   }
