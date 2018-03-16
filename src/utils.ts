@@ -124,10 +124,21 @@ export function makeUUID4() {
  */
 export function isSameOriginAbsoluteUrl(uri1: string, uri2: string) {
   const parsedUri1 = uriParse(uri1)
-  const parsedUri2 = uriParse(uri2)
+	const parsedUri2 = uriParse(uri2)
 
-  const port1 = parsedUri1.port | 0 || (parsedUri1.scheme === 'https' ? 443 : 80)
-  const port2 = parsedUri2.port | 0 || (parsedUri2.scheme === 'https' ? 443 : 80)
+	var port1, port2;
+	if(parsedUri1.port !== undefined) {
+		port1 = (typeof parsedUri1.port === 'string') ?
+			parseInt(parsedUri1.port) : <number>parsedUri1.port
+	} else {
+		port1 = (parsedUri1.scheme === 'https' ? 443 : 80)
+	}
+	if(parsedUri2.port !== undefined) {
+		port2 = (typeof parsedUri2.port === 'string') ?
+			parseInt(parsedUri2.port) : <number>parsedUri2.port
+	} else {
+		port2 = (parsedUri2.scheme === 'https' ? 443 : 80)
+	}
 
   const match = {
     scheme: parsedUri1.scheme === parsedUri2.scheme,
