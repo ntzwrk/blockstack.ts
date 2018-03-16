@@ -1,5 +1,5 @@
 import { ec as EllipticCurve } from 'elliptic'
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 
 const ecurve = new EllipticCurve('secp256k1')
 
