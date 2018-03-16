@@ -58,9 +58,11 @@ function transactionBytes(inputs: Array<txPoint | null>, outputs: Array<txPoint 
 export function estimateTXBytes(txIn: bitcoinjs.Transaction | bitcoinjs.TransactionBuilder,
                                 additionalInputs: number,
                                 additionalOutputs: number) {
-  let innerTx = txIn
+  let innerTx
   if (txIn instanceof bitcoinjs.TransactionBuilder) {
     innerTx = txIn.tx
+  } else {
+    innerTx = txIn
   }
   const dummyInputs: Array<null> = new Array(additionalInputs)
   dummyInputs.fill(null)
