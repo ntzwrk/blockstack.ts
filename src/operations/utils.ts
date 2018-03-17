@@ -76,9 +76,11 @@ export function estimateTXBytes(txIn: bitcoinjs.Transaction | bitcoinjs.Transact
 }
 
 export function sumOutputValues(txIn : bitcoinjs.Transaction | bitcoinjs.TransactionBuilder) {
-  let innerTx = txIn
+  let innerTx
   if (txIn instanceof bitcoinjs.TransactionBuilder) {
     innerTx = txIn.tx
+  } else {
+    innerTx = txIn
   }
 
   return innerTx.outs.reduce((agg, x) => agg + x.value, 0)
