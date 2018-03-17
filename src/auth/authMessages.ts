@@ -134,13 +134,13 @@ export function decryptPrivateKey(privateKey: string,
  */
 export function makeAuthResponse(privateKey: string,
                                  profile: {} = {},
-                                 username: string = null,
+                                 username: string|null = null,
                                  metadata: AuthMetadata,
-                                 coreToken?: string,
-                                 appPrivateKey?: string,
+                                 coreToken: string|null,
+                                 appPrivateKey: string|null,
                                  expiresAt: number = nextMonth().getTime(),
                                  transitPublicKey?: string,
-                                 hubUrl: string = null): string {
+                                 hubUrl: string|null = null): string {
   /* Convert the private key to a public key to an issuer */
   const publicKey = SECP256K1Client.derivePublicKey(privateKey)
   const address = publicKeyToAddress(publicKey)
