@@ -104,7 +104,7 @@ export function decodeB40(input: string) {
      bigi.valueOf(characters.indexOf(character))
      .multiply(base.pow(bigi.valueOf(exponent)))))
   const sum = digitValues.reduce(
-    (agg: bigi.BigInteger, cur: bigi.BigInteger) =>
+    (agg: bigi, cur: bigi) =>
       agg.add(cur),
     bigi.ZERO)
   return sum.toHex()
