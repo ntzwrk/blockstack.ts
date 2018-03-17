@@ -228,7 +228,12 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
  * @return {Object} User data object.
  */
 export function loadUserData() {
-  return JSON.parse(window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL))
+  var item = window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL)
+  if(item === null) {
+    return null
+  } else {
+    return JSON.parse(item)
+  }
 }
 
 /**
