@@ -1,5 +1,5 @@
 /* @flow */
-import queryString from 'query-string'
+import * as queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
 import { makeAuthRequest, verifyAuthResponse } from './index'
 import { protocolCheck } from 'custom-protocol-detection-blockstack'
