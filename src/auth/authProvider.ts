@@ -27,7 +27,7 @@ export function getAuthRequestFromURL() {
  * message.
  * @private
  */
-export function fetchAppManifest(authRequest) {
+export function fetchAppManifest(authRequest: string|JWT) {
   return new Promise((resolve, reject) => {
     if (!authRequest) {
       reject('Invalid auth request')
@@ -64,7 +64,7 @@ export function fetchAppManifest(authRequest) {
  * @throws {Error} if there is no redirect uri
  * @private
  */
-export function redirectUserToApp(authRequest, authResponse) {
+export function redirectUserToApp(authRequest: string|JWT, authResponse: string) {
   const payload = decodeToken(authRequest).payload
   let redirectURI = payload.redirect_uri
   console.log(redirectURI)

@@ -86,7 +86,7 @@ export function sendCoreSessionRequest(coreHost: string,
     .then(response => {
       if (!response.ok) {
         reject('HTTP status not OK')
-        return null
+        return Promise.reject(null)
       }
       return response.text()
     })

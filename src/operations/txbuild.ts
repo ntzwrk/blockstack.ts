@@ -202,7 +202,7 @@ function estimateRenewal(fullyQualifiedName: string,
                          paymentUtxos: number = 1) : Promise<number> {
   const network = config.network
 
-  let valueHash = undefined
+  let valueHash: string|undefined = undefined
   if (includingZonefile) {
     valueHash = dummyZonefileHash
   }

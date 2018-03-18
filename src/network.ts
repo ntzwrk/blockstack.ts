@@ -406,7 +406,7 @@ export class BlockstackNetwork {
       const address = bitcoinjs.address.fromOutputScript(
         utxoCreated.script, this.layer1)
 
-      let includeSet = []
+      let includeSet: UTXO[] = []
       if (this.includeUtxoMap.hasOwnProperty(address)) {
         includeSet = includeSet.concat(this.includeUtxoMap[address])
       }
