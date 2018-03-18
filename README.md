@@ -18,7 +18,7 @@
     &middot;
     <a href="https://ntzwrk.github.io/blockstack.ts/code/">Documentation</a>
     &middot;
-    <a href="https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#quick-start">Quick start</a>
+    <a href="https://github.com/ntzwrk/blockstack.ts#quick-start">Quick start</a>
   </p>
   <p align="center">
     <a href="https://www.npmjs.com/package/blockstack.ts"><img src="https://img.shields.io/npm/v/blockstack.ts.svg?style=flat-square" alt="npm"></a>
@@ -49,7 +49,7 @@
 
 
 ## About
-`blockstack.ts` is a library for interacting with Blockstack (i.e. [identity](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#identity), [authentication](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#authentication) and [storage](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#storage)).
+`blockstack.ts` is a library for interacting with Blockstack (i.e. [identity](https://github.com/ntzwrk/blockstack.ts#identity), [authentication](https://github.com/ntzwrk/blockstack.ts#authentication) and [storage](https://github.com/ntzwrk/blockstack.ts#storage)).
 
 It's a fork of Blockstack's official [`blockstack.js`](https://github.com/blockstack/blockstack.js) library but got ported to [TypeScript](http://www.typescriptlang.org). Since TypeScript compiles to JavaScript, you can use this library in both languages without limitations.
 
