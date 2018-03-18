@@ -1,6 +1,6 @@
 <p align="center">
   <br>
-  <!-- commented out, to not use the prominent brand (looks to official)
+  <!-- commented out, to not use the prominent brand (looks too official)
   <a href="https://blockstack.org">
     <img src="https://media.githubusercontent.com/media/blockstack/designs/master/logo/RGB/bug/blockstack-bug-rounded-256x256.png" width=72 height=72>
   </a>
