@@ -4,6 +4,8 @@ This repository uses [`yarn`](https://yarnpkg.com/en/docs/getting-started) to ma
 
 ## Releasing a new version
 
+The releases should follow [Semantic Versioning](https://semver.org).
+
 ```bash
 git flow release start <version>                                # Start new git-flow release
 nano package.json && git commit -m "Bump version to <version>"  # Bump version in `package.json`
