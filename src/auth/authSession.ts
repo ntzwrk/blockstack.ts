@@ -1,4 +1,3 @@
-/* @flow */
 import * as fetch from 'isomorphic-fetch';
 import { decodeToken, SECP256K1Client, TokenSigner } from 'jsontokens';
 

@@ -1,4 +1,3 @@
-/* @flow */
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
 import { printDebug } from '../debug';

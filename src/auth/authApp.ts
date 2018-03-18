@@ -1,4 +1,3 @@
-/* @flow */
 import { protocolCheck } from 'custom-protocol-detection-blockstack';
 import { decodeToken } from 'jsontokens';
 import * as queryString from 'query-string';

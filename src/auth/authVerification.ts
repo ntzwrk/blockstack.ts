@@ -1,4 +1,3 @@
-// @flow
 import { decodeToken, TokenVerifier } from 'jsontokens';
 
 import { fetchAppManifest, getAddressFromDID, isSameOriginAbsoluteUrl, publicKeyToAddress } from '../index';
