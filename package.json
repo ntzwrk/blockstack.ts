@@ -12,7 +12,8 @@
     "blockstack"
   ],
   "scripts": {
-    "lint": "tslint --project ./",
+    "prettier": "prettier --write \"{src,tests}/**/*.ts\"",
+    "lint": "yarn run prettier && tslint --project ./",
     "build": "tsc",
     "prepublishOnly": "yarn run build",
     "clean": "rm -r ./dist/",
