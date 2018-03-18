@@ -1,5 +1,7 @@
-import * as queryString from 'query-string';
 import { decodeToken, JWT } from 'jsontokens';
+import * as queryString from 'query-string';
+
+import { printDebug } from '../debug';
 import { updateQueryStringParameter } from '../index';
 import { BLOCKSTACK_HANDLER } from '../utils';
 
@@ -27,7 +29,7 @@ export function getAuthRequestFromURL() {
  * message.
  * @private
  */
-export function fetchAppManifest(authRequest: string | JWT) {
+export function fetchAppManifest(authRequest: string | JWT): Promise<object | string> {
 	return new Promise((resolve, reject) => {
 		if (!authRequest) {
 			reject('Invalid auth request');
@@ -42,11 +44,11 @@ export function fetchAppManifest(authRequest: string | JWT) {
 						resolve(responseJSON);
 					})
 					.catch(e => {
-						console.log(e.stack);
+						printDebug(5, 'Error while requesting manifest', e.stack);
 						reject("URI request couldn't be completed");
 					});
 			} catch (e) {
-				console.log(e.stack);
+				printDebug(5, 'Error while requesting manifest', e.stack);
 				reject("URI request couldn't be completed");
 			}
 		}
@@ -67,7 +69,7 @@ export function fetchAppManifest(authRequest: string | JWT) {
 export function redirectUserToApp(authRequest: string | JWT, authResponse: string) {
 	const payload = decodeToken(authRequest).payload;
 	let redirectURI = payload.redirect_uri;
-	console.log(redirectURI);
+	printDebug(10, 'redirectURI: ', redirectURI);
 	if (redirectURI) {
 		redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);
 	} else {

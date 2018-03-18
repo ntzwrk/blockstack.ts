@@ -1,6 +1,7 @@
 // @flow
 import { decodeToken, TokenVerifier } from 'jsontokens';
-import { getAddressFromDID, publicKeyToAddress, isSameOriginAbsoluteUrl, fetchAppManifest } from '../index';
+
+import { fetchAppManifest, getAddressFromDID, isSameOriginAbsoluteUrl, publicKeyToAddress } from '../index';
 
 /**
  * Checks if the ES256k signature on passed `token` match the claimed public key
@@ -204,7 +205,7 @@ export function isRedirectUriValid(token: string) {
  *  token is not signed
  *  @private
  */
-export function verifyAuthRequest(token: string) {
+export function verifyAuthRequest(token: string): Promise<boolean> {
 	return new Promise((resolve, reject) => {
 		if (decodeToken(token).header.alg === 'none') {
 			reject('Token must be signed in order to be verified');

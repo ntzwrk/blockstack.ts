@@ -1,26 +1,26 @@
 /* @flow */
-import * as queryString from 'query-string';
-import { decodeToken } from 'jsontokens';
-import { makeAuthRequest, verifyAuthResponse } from './index';
 import { protocolCheck } from 'custom-protocol-detection-blockstack';
-import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils';
+import { decodeToken } from 'jsontokens';
+import * as queryString from 'query-string';
+
+import { printDebug } from '../debug';
 import { makeECPrivateKey } from '../index';
-import { decryptPrivateKey } from './authMessages';
+import { extractProfile } from '../profiles';
+import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
+import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils';
 import {
 	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
-	BLOCKSTACK_STORAGE_LABEL,
 	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
+	BLOCKSTACK_STORAGE_LABEL,
 	DEFAULT_BLOCKSTACK_HOST,
 	DEFAULT_SCOPE
 } from './authConstants';
-
-import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
-
-import { extractProfile } from '../profiles';
+import { decryptPrivateKey } from './authMessages';
+import { makeAuthRequest, verifyAuthResponse } from './index';
 
 const DEFAULT_PROFILE = {
-	'@type': 'Person',
-	'@context': 'http://schema.org'
+	'@context': 'http://schema.org',
+	'@type': 'Person'
 };
 
 /**
@@ -71,18 +71,20 @@ export function redirectToSignInWithAuthRequest(
 	const protocolURI = `${BLOCKSTACK_HANDLER}:${authRequest}`;
 	const httpsURI = `${blockstackIDHost}?authRequest=${authRequest}`;
 	function successCallback() {
-		console.log('protocol handler detected');
+		printDebug(10, 'Protocol handler detected');
+
 		// protocolCheck should open the link for us
 	}
 
 	function failCallback() {
-		console.log('protocol handler not detected');
+		printDebug(10, 'Protocol handler not detected');
 		window.location.href = httpsURI;
 	}
 
 	function unsupportedBrowserCallback() {
 		// Safari is unsupported by protocolCheck
-		console.log('can not detect custom protocols on this browser');
+
+		printDebug(10, 'Cannot detect custom protocols on this browser');
 		window.location.href = protocolURI;
 	}
 
@@ -115,7 +117,7 @@ export function redirectToSignInWithAuthRequest(
 export function redirectToSignIn(
 	redirectURI: string = `${window.location.origin}/`,
 	manifestURI: string = `${window.location.origin}/manifest.json`,
-	scopes: Array<string> = DEFAULT_SCOPE
+	scopes: string[] = DEFAULT_SCOPE
 ) {
 	const authRequest = makeAuthRequest(generateAndStoreTransitKey(), redirectURI, manifestURI, scopes);
 	redirectToSignInWithAuthRequest(authRequest);
@@ -165,14 +167,14 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
 							try {
 								appPrivateKey = decryptPrivateKey(transitKey, appPrivateKey);
 							} catch (e) {
-								console.log('Failed decryption of appPrivateKey, will try to use as given');
+								printDebug(7, 'Failed decryption of appPrivateKey, will try to use as given');
 							}
 						}
 						if (coreSessionToken !== undefined && coreSessionToken !== null) {
 							try {
 								coreSessionToken = decryptPrivateKey(transitKey, coreSessionToken);
 							} catch (e) {
-								console.log('Failed decryption of coreSessionToken, will try to use as given');
+								printDebug(7, 'Failed decryption of coreSessionToken, will try to use as given');
 							}
 						}
 					}
@@ -187,12 +189,12 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
 				}
 
 				const userData = {
-					username: tokenPayload.username,
-					profile: tokenPayload.profile,
 					appPrivateKey,
-					coreSessionToken,
 					authResponseToken,
-					hubUrl
+					coreSessionToken,
+					hubUrl,
+					profile: tokenPayload.profile,
+					username: tokenPayload.username
 				};
 				const profileURL = tokenPayload.profile_url;
 				if (
@@ -235,7 +237,7 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
  * @return {Object} User data object.
  */
 export function loadUserData() {
-	var item = window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL);
+	const item = window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL);
 	if (item === null) {
 		return null;
 	} else {

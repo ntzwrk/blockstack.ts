@@ -1,6 +1,8 @@
 /* @flow */
-import { TokenSigner, decodeToken, SECP256K1Client } from 'jsontokens';
 import * as fetch from 'isomorphic-fetch';
+import { decodeToken, SECP256K1Client, TokenSigner } from 'jsontokens';
+
+import { printDebug } from '../debug';
 
 /**
  * Create an authentication token to be sent to the Core API server
@@ -18,7 +20,7 @@ import * as fetch from 'isomorphic-fetch';
  */
 export function makeCoreSessionRequest(
 	appDomain: string,
-	appMethods: Array<string>,
+	appMethods: string[],
 	appPrivateKey: string,
 	blockchainID: string | null = null,
 	thisDevice: string | null = null
@@ -31,26 +33,24 @@ export function makeCoreSessionRequest(
 	const appPublicKey = SECP256K1Client.derivePublicKey(appPrivateKey);
 	const appPublicKeys = [
 		{
-			public_key: appPublicKey,
-			device_id: thisDevice
+			device_id: thisDevice,
+			public_key: appPublicKey
 		}
 	];
 
 	const authBody = {
-		version: 1,
-		blockchain_id: blockchainID,
-		app_private_key: appPrivateKey,
 		app_domain: appDomain,
-		methods: appMethods,
+		app_private_key: appPrivateKey,
 		app_public_keys: appPublicKeys,
-		device_id: thisDevice
+		blockchain_id: blockchainID,
+		device_id: thisDevice,
+		methods: appMethods,
+		version: 1
 	};
 
 	// make token
 	const tokenSigner = new TokenSigner('ES256k', appPrivateKey);
-	const token = <string>tokenSigner.sign(authBody, false);
-
-	return token;
+	return tokenSigner.sign(authBody, false) as string;
 }
 
 /**
@@ -106,7 +106,7 @@ export function sendCoreSessionRequest(
 				return token;
 			})
 			.catch(error => {
-				console.error(error);
+				printDebug(3, 'Got invalid Core response (non-JSON)', error);
 				reject('Invalid Core response: not JSON');
 			});
 	});
@@ -155,7 +155,7 @@ export function getCoreSession(
 		}
 		payload = authRequestObject.payload;
 	} catch (e) {
-		console.error(e.stack);
+		printDebug(3, 'Failed to parse authRequest in URL');
 		return Promise.reject('Failed to parse authRequest in URL');
 	}
 

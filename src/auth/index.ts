@@ -10,7 +10,7 @@ export {
 	generateAndStoreTransitKey,
 	getTransitKey
 } from './authApp';
-export { makeAuthRequest, makeAuthResponse, AuthMetadata } from './authMessages';
+export { makeAuthRequest, makeAuthResponse, IAuthMetadata } from './authMessages';
 export { getAuthRequestFromURL, fetchAppManifest, redirectUserToApp } from './authProvider';
 export { makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession } from './authSession';
 export {

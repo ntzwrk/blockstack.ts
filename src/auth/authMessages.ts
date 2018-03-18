@@ -1,27 +1,24 @@
 /* @flow */
-require('isomorphic-fetch');
+import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
-import { TokenSigner, SECP256K1Client } from 'jsontokens';
-
+import { printDebug } from '../debug';
+import { decryptECIES, encryptECIES } from '../encryption';
 import {
-	makeDIDFromAddress,
 	generateAndStoreTransitKey,
+	makeDIDFromAddress,
 	makeUUID4,
-	nextMonth,
 	nextHour,
+	nextMonth,
 	publicKeyToAddress
 } from '../index';
-
 import { DEFAULT_SCOPE } from './authConstants';
-
-import { encryptECIES, decryptECIES } from '../encryption';
 
 const VERSION = '1.1.0';
 
-export type AuthMetadata = {
+export interface IAuthMetadata {
 	email?: string;
 	profileUrl?: string;
-};
+}
 
 /**
  * Generates an authentication request that can be sent to the Blockstack
@@ -46,27 +43,27 @@ export function makeAuthRequest(
 	transitPrivateKey: string = generateAndStoreTransitKey(),
 	redirectURI: string = `${window.location.origin}/`,
 	manifestURI: string = `${window.location.origin}/manifest.json`,
-	scopes: Array<String> = DEFAULT_SCOPE,
+	scopes: string[] = DEFAULT_SCOPE,
 	appDomain: string = window.location.origin,
 	expiresAt: number = nextHour().getTime()
 ): string {
 	/* Create the payload */
 	const payload = {
-		jti: makeUUID4(),
-		iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
-		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
-		iss: null,
-		public_keys: [],
-		domain_name: appDomain,
-		manifest_uri: manifestURI,
-		redirect_uri: redirectURI,
-		version: VERSION,
 		do_not_include_profile: true,
+		domain_name: appDomain,
+		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
+		iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
+		iss: null,
+		jti: makeUUID4(),
+		manifest_uri: manifestURI,
+		public_keys: [],
+		redirect_uri: redirectURI,
+		scopes,
 		supports_hub_url: true,
-		scopes
+		version: VERSION
 	};
 
-	console.log(`blockstack.js: generating v${VERSION} auth request`);
+	printDebug(10, `Generating a "v${VERSION}" auth request`);
 
 	/* Convert the private key to a public key to an issuer */
 	const publicKey = SECP256K1Client.derivePublicKey(transitPrivateKey);
@@ -76,9 +73,7 @@ export function makeAuthRequest(
 
 	/* Sign and return the token */
 	const tokenSigner = new TokenSigner('ES256k', transitPrivateKey);
-	const token = <string>tokenSigner.sign(payload, false);
-
-	return token;
+	return tokenSigner.sign(payload, false) as string;
 }
 
 /**
@@ -118,7 +113,7 @@ export function decryptPrivateKey(privateKey: string, hexedEncrypted: string): s
  * the authentication response
  * @param  {Object} profile the profile object for the Blockstack ID
  * @param  {String} username the username of the Blockstack ID if any, otherwise `null`
- * @param  {AuthMetadata} metadata an object containing metadata sent as part of the authentication
+ * @param  {IAuthMetadata} metadata an object containing metadata sent as part of the authentication
  * response including `email` if requested and available and a URL to the profile
  * @param  {String} coreToken core session token when responding to a legacy auth request
  * or `null` for current direct to gaia authentication requests
@@ -135,7 +130,7 @@ export function makeAuthResponse(
 	privateKey: string,
 	profile: {} = {},
 	username: string | null = null,
-	metadata: AuthMetadata,
+	metadata: IAuthMetadata,
 	coreToken: string | null,
 	appPrivateKey: string | null,
 	expiresAt: number = nextMonth().getTime(),
@@ -151,7 +146,7 @@ export function makeAuthResponse(
 	let coreTokenPayload = coreToken;
 	let additionalProperties = {};
 	if (appPrivateKey !== undefined && appPrivateKey !== null) {
-		console.log(`blockstack.js: generating v${VERSION} auth response`);
+		printDebug(10, `Generating a "v${VERSION}" auth response`);
 		if (transitPublicKey !== undefined && transitPublicKey !== null) {
 			privateKeyPayload = encryptPrivateKey(transitPublicKey, appPrivateKey);
 			if (coreToken !== undefined && coreToken !== null) {
@@ -160,32 +155,32 @@ export function makeAuthResponse(
 		}
 		additionalProperties = {
 			email: metadata.email ? metadata.email : null,
-			profile_url: metadata.profileUrl ? metadata.profileUrl : null,
 			hubUrl,
+			profile_url: metadata.profileUrl ? metadata.profileUrl : null,
 			version: VERSION
 		};
 	} else {
-		console.log('blockstack.js: generating legacy auth response');
+		printDebug(8, 'Generating a _legacy_ auth response');
 	}
 
 	/* Create the payload */
 	const payload = Object.assign(
 		{},
 		{
-			jti: makeUUID4(),
-			iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
+			core_token: coreTokenPayload,
 			exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
+			iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
 			iss: makeDIDFromAddress(address),
+			jti: makeUUID4(),
 			private_key: privateKeyPayload,
-			public_keys: [publicKey],
 			profile,
-			username,
-			core_token: coreTokenPayload
+			public_keys: [publicKey],
+			username
 		},
 		additionalProperties
 	);
 
 	/* Sign and return the token */
 	const tokenSigner = new TokenSigner('ES256k', privateKey);
-	return <string>tokenSigner.sign(payload, false);
+	return tokenSigner.sign(payload, false) as string;
 }
