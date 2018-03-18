@@ -53,11 +53,7 @@
 
 
 ## Installation
-Install it with
-```bash
-$ yarn install blockstack.ts
-```
-into your project.
+Simply install it with `yarn install blockstack.ts` into your project (which is a lie, it's not yet on NPM).
 
 
 ## Quick start
