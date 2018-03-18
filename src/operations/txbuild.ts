@@ -240,6 +240,9 @@ function makePreorder(fullyQualifiedName: string,
   const network = config.network
 
   const namespace = fullyQualifiedName.split('.').pop()
+  if(namespace === undefined) {
+    return; // TODO: Proper error handling
+  }
 
   const paymentKey = hexStringToECPair(paymentKeyHex)
   const preorderAddress = paymentKey.getAddress()
