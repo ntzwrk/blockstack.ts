@@ -57,7 +57,9 @@ It's a fork of Blockstack's official [`blockstack.js`](https://github.com/blocks
 
 
 ## Installation
-Simply install it with `yarn install blockstack.ts` into your project (which is a lie, it's not yet on NPM).
+Simply install it with `yarn install blockstack.ts` into your project.
+
+_Please note that the version on NPM is **just a placeholder** and doesn't contain any useful code._
 
 
 ## Quick start
