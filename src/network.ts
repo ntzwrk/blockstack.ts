@@ -557,10 +557,12 @@ export class BitcoindAPI extends BitcoinNetwork {
       .then(resp => resp.json())
       .then(x => x.result)
       .then(utxos => utxos.map(
-        x => Object({ value: x.amount * SATOSHIS_PER_BTC,
-                      confirmations: x.confirmations,
-                      tx_hash: x.txid,
-                      tx_output_n: x.vout })))
+        (x: {amount: number, confirmations: number, txid: string, vout: number}) => ({
+          value: x.amount * SATOSHIS_PER_BTC,
+          confirmations: x.confirmations,
+          tx_hash: x.txid,
+          tx_output_n: x.vout
+        })))
   }
 
 }
@@ -605,10 +607,12 @@ export class InsightClient extends BitcoinNetwork {
     return fetch(`${this.apiUrl}/addr/${address}/utxo`)
       .then(resp => resp.json())
       .then(utxos => utxos.map(
-        x => ({ value: x.satoshis,
-                confirmations: x.confirmations,
-                tx_hash: x.txid,
-                tx_output_n: x.vout })))
+        (x: {satoshis: number, confirmations: number, txid: string, vout: number}) => ({
+          value: x.satoshis,
+          confirmations: x.confirmations,
+          tx_hash: x.txid,
+          tx_output_n: x.vout
+        })))
   }
 
 }
@@ -641,13 +645,12 @@ export class BlockchainInfoApi extends BitcoinNetwork {
       })
       .then(utxoJSON => utxoJSON.unspent_outputs)
       .then(utxoList => utxoList.map(
-        utxo => {
-          const utxoOut = { value: utxo.value,
-                            tx_output_n: utxo.tx_output_n,
-                            confirmations: utxo.confirmations,
-                            tx_hash: utxo.tx_hash_big_endian }
-          return utxoOut
-        }))
+        (utxo: {value: number, tx_output_n: number, confirmations: number, tx_hash_big_endian: string}) => ({
+          value: utxo.value,
+          tx_output_n: utxo.tx_output_n,
+          confirmations: utxo.confirmations,
+          tx_hash: utxo.tx_hash_big_endian
+        })))
   }
 
   getTransactionInfo(txHash: string) : Promise<{block_height: Number}> {
