@@ -1,7 +1,6 @@
 // @flow
-import { decodeToken, TokenVerifier } from 'jsontokens'
-import { getAddressFromDID, publicKeyToAddress,
-  isSameOriginAbsoluteUrl, fetchAppManifest } from '../index'
+import { decodeToken, TokenVerifier } from 'jsontokens';
+import { getAddressFromDID, publicKeyToAddress, isSameOriginAbsoluteUrl, fetchAppManifest } from '../index';
 
 /**
  * Checks if the ES256k signature on passed `token` match the claimed public key
@@ -13,24 +12,24 @@ import { getAddressFromDID, publicKeyToAddress,
  * @private
  */
 export function doSignaturesMatchPublicKeys(token: string) {
-  const payload = decodeToken(token).payload
-  const publicKeys = payload.public_keys
-  if (publicKeys.length === 1) {
-    const publicKey = publicKeys[0]
-    try {
-      const tokenVerifier = new TokenVerifier('ES256k', publicKey)
-      const signatureVerified = tokenVerifier.verify(token)
-      if (signatureVerified) {
-        return true
-      } else {
-        return false
-      }
-    } catch (e) {
-      return false
-    }
-  } else {
-    throw new Error('Multiple public keys are not supported')
-  }
+	const payload = decodeToken(token).payload;
+	const publicKeys = payload.public_keys;
+	if (publicKeys.length === 1) {
+		const publicKey = publicKeys[0];
+		try {
+			const tokenVerifier = new TokenVerifier('ES256k', publicKey);
+			const signatureVerified = tokenVerifier.verify(token);
+			if (signatureVerified) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (e) {
+			return false;
+		}
+	} else {
+		throw new Error('Multiple public keys are not supported');
+	}
 }
 
 /**
@@ -44,20 +43,20 @@ export function doSignaturesMatchPublicKeys(token: string) {
  * @private
  */
 export function doPublicKeysMatchIssuer(token: string) {
-  const payload = decodeToken(token).payload
-  const publicKeys = payload.public_keys
-  const addressFromIssuer = getAddressFromDID(payload.iss)
+	const payload = decodeToken(token).payload;
+	const publicKeys = payload.public_keys;
+	const addressFromIssuer = getAddressFromDID(payload.iss);
 
-  if (publicKeys.length === 1) {
-    const addressFromPublicKeys = publicKeyToAddress(publicKeys[0])
-    if (addressFromPublicKeys === addressFromIssuer) {
-      return true
-    }
-  } else {
-    throw new Error('Multiple public keys are not supported')
-  }
+	if (publicKeys.length === 1) {
+		const addressFromPublicKeys = publicKeyToAddress(publicKeys[0]);
+		if (addressFromPublicKeys === addressFromIssuer) {
+			return true;
+		}
+	} else {
+		throw new Error('Multiple public keys are not supported');
+	}
 
-  return false
+	return false;
 }
 
 /**
@@ -73,53 +72,52 @@ export function doPublicKeysMatchIssuer(token: string) {
  * `Promise` resolves to `false`
  * @private
  */
-export function doPublicKeysMatchUsername(token: string,
-  nameLookupURL: string) {
-  return new Promise((resolve) => {
-    const payload = decodeToken(token).payload
+export function doPublicKeysMatchUsername(token: string, nameLookupURL: string) {
+	return new Promise(resolve => {
+		const payload = decodeToken(token).payload;
 
-    if (!payload.username) {
-      resolve(true)
-      return
-    }
+		if (!payload.username) {
+			resolve(true);
+			return;
+		}
 
-    if (payload.username === null) {
-      resolve(true)
-      return
-    }
+		if (payload.username === null) {
+			resolve(true);
+			return;
+		}
 
-    if (nameLookupURL === null) {
-      resolve(false)
-      return
-    }
+		if (nameLookupURL === null) {
+			resolve(false);
+			return;
+		}
 
-    const username = payload.username
-    const url = `${nameLookupURL.replace(/\/$/, '')}/${username}`
+		const username = payload.username;
+		const url = `${nameLookupURL.replace(/\/$/, '')}/${username}`;
 
-    try {
-      fetch(url)
-        .then(response => response.text())
-        .then(responseText => JSON.parse(responseText))
-        .then(responseJSON => {
-          if (responseJSON.hasOwnProperty('address')) {
-            const nameOwningAddress = responseJSON.address
-            const addressFromIssuer = getAddressFromDID(payload.iss)
-            if (nameOwningAddress === addressFromIssuer) {
-              resolve(true)
-            } else {
-              resolve(false)
-            }
-          } else {
-            resolve(false)
-          }
-        })
-        .catch(() => {
-          resolve(false)
-        })
-    } catch (e) {
-      resolve(false)
-    }
-  })
+		try {
+			fetch(url)
+				.then(response => response.text())
+				.then(responseText => JSON.parse(responseText))
+				.then(responseJSON => {
+					if (responseJSON.hasOwnProperty('address')) {
+						const nameOwningAddress = responseJSON.address;
+						const addressFromIssuer = getAddressFromDID(payload.iss);
+						if (nameOwningAddress === addressFromIssuer) {
+							resolve(true);
+						} else {
+							resolve(false);
+						}
+					} else {
+						resolve(false);
+					}
+				})
+				.catch(() => {
+					resolve(false);
+				});
+		} catch (e) {
+			resolve(false);
+		}
+	});
 }
 
 /**
@@ -132,20 +130,20 @@ export function doPublicKeysMatchUsername(token: string,
  * @private
  */
 export function isIssuanceDateValid(token: string) {
-  const payload = decodeToken(token).payload
-  if (payload.iat) {
-    if (typeof payload.iat !== 'number') {
-      return false
-    }
-    const issuedAt = new Date(payload.iat * 1000) // JWT times are in seconds
-    if (new Date().getTime() < issuedAt.getTime()) {
-      return false
-    } else {
-      return true
-    }
-  } else {
-    return true
-  }
+	const payload = decodeToken(token).payload;
+	if (payload.iat) {
+		if (typeof payload.iat !== 'number') {
+			return false;
+		}
+		const issuedAt = new Date(payload.iat * 1000); // JWT times are in seconds
+		if (new Date().getTime() < issuedAt.getTime()) {
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return true;
+	}
 }
 
 /**
@@ -155,20 +153,20 @@ export function isIssuanceDateValid(token: string) {
  * if the `token` has expired
  */
 export function isExpirationDateValid(token: string) {
-  const payload = decodeToken(token).payload
-  if (payload.exp) {
-    if (typeof payload.exp !== 'number') {
-      return false
-    }
-    const expiresAt = new Date(payload.exp * 1000) // JWT times are in seconds
-    if (new Date().getTime() > expiresAt.getTime()) {
-      return false
-    } else {
-      return true
-    }
-  } else {
-    return true
-  }
+	const payload = decodeToken(token).payload;
+	if (payload.exp) {
+		if (typeof payload.exp !== 'number') {
+			return false;
+		}
+		const expiresAt = new Date(payload.exp * 1000); // JWT times are in seconds
+		if (new Date().getTime() > expiresAt.getTime()) {
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return true;
+	}
 }
 
 /**
@@ -178,8 +176,8 @@ export function isExpirationDateValid(token: string) {
  * @private
  */
 export function isManifestUriValid(token: string) {
-  const payload = decodeToken(token).payload
-  return isSameOriginAbsoluteUrl(payload.domain_name, payload.manifest_uri)
+	const payload = decodeToken(token).payload;
+	return isSameOriginAbsoluteUrl(payload.domain_name, payload.manifest_uri);
 }
 
 /**
@@ -188,8 +186,8 @@ export function isManifestUriValid(token: string) {
  * @return {Boolean} `true` if valid, otherwise `false`
  */
 export function isRedirectUriValid(token: string) {
-  const payload = decodeToken(token).payload
-  return isSameOriginAbsoluteUrl(payload.domain_name, payload.redirect_uri)
+	const payload = decodeToken(token).payload;
+	return isSameOriginAbsoluteUrl(payload.domain_name, payload.redirect_uri);
 }
 
 /**
@@ -207,26 +205,26 @@ export function isRedirectUriValid(token: string) {
  *  @private
  */
 export function verifyAuthRequest(token: string) {
-  return new Promise((resolve, reject) => {
-    if (decodeToken(token).header.alg === 'none') {
-      reject('Token must be signed in order to be verified')
-    }
+	return new Promise((resolve, reject) => {
+		if (decodeToken(token).header.alg === 'none') {
+			reject('Token must be signed in order to be verified');
+		}
 
-    Promise.all([
-      isExpirationDateValid(token),
-      isIssuanceDateValid(token),
-      doSignaturesMatchPublicKeys(token),
-      doPublicKeysMatchIssuer(token),
-      isManifestUriValid(token),
-      isRedirectUriValid(token)
-    ]).then(values => {
-      if (values.every(Boolean)) {
-        resolve(true)
-      } else {
-        resolve(false)
-      }
-    })
-  })
+		Promise.all([
+			isExpirationDateValid(token),
+			isIssuanceDateValid(token),
+			doSignaturesMatchPublicKeys(token),
+			doPublicKeysMatchIssuer(token),
+			isManifestUriValid(token),
+			isRedirectUriValid(token)
+		]).then(values => {
+			if (values.every(Boolean)) {
+				resolve(true);
+			} else {
+				resolve(false);
+			}
+		});
+	});
 }
 
 /**
@@ -238,18 +236,18 @@ export function verifyAuthRequest(token: string) {
  * @private
  */
 export function verifyAuthRequestAndLoadManifest(token: string) {
-  return new Promise((resolve, reject) => verifyAuthRequest(token)
-  .then(valid => {
-    if (valid) {
-      return fetchAppManifest(token)
-      .then(appManifest => {
-        resolve(appManifest)
-      })
-    } else {
-      reject()
-      return Promise.reject(null)
-    }
-  }))
+	return new Promise((resolve, reject) =>
+		verifyAuthRequest(token).then(valid => {
+			if (valid) {
+				return fetchAppManifest(token).then(appManifest => {
+					resolve(appManifest);
+				});
+			} else {
+				reject();
+				return Promise.reject(null);
+			}
+		})
+	);
 }
 
 /**
@@ -261,19 +259,19 @@ export function verifyAuthRequestAndLoadManifest(token: string) {
  * @private
  */
 export function verifyAuthResponse(token: string, nameLookupURL: string) {
-  return new Promise((resolve) => {
-    Promise.all([
-      isExpirationDateValid(token),
-      isIssuanceDateValid(token),
-      doSignaturesMatchPublicKeys(token),
-      doPublicKeysMatchIssuer(token),
-      doPublicKeysMatchUsername(token, nameLookupURL)
-    ]).then(values => {
-      if (values.every(Boolean)) {
-        resolve(true)
-      } else {
-        resolve(false)
-      }
-    })
-  })
+	return new Promise(resolve => {
+		Promise.all([
+			isExpirationDateValid(token),
+			isIssuanceDateValid(token),
+			doSignaturesMatchPublicKeys(token),
+			doPublicKeysMatchIssuer(token),
+			doPublicKeysMatchUsername(token, nameLookupURL)
+		]).then(values => {
+			if (values.every(Boolean)) {
+				resolve(true);
+			} else {
+				resolve(false);
+			}
+		});
+	});
 }

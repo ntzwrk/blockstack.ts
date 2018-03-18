@@ -1,25 +1,27 @@
 /* @flow */
-import * as queryString from 'query-string'
-import { decodeToken } from 'jsontokens'
-import { makeAuthRequest, verifyAuthResponse } from './index'
-import { protocolCheck } from 'custom-protocol-detection-blockstack'
-import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils'
-import { makeECPrivateKey } from '../index'
-import { decryptPrivateKey } from './authMessages'
-import { BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
-         BLOCKSTACK_STORAGE_LABEL,
-         BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
-         DEFAULT_BLOCKSTACK_HOST,
-         DEFAULT_SCOPE } from './authConstants'
+import * as queryString from 'query-string';
+import { decodeToken } from 'jsontokens';
+import { makeAuthRequest, verifyAuthResponse } from './index';
+import { protocolCheck } from 'custom-protocol-detection-blockstack';
+import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils';
+import { makeECPrivateKey } from '../index';
+import { decryptPrivateKey } from './authMessages';
+import {
+	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
+	BLOCKSTACK_STORAGE_LABEL,
+	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
+	DEFAULT_BLOCKSTACK_HOST,
+	DEFAULT_SCOPE
+} from './authConstants';
 
-import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage'
+import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
 
-import { extractProfile } from '../profiles'
+import { extractProfile } from '../profiles';
 
 const DEFAULT_PROFILE = {
-  '@type': 'Person',
-  '@context': 'http://schema.org'
-}
+	'@type': 'Person',
+	'@context': 'http://schema.org'
+};
 
 /**
  * Generates a ECDSA keypair and stores the hex value of the private key in
@@ -28,9 +30,9 @@ const DEFAULT_PROFILE = {
  * @private
  */
 export function generateAndStoreTransitKey() {
-  const transitKey = makeECPrivateKey()
-  localStorage.setItem(BLOCKSTACK_APP_PRIVATE_KEY_LABEL, transitKey)
-  return transitKey
+	const transitKey = makeECPrivateKey();
+	localStorage.setItem(BLOCKSTACK_APP_PRIVATE_KEY_LABEL, transitKey);
+	return transitKey;
 }
 
 /**
@@ -39,7 +41,7 @@ export function generateAndStoreTransitKey() {
  * @private
  */
 export function getTransitKey() {
-  return localStorage.getItem(BLOCKSTACK_APP_PRIVATE_KEY_LABEL)
+	return localStorage.getItem(BLOCKSTACK_APP_PRIVATE_KEY_LABEL);
 }
 
 /**
@@ -47,7 +49,7 @@ export function getTransitKey() {
  * @return {Boolean} `true` if the user is signed in, `false` if not.
  */
 export function isUserSignedIn() {
-  return !!window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL)
+	return !!window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL);
 }
 
 /**
@@ -62,26 +64,29 @@ export function isUserSignedIn() {
  *                                     protocol handler is not detected
  * @return {void}
  */
-export function redirectToSignInWithAuthRequest(authRequest: string = makeAuthRequest(),
-                                     blockstackIDHost: string = DEFAULT_BLOCKSTACK_HOST) {
-  const protocolURI = `${BLOCKSTACK_HANDLER}:${authRequest}`
-  const httpsURI = `${blockstackIDHost}?authRequest=${authRequest}`
-  function successCallback() {
-    console.log('protocol handler detected')
-    // protocolCheck should open the link for us
-  }
+export function redirectToSignInWithAuthRequest(
+	authRequest: string = makeAuthRequest(),
+	blockstackIDHost: string = DEFAULT_BLOCKSTACK_HOST
+) {
+	const protocolURI = `${BLOCKSTACK_HANDLER}:${authRequest}`;
+	const httpsURI = `${blockstackIDHost}?authRequest=${authRequest}`;
+	function successCallback() {
+		console.log('protocol handler detected');
+		// protocolCheck should open the link for us
+	}
 
-  function failCallback() {
-    console.log('protocol handler not detected')
-    window.location.href = httpsURI
-  }
+	function failCallback() {
+		console.log('protocol handler not detected');
+		window.location.href = httpsURI;
+	}
 
-  function unsupportedBrowserCallback() { // Safari is unsupported by protocolCheck
-    console.log('can not detect custom protocols on this browser')
-    window.location.href = protocolURI
-  }
+	function unsupportedBrowserCallback() {
+		// Safari is unsupported by protocolCheck
+		console.log('can not detect custom protocols on this browser');
+		window.location.href = protocolURI;
+	}
 
-  protocolCheck(protocolURI, failCallback, successCallback, unsupportedBrowserCallback)
+	protocolCheck(protocolURI, failCallback, successCallback, unsupportedBrowserCallback);
 }
 
 /**
@@ -107,12 +112,13 @@ export function redirectToSignInWithAuthRequest(authRequest: string = makeAuthRe
  * An array of strings indicating which permissions this app is requesting.
  * @return {void}
  */
-export function redirectToSignIn(redirectURI: string = `${window.location.origin}/`,
-                                 manifestURI: string = `${window.location.origin}/manifest.json`,
-                                 scopes: Array<string> = DEFAULT_SCOPE) {
-  const authRequest = makeAuthRequest(
-    generateAndStoreTransitKey(), redirectURI, manifestURI, scopes)
-  redirectToSignInWithAuthRequest(authRequest)
+export function redirectToSignIn(
+	redirectURI: string = `${window.location.origin}/`,
+	manifestURI: string = `${window.location.origin}/manifest.json`,
+	scopes: Array<string> = DEFAULT_SCOPE
+) {
+	const authRequest = makeAuthRequest(generateAndStoreTransitKey(), redirectURI, manifestURI, scopes);
+	redirectToSignInWithAuthRequest(authRequest);
 }
 
 /**
@@ -120,8 +126,8 @@ export function redirectToSignIn(redirectURI: string = `${window.location.origin
  * @return {String} the authentication token if it exists otherwise `null`
  */
 export function getAuthResponseToken() {
-  const queryDict = queryString.parse(location.search)
-  return queryDict.authResponse ? queryDict.authResponse : null
+	const queryDict = queryString.parse(location.search);
+	return queryDict.authResponse ? queryDict.authResponse : null;
 }
 
 /**
@@ -129,9 +135,8 @@ export function getAuthResponseToken() {
  * @return {Boolean} `true` if there is a pending sign in, otherwise `false`
  */
 export function isSignInPending() {
-  return !!getAuthResponseToken()
+	return !!getAuthResponseToken();
 }
-
 
 /**
  * Try to process any pending sign in request by returning a `Promise` that resolves
@@ -144,83 +149,85 @@ export function isSignInPending() {
  * if handling the sign in request fails or there was no pending sign in request.
  */
 export function handlePendingSignIn(nameLookupURL: string = 'https://core.blockstack.org/v1/names/') {
-  const authResponseToken = getAuthResponseToken()
+	const authResponseToken = getAuthResponseToken();
 
-  return new Promise((resolve, reject) => {
-    verifyAuthResponse(authResponseToken, nameLookupURL)
-    .then(isValid => {
-      if (isValid) {
-        const tokenPayload = decodeToken(authResponseToken).payload
-        // TODO: real version handling
-        let appPrivateKey = tokenPayload.private_key
-        let coreSessionToken = tokenPayload.core_token
-        if (isLaterVersion(tokenPayload.version, '1.1.0')) {
-          const transitKey = getTransitKey()
-          if (transitKey !== undefined && transitKey != null) {
-            if (appPrivateKey !== undefined && appPrivateKey !== null) {
-              try {
-                appPrivateKey = decryptPrivateKey(transitKey, appPrivateKey)
-              } catch (e) {
-                console.log('Failed decryption of appPrivateKey, will try to use as given')
-              }
-            }
-            if (coreSessionToken !== undefined && coreSessionToken !== null) {
-              try {
-                coreSessionToken = decryptPrivateKey(transitKey, coreSessionToken)
-              } catch (e) {
-                console.log('Failed decryption of coreSessionToken, will try to use as given')
-              }
-            }
-          }
-        }
-        let hubUrl = BLOCKSTACK_DEFAULT_GAIA_HUB_URL
-        if (isLaterVersion(tokenPayload.version, '1.2.0') &&
-            tokenPayload.hubUrl !== null && tokenPayload.hubUrl !== undefined) {
-          hubUrl = tokenPayload.hubUrl
-        }
+	return new Promise((resolve, reject) => {
+		verifyAuthResponse(authResponseToken, nameLookupURL).then(isValid => {
+			if (isValid) {
+				const tokenPayload = decodeToken(authResponseToken).payload;
+				// TODO: real version handling
+				let appPrivateKey = tokenPayload.private_key;
+				let coreSessionToken = tokenPayload.core_token;
+				if (isLaterVersion(tokenPayload.version, '1.1.0')) {
+					const transitKey = getTransitKey();
+					if (transitKey !== undefined && transitKey != null) {
+						if (appPrivateKey !== undefined && appPrivateKey !== null) {
+							try {
+								appPrivateKey = decryptPrivateKey(transitKey, appPrivateKey);
+							} catch (e) {
+								console.log('Failed decryption of appPrivateKey, will try to use as given');
+							}
+						}
+						if (coreSessionToken !== undefined && coreSessionToken !== null) {
+							try {
+								coreSessionToken = decryptPrivateKey(transitKey, coreSessionToken);
+							} catch (e) {
+								console.log('Failed decryption of coreSessionToken, will try to use as given');
+							}
+						}
+					}
+				}
+				let hubUrl = BLOCKSTACK_DEFAULT_GAIA_HUB_URL;
+				if (
+					isLaterVersion(tokenPayload.version, '1.2.0') &&
+					tokenPayload.hubUrl !== null &&
+					tokenPayload.hubUrl !== undefined
+				) {
+					hubUrl = tokenPayload.hubUrl;
+				}
 
-        const userData = {
-          username: tokenPayload.username,
-          profile: tokenPayload.profile,
-          appPrivateKey,
-          coreSessionToken,
-          authResponseToken,
-          hubUrl
-        }
-        const profileURL = tokenPayload.profile_url
-        if ((userData.profile === null ||
-             userData.profile === undefined) &&
-            profileURL !== undefined && profileURL !== null) {
-          fetch(profileURL)
-            .then(response => {
-              if (!response.ok) { // return blank profile if we fail to fetch
-                userData.profile = Object.assign({}, DEFAULT_PROFILE)
-                window.localStorage.setItem(
-                  BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData))
-                resolve(userData)
-              } else {
-                response.text()
-                .then(responseText => JSON.parse(responseText))
-                .then(wrappedProfile => extractProfile(wrappedProfile[0].token))
-                .then(profile => {
-                  userData.profile = profile
-                  window.localStorage.setItem(
-                    BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData))
-                  resolve(userData)
-                })
-              }
-            })
-        } else {
-          userData.profile = tokenPayload.profile
-          window.localStorage.setItem(
-            BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData))
-          resolve(userData)
-        }
-      } else {
-        reject()
-      }
-    })
-  })
+				const userData = {
+					username: tokenPayload.username,
+					profile: tokenPayload.profile,
+					appPrivateKey,
+					coreSessionToken,
+					authResponseToken,
+					hubUrl
+				};
+				const profileURL = tokenPayload.profile_url;
+				if (
+					(userData.profile === null || userData.profile === undefined) &&
+					profileURL !== undefined &&
+					profileURL !== null
+				) {
+					fetch(profileURL).then(response => {
+						if (!response.ok) {
+							// return blank profile if we fail to fetch
+							userData.profile = Object.assign({}, DEFAULT_PROFILE);
+							window.localStorage.setItem(BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData));
+							resolve(userData);
+						} else {
+							response
+								.text()
+								.then(responseText => JSON.parse(responseText))
+								.then(wrappedProfile => extractProfile(wrappedProfile[0].token))
+								.then(profile => {
+									userData.profile = profile;
+									window.localStorage.setItem(BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData));
+									resolve(userData);
+								});
+						}
+					});
+				} else {
+					userData.profile = tokenPayload.profile;
+					window.localStorage.setItem(BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData));
+					resolve(userData);
+				}
+			} else {
+				reject();
+			}
+		});
+	});
 }
 
 /**
@@ -228,12 +235,12 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
  * @return {Object} User data object.
  */
 export function loadUserData() {
-  var item = window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL)
-  if(item === null) {
-    return null
-  } else {
-    return JSON.parse(item)
-  }
+	var item = window.localStorage.getItem(BLOCKSTACK_STORAGE_LABEL);
+	if (item === null) {
+		return null;
+	} else {
+		return JSON.parse(item);
+	}
 }
 
 /**
@@ -242,10 +249,10 @@ export function loadUserData() {
  * @return {void}
  */
 export function signUserOut(redirectURL?: string) {
-  window.localStorage.removeItem(BLOCKSTACK_STORAGE_LABEL)
-  window.localStorage.removeItem(BLOCKSTACK_GAIA_HUB_LABEL)
+	window.localStorage.removeItem(BLOCKSTACK_STORAGE_LABEL);
+	window.localStorage.removeItem(BLOCKSTACK_GAIA_HUB_LABEL);
 
-  if (redirectURL !== undefined) {
-    window.location.href = redirectURL
-  }
+	if (redirectURL !== undefined) {
+		window.location.href = redirectURL;
+	}
 }

@@ -1,11 +1,9 @@
 /* @flow */
 
-export {
-  makePreorderSkeleton
-} from './skeletons'
+export { makePreorderSkeleton } from './skeletons';
 
-export { transactions } from './txbuild'
+export { transactions } from './txbuild';
 
-export * from './utils'
+export * from './utils';
 
-export { safety } from './safety'
+export { safety } from './safety';

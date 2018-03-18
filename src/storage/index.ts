@@ -1,13 +1,19 @@
 /* @flow */
 
-import { getOrSetLocalGaiaHubConnection, getFullReadUrl, GaiaHubConfig,
-         connectToGaiaHub, uploadToGaiaHub, getBucketUrl,
-         BLOCKSTACK_GAIA_HUB_LABEL } from './hub'
+import {
+	getOrSetLocalGaiaHubConnection,
+	getFullReadUrl,
+	GaiaHubConfig,
+	connectToGaiaHub,
+	uploadToGaiaHub,
+	getBucketUrl,
+	BLOCKSTACK_GAIA_HUB_LABEL
+} from './hub';
 
-import { encryptECIES, decryptECIES } from '../encryption'
-import { loadUserData } from '../auth'
-import { getPublicKeyFromPrivate } from '../keys'
-import { lookupProfile } from '../profiles'
+import { encryptECIES, decryptECIES } from '../encryption';
+import { loadUserData } from '../auth';
+import { getPublicKeyFromPrivate } from '../keys';
+import { lookupProfile } from '../profiles';
 
 /**
  * Fetch the public read URL of a user file for the specified app.
@@ -19,28 +25,32 @@ import { lookupProfile } from '../profiles'
  * @return {Promise} that resolves to the public read URL of the file
  * or rejects with an error
  */
-export function getUserAppFileUrl(path: string, username: string, appOrigin: string,
-  zoneFileLookupURL: string = 'http://localhost:6270/v1/names/') {
-  return lookupProfile(username, zoneFileLookupURL)
-    .then(profile => {
-      if (profile.hasOwnProperty('apps')) {
-        if (profile.apps.hasOwnProperty(appOrigin)) {
-          return profile.apps[appOrigin]
-        } else {
-          return null
-        }
-      } else {
-        return null
-      }
-    })
-    .then((bucketUrl) => {
-      if (bucketUrl) {
-        const bucket = bucketUrl.replace(/\/?(\?|#|$)/, '/$1')
-        return `${bucket}${path}`
-      } else {
-        return null
-      }
-    })
+export function getUserAppFileUrl(
+	path: string,
+	username: string,
+	appOrigin: string,
+	zoneFileLookupURL: string = 'http://localhost:6270/v1/names/'
+) {
+	return lookupProfile(username, zoneFileLookupURL)
+		.then(profile => {
+			if (profile.hasOwnProperty('apps')) {
+				if (profile.apps.hasOwnProperty(appOrigin)) {
+					return profile.apps[appOrigin];
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		})
+		.then(bucketUrl => {
+			if (bucketUrl) {
+				const bucket = bucketUrl.replace(/\/?(\?|#|$)/, '/$1');
+				return `${bucket}${path}`;
+			} else {
+				return null;
+			}
+		});
 }
 
 /**
@@ -56,60 +66,68 @@ export function getUserAppFileUrl(path: string, username: string, appOrigin: str
  * @returns {Promise} that resolves to the raw data in the file
  * or rejects with an error
  */
-export function getFile(path: string, options?: {decrypt?: boolean, username?: string, app?: string,
-  zoneFileLookupURL?: string}) {
-  const defaults = {
-    decrypt: false,
-    username: null,
-    app: window.location.origin,
-    zoneFileLookupURL: 'http://localhost:6270/v1/names/'
-  }
+export function getFile(
+	path: string,
+	options?: {
+		decrypt?: boolean;
+		username?: string;
+		app?: string;
+		zoneFileLookupURL?: string;
+	}
+) {
+	const defaults = {
+		decrypt: false,
+		username: null,
+		app: window.location.origin,
+		zoneFileLookupURL: 'http://localhost:6270/v1/names/'
+	};
 
-  const opt = Object.assign({}, defaults, options)
+	const opt = Object.assign({}, defaults, options);
 
-  return getOrSetLocalGaiaHubConnection()
-    .then((gaiaHubConfig) => {
-      if (opt.username) {
-        return getUserAppFileUrl(path, opt.username, opt.app, opt.zoneFileLookupURL)
-      } else {
-        return getFullReadUrl(path, gaiaHubConfig)
-      }
-    })
-    .then((readUrl) => new Promise((resolve, reject) => {
-      if (!readUrl) {
-        reject(null)
-      } else {
-        resolve(readUrl)
-      }
-    }))
-    .then((readUrl) => fetch(readUrl))
-    .then((response) => {
-      if (response.status !== 200) {
-        if (response.status === 404) {
-          console.log(`getFile ${path} returned 404, returning null`)
-          return null
-        } else {
-          throw new Error(`getFile ${path} failed with HTTP status ${response.status}`)
-        }
-      }
-      const contentType = response.headers.get('Content-Type')
-      if (contentType === null || opt.decrypt ||
-          contentType.startsWith('text') ||
-          contentType === 'application/json') {
-        return response.text()
-      } else {
-        return response.arrayBuffer()
-      }
-    })
-    .then((storedContents) => {
-      if (opt.decrypt && storedContents !== null) {
-        const privateKey = loadUserData().appPrivateKey
-        const cipherObject = JSON.parse(storedContents)
-        return decryptECIES(privateKey, cipherObject)
-      } else {
-        return storedContents
-      }
-    })
+	return getOrSetLocalGaiaHubConnection()
+		.then(gaiaHubConfig => {
+			if (opt.username) {
+				return getUserAppFileUrl(path, opt.username, opt.app, opt.zoneFileLookupURL);
+			} else {
+				return getFullReadUrl(path, gaiaHubConfig);
+			}
+		})
+		.then(
+			readUrl =>
+				new Promise((resolve, reject) => {
+					if (!readUrl) {
+						reject(null);
+					} else {
+						resolve(readUrl);
+					}
+				})
+		)
+		.then(readUrl => fetch(readUrl))
+		.then(response => {
+			if (response.status !== 200) {
+				if (response.status === 404) {
+					console.log(`getFile ${path} returned 404, returning null`);
+					return null;
+				} else {
+					throw new Error(`getFile ${path} failed with HTTP status ${response.status}`);
+				}
+			}
+			const contentType = response.headers.get('Content-Type');
+			if (contentType === null || opt.decrypt || contentType.startsWith('text') || contentType === 'application/json') {
+				return response.text();
+			} else {
+				return response.arrayBuffer();
+			}
+		})
+		.then(storedContents => {
+			if (opt.decrypt && storedContents !== null) {
+				const privateKey = loadUserData().appPrivateKey;
+				const cipherObject = JSON.parse(storedContents);
+				return decryptECIES(privateKey, cipherObject);
+			} else {
+				return storedContents;
+			}
+		});
 }
 
 /**
@@ -121,26 +139,27 @@ export function getFile(path: string, options?: {decrypt?: boolean, username?: s
  * @return {Promise} that resolves if the operation succeed and rejects
  * if it failed
  */
-export function putFile(path: string, content: string | Buffer, options?: {encrypt?: boolean}) {
-  const defaults = {
-    encrypt: false
-  }
+export function putFile(path: string, content: string | Buffer, options?: { encrypt?: boolean }) {
+	const defaults = {
+		encrypt: false
+	};
 
-  const opt = Object.assign({}, defaults, options)
+	const opt = Object.assign({}, defaults, options);
 
-  let contentType = 'text/plain'
-  if (typeof(content) !== 'string') {
-    contentType = 'application/octet-stream'
-  }
-  if (opt.encrypt) {
-    const privateKey = loadUserData().appPrivateKey
-    const publicKey = getPublicKeyFromPrivate(privateKey)
-    const cipherObject = encryptECIES(publicKey, content)
-    content = JSON.stringify(cipherObject)
-    contentType = 'application/json'
-  }
-  return getOrSetLocalGaiaHubConnection()
-    .then((gaiaHubConfig) => uploadToGaiaHub(path, content, gaiaHubConfig, contentType))
+	let contentType = 'text/plain';
+	if (typeof content !== 'string') {
+		contentType = 'application/octet-stream';
+	}
+	if (opt.encrypt) {
+		const privateKey = loadUserData().appPrivateKey;
+		const publicKey = getPublicKeyFromPrivate(privateKey);
+		const cipherObject = encryptECIES(publicKey, content);
+		content = JSON.stringify(cipherObject);
+		contentType = 'application/json';
+	}
+	return getOrSetLocalGaiaHubConnection().then(gaiaHubConfig =>
+		uploadToGaiaHub(path, content, gaiaHubConfig, contentType)
+	);
 }
 
 /**
@@ -151,7 +170,7 @@ export function putFile(path: string, content: string | Buffer, options?: {encry
  * or rejects if it fails
  */
 export function getAppBucketUrl(gaiaHubUrl: string, appPrivateKey: string) {
-  return getBucketUrl(gaiaHubUrl, appPrivateKey)
+	return getBucketUrl(gaiaHubUrl, appPrivateKey);
 }
 
 /**
@@ -161,7 +180,7 @@ export function getAppBucketUrl(gaiaHubUrl: string, appPrivateKey: string) {
  * or rejects with an error
  */
 export function deleteFile(path: string) {
-  throw new Error(`Delete of ${path} not supported by gaia hubs`)
+	throw new Error(`Delete of ${path} not supported by gaia hubs`);
 }
 
-export { connectToGaiaHub, uploadToGaiaHub, BLOCKSTACK_GAIA_HUB_LABEL, GaiaHubConfig }
+export { connectToGaiaHub, uploadToGaiaHub, BLOCKSTACK_GAIA_HUB_LABEL, GaiaHubConfig };

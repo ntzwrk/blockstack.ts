@@ -1,21 +1,27 @@
 export {
-  isUserSignedIn, redirectToSignIn, redirectToSignInWithAuthRequest,
-  getAuthResponseToken, isSignInPending,
-  handlePendingSignIn, loadUserData, signUserOut,
-  generateAndStoreTransitKey, getTransitKey
-} from './authApp'
+	isUserSignedIn,
+	redirectToSignIn,
+	redirectToSignInWithAuthRequest,
+	getAuthResponseToken,
+	isSignInPending,
+	handlePendingSignIn,
+	loadUserData,
+	signUserOut,
+	generateAndStoreTransitKey,
+	getTransitKey
+} from './authApp';
+export { makeAuthRequest, makeAuthResponse, AuthMetadata } from './authMessages';
+export { getAuthRequestFromURL, fetchAppManifest, redirectUserToApp } from './authProvider';
+export { makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession } from './authSession';
 export {
-  makeAuthRequest, makeAuthResponse, AuthMetadata
-} from './authMessages'
-export {
-  getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
-} from './authProvider'
-export {
-  makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession
-} from './authSession'
-export {
-  verifyAuthRequest, verifyAuthResponse,
-  isExpirationDateValid, isIssuanceDateValid, doPublicKeysMatchUsername,
-  doPublicKeysMatchIssuer, doSignaturesMatchPublicKeys,
-  isManifestUriValid, isRedirectUriValid, verifyAuthRequestAndLoadManifest
-} from './authVerification'
+	verifyAuthRequest,
+	verifyAuthResponse,
+	isExpirationDateValid,
+	isIssuanceDateValid,
+	doPublicKeysMatchUsername,
+	doPublicKeysMatchIssuer,
+	doSignaturesMatchPublicKeys,
+	isManifestUriValid,
+	isRedirectUriValid,
+	verifyAuthRequestAndLoadManifest
+} from './authVerification';

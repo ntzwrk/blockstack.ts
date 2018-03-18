@@ -1,7 +1,7 @@
-import * as queryString from 'query-string'
-import { decodeToken, JWT } from 'jsontokens'
-import { updateQueryStringParameter } from '../index'
-import { BLOCKSTACK_HANDLER } from '../utils'
+import * as queryString from 'query-string';
+import { decodeToken, JWT } from 'jsontokens';
+import { updateQueryStringParameter } from '../index';
+import { BLOCKSTACK_HANDLER } from '../utils';
 
 /**
  * Retrieves the authentication request from the query string
@@ -10,12 +10,12 @@ import { BLOCKSTACK_HANDLER } from '../utils'
  * @private
  */
 export function getAuthRequestFromURL() {
-  const queryDict = queryString.parse(location.search)
-  if (queryDict.authRequest !== null && queryDict.authRequest !== undefined) {
-    return queryDict.authRequest.split(`${BLOCKSTACK_HANDLER}:`).join('')
-  } else {
-    return null
-  }
+	const queryDict = queryString.parse(location.search);
+	if (queryDict.authRequest !== null && queryDict.authRequest !== undefined) {
+		return queryDict.authRequest.split(`${BLOCKSTACK_HANDLER}:`).join('');
+	} else {
+		return null;
+	}
 }
 
 /**
@@ -27,30 +27,30 @@ export function getAuthRequestFromURL() {
  * message.
  * @private
  */
-export function fetchAppManifest(authRequest: string|JWT) {
-  return new Promise((resolve, reject) => {
-    if (!authRequest) {
-      reject('Invalid auth request')
-    } else {
-      const payload = decodeToken(authRequest).payload
-      const manifestURI = payload.manifest_uri
-      try {
-        fetch(manifestURI)
-          .then(response => response.text())
-          .then(responseText => JSON.parse(responseText))
-          .then(responseJSON => {
-            resolve(responseJSON)
-          })
-          .catch((e) => {
-            console.log(e.stack)
-            reject('URI request couldn\'t be completed')
-          })
-      } catch (e) {
-        console.log(e.stack)
-        reject('URI request couldn\'t be completed')
-      }
-    }
-  })
+export function fetchAppManifest(authRequest: string | JWT) {
+	return new Promise((resolve, reject) => {
+		if (!authRequest) {
+			reject('Invalid auth request');
+		} else {
+			const payload = decodeToken(authRequest).payload;
+			const manifestURI = payload.manifest_uri;
+			try {
+				fetch(manifestURI)
+					.then(response => response.text())
+					.then(responseText => JSON.parse(responseText))
+					.then(responseJSON => {
+						resolve(responseJSON);
+					})
+					.catch(e => {
+						console.log(e.stack);
+						reject("URI request couldn't be completed");
+					});
+			} catch (e) {
+				console.log(e.stack);
+				reject("URI request couldn't be completed");
+			}
+		}
+	});
 }
 
 /**
@@ -64,14 +64,14 @@ export function fetchAppManifest(authRequest: string|JWT) {
  * @throws {Error} if there is no redirect uri
  * @private
  */
-export function redirectUserToApp(authRequest: string|JWT, authResponse: string) {
-  const payload = decodeToken(authRequest).payload
-  let redirectURI = payload.redirect_uri
-  console.log(redirectURI)
-  if (redirectURI) {
-    redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse)
-  } else {
-    throw new Error('Invalid redirect URI')
-  }
-  window.location.href = redirectURI
+export function redirectUserToApp(authRequest: string | JWT, authResponse: string) {
+	const payload = decodeToken(authRequest).payload;
+	let redirectURI = payload.redirect_uri;
+	console.log(redirectURI);
+	if (redirectURI) {
+		redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);
+	} else {
+		throw new Error('Invalid redirect URI');
+	}
+	window.location.href = redirectURI;
 }
