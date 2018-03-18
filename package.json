@@ -38,9 +38,11 @@
     "hasprop": "^0.0.4",
     "isomorphic-fetch": "^2.2.1",
     "jsontokens": "^0.7.7",
+    "prettier": "^1.11.1",
     "query-string": "^6.0.0",
     "schema-inspector": "^1.6.8",
     "ts-node": "^5.0.1",
+    "tslint-config-prettier": "^1.10.0",
     "typescript": "^2.7.2",
     "uri-js": "^3.0.2",
     "zone-file": "^0.2.3"
