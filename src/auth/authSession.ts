@@ -1,6 +1,6 @@
 /* @flow */
 import { TokenSigner, decodeToken, SECP256K1Client } from 'jsontokens'
-import fetch from 'isomorphic-fetch'
+import * as fetch from 'isomorphic-fetch'
 
 /**
  * Create an authentication token to be sent to the Core API server

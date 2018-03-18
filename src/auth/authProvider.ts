@@ -1,5 +1,5 @@
-import queryString from 'query-string'
-import { decodeToken } from 'jsontokens'
+import * as queryString from 'query-string'
+import { decodeToken, JWT } from 'jsontokens'
 import { updateQueryStringParameter } from '../index'
 import { BLOCKSTACK_HANDLER } from '../utils'
 

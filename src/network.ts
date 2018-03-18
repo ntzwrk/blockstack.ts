@@ -1,6 +1,6 @@
 /* @flow */
 import * as bitcoinjs from 'bitcoinjs-lib'
-import FormData from 'form-data'
+import * as FormData from 'form-data'
 
 import { MissingParameterError, RemoteServiceError } from './errors'
 
