@@ -7,7 +7,7 @@ Please raise your PRs against the `develop` branch (regardless of `git-flow` usa
 Before raising a PR, please make sure that
 * your code is lint-free (`yarn lint`),
 * your code compiles (`yarn build`),
-* the tests run through (`yarn test).
+* the tests run through (`yarn test`).
 Also don't forget to comment your code properly and add code documentation / tests.
 
 Thanks for contributing!
