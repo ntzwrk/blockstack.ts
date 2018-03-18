@@ -1,8 +1,6 @@
-/* @flow */
-
-import * as bitcoinjs from 'bitcoinjs-lib';
-import RIPEMD160 from 'ripemd160';
 import * as bigi from 'bigi';
+import * as bitcoinjs from 'bitcoinjs-lib';
+import * as RIPEMD160 from 'ripemd160';
 
 import { NotEnoughFundsError } from '../errors';
 import { UTXO } from '../network';
@@ -26,11 +24,11 @@ const TX_INPUT_PUBKEYHASH = 107;
 const TX_OUTPUT_BASE = 8 + 1;
 const TX_OUTPUT_PUBKEYHASH = 25;
 
-type txPoint = {
+interface ITxPoint {
 	script: { length: number };
-};
+}
 
-function inputBytes(input: txPoint | null) {
+function inputBytes(input: ITxPoint | null) {
 	if (input && input.script && input.script.length > 0) {
 		return TX_INPUT_BASE + input.script.length;
 	} else {
@@ -38,7 +36,7 @@ function inputBytes(input: txPoint | null) {
 	}
 }
 
-function outputBytes(output: txPoint | null) {
+function outputBytes(output: ITxPoint | null) {
 	if (output && output.script && output.script.length > 0) {
 		return TX_OUTPUT_BASE + output.script.length;
 	} else {
@@ -46,11 +44,11 @@ function outputBytes(output: txPoint | null) {
 	}
 }
 
-function transactionBytes(inputs: Array<txPoint | null>, outputs: Array<txPoint | null>) {
+function transactionBytes(inputs: Array<ITxPoint | null>, outputs: Array<ITxPoint | null>) {
 	return (
 		TX_EMPTY_SIZE +
-		inputs.reduce((a: number, x: txPoint | null) => a + inputBytes(x), 0) +
-		outputs.reduce((a: number, x: txPoint | null) => a + outputBytes(x), 0)
+		inputs.reduce((a: number, x: ITxPoint | null) => a + inputBytes(x), 0) +
+		outputs.reduce((a: number, x: ITxPoint | null) => a + outputBytes(x), 0)
 	);
 }
 
@@ -61,31 +59,20 @@ export function estimateTXBytes(
 	additionalInputs: number,
 	additionalOutputs: number
 ) {
-	let innerTx;
-	if (txIn instanceof bitcoinjs.TransactionBuilder) {
-		innerTx = txIn.tx;
-	} else {
-		innerTx = txIn;
-	}
-	const dummyInputs: Array<null> = new Array(additionalInputs);
+	const innerTx = txIn instanceof bitcoinjs.TransactionBuilder ? txIn.tx : txIn;
+	const dummyInputs: Array<null | ITxPoint> = new Array(additionalInputs);
 	dummyInputs.fill(null);
-	const dummyOutputs: Array<null> = new Array(additionalOutputs);
+	const dummyOutputs: Array<null | ITxPoint> = new Array(additionalOutputs);
 	dummyOutputs.fill(null);
 
-	const inputs: Array<null | txPoint> = [].concat(innerTx.ins, dummyInputs);
-	const outputs: Array<null | txPoint> = [].concat(innerTx.outs, dummyOutputs);
+	const inputs: Array<null | ITxPoint> = dummyInputs.concat(innerTx.ins);
+	const outputs: Array<null | ITxPoint> = dummyOutputs.concat(innerTx.outs);
 
 	return transactionBytes(inputs, outputs);
 }
 
 export function sumOutputValues(txIn: bitcoinjs.Transaction | bitcoinjs.TransactionBuilder) {
-	let innerTx;
-	if (txIn instanceof bitcoinjs.TransactionBuilder) {
-		innerTx = txIn.tx;
-	} else {
-		innerTx = txIn;
-	}
-
+	const innerTx = txIn instanceof bitcoinjs.TransactionBuilder ? txIn.tx : txIn;
 	return innerTx.outs.reduce((agg, x) => agg + x.value, 0);
 }
 

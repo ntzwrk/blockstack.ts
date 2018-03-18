@@ -1,5 +1,3 @@
-/* @flow */
-
 import { config } from '../config';
 
 function isNameValid(fullyQualifiedName: string = '') {
@@ -73,7 +71,7 @@ function addressCanReceiveName(address: string) {
 export const safety = {
 	addressCanReceiveName,
 	isInGracePeriod,
-	ownsName,
 	isNameAvailable,
-	isNameValid
+	isNameValid,
+	ownsName
 };

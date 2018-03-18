@@ -1,8 +1,7 @@
-/* @flow */
-
 import * as bitcoin from 'bitcoinjs-lib';
-import { decodeB40, hash160, hash128, DUST_MINIMUM } from './utils';
+
 import { config } from '../config';
+import { decodeB40, DUST_MINIMUM, hash128, hash160 } from './utils';
 
 // todo : add name length / character verification
 

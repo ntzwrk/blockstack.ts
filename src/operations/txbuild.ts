@@ -1,19 +1,17 @@
-/* @flow */
-
 import * as bitcoinjs from 'bitcoinjs-lib';
 
-import { addUTXOsToFund, DUST_MINIMUM, estimateTXBytes, sumOutputValues, hash160 } from './utils';
+import { config } from '../config';
+import { InvalidAmountError, InvalidParameterError } from '../errors';
+import { UTXO } from '../network';
+import { hexStringToECPair } from '../utils';
 import {
 	makePreorderSkeleton,
 	makeRegisterSkeleton,
-	makeUpdateSkeleton,
+	makeRenewalSkeleton,
 	makeTransferSkeleton,
-	makeRenewalSkeleton
+	makeUpdateSkeleton
 } from './skeletons';
-import { config } from '../config';
-import { hexStringToECPair } from '../utils';
-import { InvalidAmountError, InvalidParameterError } from '../errors';
-import { UTXO } from '../network';
+import { addUTXOsToFund, DUST_MINIMUM, estimateTXBytes, hash160, sumOutputValues } from './utils';
 
 const dummyBurnAddress = '1111111111111111111114oLvT2';
 const dummyConsensusHash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
@@ -123,7 +121,7 @@ function estimateRegister(
 ): Promise<number> {
 	const network = config.network;
 
-	let valueHash = undefined;
+	let valueHash: string | undefined;
 	if (includingZonefile) {
 		valueHash = dummyZonefileHash;
 	}
@@ -207,7 +205,7 @@ function estimateTransfer(
  * @param {String} ownerAddress - the current owner of the name
  * @param {String} paymentAddress - the address funding the transfer
  * @param {Boolean} includingZonefile - whether or not we will broadcast a zonefile hash
-      in the renewal operation
+ *    in the renewal operation
  * @param {Number} paymentUtxos - the number of UTXOs we expect will be required
  *    from the payment address.
  * @returns {Promise} - a promise which resolves to the satoshi cost to fund
@@ -224,7 +222,7 @@ function estimateRenewal(
 ): Promise<number> {
 	const network = config.network;
 
-	let valueHash: string | undefined = undefined;
+	let valueHash: string | undefined;
 	if (includingZonefile) {
 		valueHash = dummyZonefileHash;
 	}
@@ -359,7 +357,7 @@ function makeUpdate(fullyQualifiedName: string, ownerKeyHex: string, paymentKeyH
  */
 function makeRegister(fullyQualifiedName: string, registerAddress: string, paymentKeyHex: string, zonefile?: string) {
 	const network = config.network;
-	let valueHash = undefined;
+	let valueHash: string | undefined;
 	if (zonefile !== undefined) {
 		valueHash = hash160(Buffer.from(zonefile)).toString('hex');
 	}
@@ -453,7 +451,7 @@ function makeRenewal(
 	paymentKeyHex: string,
 	zonefile?: string
 ) {
-	let valueHash = undefined;
+	let valueHash: string | undefined;
 	const network = config.network;
 
 	if (zonefile !== undefined) {
@@ -577,15 +575,15 @@ function makeBitcoinSpend(destinationAddress: string, paymentKeyHex: string, amo
 }
 
 export const transactions = {
-	makeRenewal,
-	makeUpdate,
-	makePreorder,
-	makeRegister,
-	makeTransfer,
-	makeBitcoinSpend,
 	estimatePreorder,
 	estimateRegister,
+	estimateRenewal,
 	estimateTransfer,
 	estimateUpdate,
-	estimateRenewal
+	makeBitcoinSpend,
+	makePreorder,
+	makeRegister,
+	makeRenewal,
+	makeTransfer,
+	makeUpdate
 };
