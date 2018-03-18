@@ -171,7 +171,7 @@ export class BlockstackNetwork {
   *   parameter
   */
   broadcastTransaction(transaction: string,
-    transactionToWatch: string = null,
+    transactionToWatch: string|null = null,
     confirmations: number = 6) {
     if (!transaction) {
       const error = new MissingParameterError('transaction')
@@ -223,7 +223,7 @@ export class BlockstackNetwork {
    *   parameter
    */
   broadcastZoneFile(zoneFile: string,
-    transactionToWatch: string = null) {
+    transactionToWatch: string|null = null) {
     if (!zoneFile) {
       return Promise.reject(new MissingParameterError('zoneFile'))
     }
