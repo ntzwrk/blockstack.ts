@@ -49,7 +49,9 @@
 
 
 ## About
-`@todo`
+`blockstack.ts` is a library for interacting with Blockstack (i.e. [identity](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#identity), [authentication](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#authentication) and [storage](https://github.com/ntzwrk/blockstack.ts/blob/master/README.md#storage)).
+
+It's a fork of Blockstack's official [`blockstack.js`](https://github.com/blockstack/blockstack.js) library but got ported to [TypeScript](http://www.typescriptlang.org). Since TypeScript compiles to JavaScript, you can use this library in both languages without limitations.
 
 
 ## Installation
@@ -57,9 +59,17 @@ Simply install it with `yarn install blockstack.ts` into your project (which is 
 
 
 ## Quick start
+
+### Identity
 `@todo`
 
-For some examples see [`examples/`](https://github.com/ntzwrk/blockstack.ts/blob/master/examples/).
+### Authentication
+`@todo`
+
+### Storage
+`@todo`
+
+For more examples see [`examples/`](https://github.com/ntzwrk/blockstack.ts/blob/master/examples/).
 
 
 ## Tutorials
