@@ -10,5 +10,5 @@ cache:
     - node_modules
 
 notifications:
-  email:
-    on_success: never
+  email: false
+    # on_success: never
