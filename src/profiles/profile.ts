@@ -1,3 +1,4 @@
+import { JWT } from 'jsontokens';
 import inspector from 'schema-inspector';
 
 import { signProfileToken, extractProfile } from './profileTokens';
@@ -27,7 +28,7 @@ export class Profile {
 		return Object.assign({}, this._profile);
 	}
 
-	toToken(privateKey) {
+	toToken(privateKey): JWT {
 		return signProfileToken(this.toJSON(), privateKey);
 	}
 

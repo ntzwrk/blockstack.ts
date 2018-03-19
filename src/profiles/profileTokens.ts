@@ -1,4 +1,4 @@
-import ecurve from 'ecurve';
+import * as ecurve from 'ecurve';
 import { ECPair } from 'bitcoinjs-lib';
 import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier, JWT } from 'jsontokens';
 
@@ -18,10 +18,10 @@ const secp256k1 = ecurve.getCurveByName('secp256k1');
  * @returns {Object} - the signed profile token
  */
 export function signProfileToken(
-	profile,
-	privateKey,
-	subject = null,
-	issuer = null,
+	profile: object,
+	privateKey: string,
+	subject: { publicKey: string }|null = null,
+	issuer: { publicKey: string }|null = null,
 	signingAlgorithm = 'ES256K',
 	issuedAt = new Date(),
 	expiresAt = nextYear()
@@ -30,7 +30,7 @@ export function signProfileToken(
 		throw new Error('Signing algorithm not supported');
 	}
 
-	const publicKey = SECP256K1Client.derivePublicKey(privateKey);
+	const publicKey: string = SECP256K1Client.derivePublicKey(privateKey);
 
 	if (subject === null) {
 		subject = { publicKey };
@@ -59,7 +59,7 @@ export function signProfileToken(
  * @param {String} token - the token to be wrapped
  * @returns {Object} - including `token` and `decodedToken`
  */
-export function wrapProfileToken(token) {
+export function wrapProfileToken(token: string) {
 	return {
 		token,
 		decodedToken: decodeToken(token)
@@ -74,7 +74,7 @@ export function wrapProfileToken(token) {
  * @returns {Object} - the verified, decoded profile token
  * @throws {Error} - throws an error if token verification fails
  */
-export function verifyProfileToken(token, publicKeyOrAddress) {
+export function verifyProfileToken(token: string, publicKeyOrAddress: string) {
 	const decodedToken = decodeToken(token);
 	const payload = decodedToken.payload;
 
@@ -142,7 +142,7 @@ export function verifyProfileToken(token, publicKeyOrAddress) {
  * @returns {Object} - the profile extracted from the encoded token
  * @throws {Error} - if the token isn't signed by the provided `publicKeyOrAddress`
  */
-export function extractProfile(token, publicKeyOrAddress = null) {
+export function extractProfile(token: string, publicKeyOrAddress: string|null = null) {
 	let decodedToken;
 	if (publicKeyOrAddress) {
 		decodedToken = verifyProfileToken(token, publicKeyOrAddress);

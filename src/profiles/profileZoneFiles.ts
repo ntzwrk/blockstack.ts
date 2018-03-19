@@ -1,8 +1,8 @@
-import { makeZoneFile, parseZoneFile } from 'zone-file';
+import { makeZoneFile, parseZoneFile, JsonZoneFile } from 'zone-file';
 import { extractProfile } from './profileTokens';
 import { Person } from './index';
 
-export function makeProfileZoneFile(origin, tokenFileUrl) {
+export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
 		throw new Error('Invalid token file url');
 	}
@@ -12,7 +12,7 @@ export function makeProfileZoneFile(origin, tokenFileUrl) {
 	const domain = urlParts[0];
 	const pathname = `/${urlParts.slice(1).join('/')}`;
 
-	const zoneFile = {
+	const zoneFile: JsonZoneFile = {
 		$origin: origin,
 		$ttl: 3600,
 		uri: [
@@ -30,20 +30,20 @@ export function makeProfileZoneFile(origin, tokenFileUrl) {
 	return makeZoneFile(zoneFile, zoneFileTemplate);
 }
 
-export function getTokenFileUrl(zoneFileJson) {
+export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string|undefined {
 	if (!zoneFileJson.hasOwnProperty('uri')) {
-		return null;
+		return undefined;
 	}
 	if (!Array.isArray(zoneFileJson.uri)) {
-		return null;
+		return undefined;
 	}
 	if (zoneFileJson.uri.length < 1) {
-		return null;
+		return undefined;
 	}
 	const firstUriRecord = zoneFileJson.uri[0];
 
 	if (!firstUriRecord.hasOwnProperty('target')) {
-		return null;
+		return undefined;
 	}
 	let tokenFileUrl = firstUriRecord.target;
 
@@ -58,7 +58,7 @@ export function getTokenFileUrl(zoneFileJson) {
 	return tokenFileUrl;
 }
 
-export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
+export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string) {
 	return new Promise((resolve, reject) => {
 		let zoneFileJson = null;
 		try {
@@ -70,7 +70,7 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
 			reject(e);
 		}
 
-		let tokenFileUrl = null;
+		let tokenFileUrl: string|undefined;
 		if (zoneFileJson && Object.keys(zoneFileJson).length > 0) {
 			tokenFileUrl = getTokenFileUrl(zoneFileJson);
 		} else {

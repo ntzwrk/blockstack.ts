@@ -15,7 +15,7 @@ export function validateProofs(profile: Object, ownerAddress: string, name?: str
 		throw new Error('Profile must not be null');
 	}
 
-	let accounts: Array<any> = [];
+	let accounts: any[] = [];
 	const proofsToValidate = [];
 
 	if (profile.hasOwnProperty('account')) {
