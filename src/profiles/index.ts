@@ -1,13 +1,24 @@
-export { Profile } from './profile';
+export { Profile } from './Profile';
 
-export { Person, Organization, CreativeWork, resolveZoneFileToPerson } from './profileSchemas';
+export { Person } from './Person';
+export { Organization } from './Organization';
+export { CreativeWork } from './CreativeWork';
 
-export { signProfileToken, wrapProfileToken, verifyProfileToken, extractProfile } from './profileTokens';
+export {
+	makeProfileZoneFile,
+	getTokenFileUrl,
+	resolveZoneFileToProfile,
+	lookupProfile,
+	validateProofs,
+	resolveZoneFileToPerson,
+	signProfileToken,
+	wrapProfileToken,
+	verifyProfileToken,
+	extractProfile
+} from './utils';
 
-export { validateProofs } from './profileProofs';
-
-export { profileServices, containsValidProofStatement, containsValidAddressProofStatement } from './services';
-
-export { makeProfileZoneFile, getTokenFileUrl, resolveZoneFileToProfile } from './profileZoneFiles';
-
-export { lookupProfile } from './profileLookup';
+export {
+	profileServices,
+	containsValidProofStatement,
+	containsValidAddressProofStatement
+} from './services';

@@ -2,7 +2,7 @@ import * as ecurve from 'ecurve';
 import { ECPair } from 'bitcoinjs-lib';
 import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier, JWT } from 'jsontokens';
 
-import { nextYear, makeUUID4 } from '../utils';
+import { nextYear, makeUUID4 } from '../../utils';
 
 const secp256k1 = ecurve.getCurveByName('secp256k1');
 

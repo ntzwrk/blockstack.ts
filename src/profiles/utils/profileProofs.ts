@@ -1,5 +1,5 @@
 /* @flow */
-import { profileServices } from './services';
+import { profileServices } from '../services';
 
 /**
  * Validates the social proofs in a user's profile. Currently supports validation of

@@ -1,4 +1,4 @@
-import hasprop from 'hasprop';
+import * as hasprop from 'hasprop';
 
 function formatAccount(serviceName, data) {
 	let proofUrl;

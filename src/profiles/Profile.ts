@@ -1,9 +1,9 @@
 import { JWT } from 'jsontokens';
 import inspector from 'schema-inspector';
 
-import { signProfileToken, extractProfile } from './profileTokens';
-import { validateProofs } from './profileProofs';
-import { makeProfileZoneFile } from './profileZoneFiles';
+import { signProfileToken, extractProfile } from './utils';
+import { validateProofs } from './utils';
+import { makeProfileZoneFile } from './utils';
 
 const schemaDefinition = {
 	type: 'object',

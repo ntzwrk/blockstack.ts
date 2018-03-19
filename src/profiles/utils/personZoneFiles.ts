@@ -1,10 +1,10 @@
 import { parseZoneFile } from 'zone-file';
 
-import { Person } from './person';
-import { getTokenFileUrl } from '../profileZoneFiles';
-import { extractProfile } from '../profileTokens';
+import { Person } from '../Person';
+import { getTokenFileUrl } from './profileZoneFiles';
+import { extractProfile } from './profileTokens';
 
-export function resolveZoneFileToPerson(zoneFile, publicKeyOrAddress, callback) {
+export function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: string, callback) {
 	let zoneFileJson = null;
 	try {
 		zoneFileJson = parseZoneFile(zoneFile);

@@ -1,8 +1,8 @@
 import inspector from 'schema-inspector';
 
-import { Profile } from '../profile';
-import { extractProfile } from '../profileTokens';
-import { getPersonFromLegacyFormat } from './personLegacy';
+import { Profile } from './Profile';
+import { extractProfile } from './utils';
+import { getPersonFromLegacyFormat } from './utils/personLegacy';
 import {
 	getName,
 	getFamilyName,
@@ -14,7 +14,7 @@ import {
 	getBirthDate,
 	getConnections,
 	getOrganizations
-} from './personUtils';
+} from './utils/person';
 
 const schemaDefinition = {
 	type: 'object',

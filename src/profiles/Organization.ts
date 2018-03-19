@@ -1,7 +1,7 @@
 import inspector from 'schema-inspector';
 
-import { extractProfile } from '../profileTokens';
-import { Profile } from '../profile';
+import { extractProfile } from './utils';
+import { Profile } from './Profile';
 
 const schemaDefinition = {
 	type: 'object',

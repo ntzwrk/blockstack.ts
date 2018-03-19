@@ -1,6 +1,6 @@
 import { makeZoneFile, parseZoneFile, JsonZoneFile } from 'zone-file';
 import { extractProfile } from './profileTokens';
-import { Person } from './index';
+import { Person } from '../Person';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
