@@ -1,4 +1,5 @@
-import { BitcoinNetwork, IUTXO, SATOSHIS_PER_BTC } from './index';
+import { BitcoinNetwork } from './BitcoinNetwork';
+import { IUTXO, SATOSHIS_PER_BTC } from './index';
 
 export class BitcoindAPI extends BitcoinNetwork {
 	public bitcoindUrl: string;

@@ -1,6 +1,8 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
-import { BlockstackNetwork, BitcoinNetwork, SATOSHIS_PER_BTC } from './index';
+import { BitcoinNetwork } from './BitcoinNetwork';
+import { BlockstackNetwork } from './BlockstackNetwork';
+import { SATOSHIS_PER_BTC } from './index';
 
 export class LocalRegtest extends BlockstackNetwork {
 	constructor(apiUrl: string, broadcastServiceUrl: string, bitcoinAPI: BitcoinNetwork) {

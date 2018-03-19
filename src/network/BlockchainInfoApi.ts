@@ -1,8 +1,10 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
+import * as FormData from 'form-data';
 
 import { printDebug } from '../debug';
 import { RemoteServiceError } from '../errors';
-import { BitcoinNetwork, IUTXO } from './index';
+import { BitcoinNetwork } from './BitcoinNetwork';
+import { IUTXO } from './index';
 
 export class BlockchainInfoApi extends BitcoinNetwork {
 	public utxoProviderUrl: string;

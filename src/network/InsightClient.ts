@@ -1,4 +1,5 @@
-import { BitcoinNetwork, IUTXO } from './index';
+import { BitcoinNetwork } from './BitcoinNetwork';
+import { IUTXO } from './index';
 
 export class InsightClient extends BitcoinNetwork {
 	public apiUrl: string;

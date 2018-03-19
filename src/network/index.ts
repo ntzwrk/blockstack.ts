@@ -1,11 +1,4 @@
-import * as bitcoinjs from 'bitcoinjs-lib';
-import * as FormData from 'form-data';
-
-import { printDebug } from '../debug';
-import { MissingParameterError, RemoteServiceError } from '../errors';
-
 import { BitcoindAPI } from './BitcoindAPI';
-import { BitcoinNetwork } from './BitcoinNetwork';
 import { BlockchainInfoApi } from './BlockchainInfoApi';
 import { BlockstackNetwork } from './BlockstackNetwork';
 import { InsightClient } from './InsightClient';
