@@ -1,5 +1,5 @@
 import { Service } from './service';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { Proof } from '.';
 
 class HackerNews extends Service {
