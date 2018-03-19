@@ -1,19 +1,17 @@
-/* @flow */
-
-import {
-	getOrSetLocalGaiaHubConnection,
-	getFullReadUrl,
-	GaiaHubConfig,
-	connectToGaiaHub,
-	uploadToGaiaHub,
-	getBucketUrl,
-	BLOCKSTACK_GAIA_HUB_LABEL
-} from './hub';
-
-import { encryptECIES, decryptECIES } from '../encryption';
 import { loadUserData } from '../auth';
+import { printDebug } from '../debug';
+import { decryptECIES, encryptECIES } from '../encryption';
 import { getPublicKeyFromPrivate } from '../keys';
 import { lookupProfile } from '../profiles';
+import {
+	BLOCKSTACK_GAIA_HUB_LABEL,
+	connectToGaiaHub,
+	getBucketUrl,
+	getFullReadUrl,
+	getOrSetLocalGaiaHubConnection,
+	IGaiaHubConfig,
+	uploadToGaiaHub
+} from './hub';
 
 /**
  * Fetch the public read URL of a user file for the specified app.
@@ -76,9 +74,9 @@ export function getFile(
 	}
 ) {
 	const defaults = {
+		app: window.location.origin,
 		decrypt: false,
 		username: null,
-		app: window.location.origin,
 		zoneFileLookupURL: 'http://localhost:6270/v1/names/'
 	};
 
@@ -106,7 +104,7 @@ export function getFile(
 		.then(response => {
 			if (response.status !== 200) {
 				if (response.status === 404) {
-					console.log(`getFile ${path} returned 404, returning null`);
+					printDebug(10, `getFile ${path} returned 404, returning null`);
 					return null;
 				} else {
 					throw new Error(`getFile ${path} failed with HTTP status ${response.status}`);
@@ -183,4 +181,4 @@ export function deleteFile(path: string) {
 	throw new Error(`Delete of ${path} not supported by gaia hubs`);
 }
 
-export { connectToGaiaHub, uploadToGaiaHub, BLOCKSTACK_GAIA_HUB_LABEL, GaiaHubConfig };
+export { connectToGaiaHub, uploadToGaiaHub, BLOCKSTACK_GAIA_HUB_LABEL, IGaiaHubConfig };
