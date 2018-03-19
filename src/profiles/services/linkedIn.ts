@@ -35,16 +35,12 @@ class LinkedIn extends Service {
 		const profileLink = $('article').find('.post-meta__profile-link');
 
 		if (profileLink !== undefined) {
-			if (profileLink.attr('href') === undefined) {
-				return '';
+			if (profileLink.attr('href') !== undefined) {
+				return profileLink.attr('href').split('/')[0];
 			}
-			return profileLink
-				.attr('href')
-				.split('/')
-				.pop();
-		} else {
-			return '';
 		}
+
+		return '';
 	}
 
 	static getProofStatement(searchText: string) {

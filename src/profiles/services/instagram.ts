@@ -1,6 +1,7 @@
 import { Service } from './service';
 import * as cheerio from 'cheerio';
 import { Proof } from '.';
+import { printDebug } from '../../debug';
 
 class Instagram extends Service {
 	static getBaseUrls() {
@@ -37,15 +38,28 @@ class Instagram extends Service {
 
 	static getProofIdentity(searchText: string) {
 		const $ = cheerio.load(searchText);
-		const username = $('meta[property="og:description"]').attr('content');
-		if (username !== undefined && username.split(':').length > 1) {
-			return username
-				.split(':')[0]
-				.match(/\(([^)]+)\)/)[1]
-				.substr(1);
+		const description = $('meta[property="og:description"]').attr('content');
+
+		// if description exists...
+		if(description !== undefined) {
+			// ...split description on each ':'
+			const descriptionParts = description.split(':');
+
+			// select the first part and match the @username
+			const usernameCandidateMatches = descriptionParts[0].match(/\(([^)]+)\)/);
+
+			// if there's a match...
+			if(usernameCandidateMatches !== null) {
+				// ...take it, trim first char (@) and return the rest (username)
+				return usernameCandidateMatches[1].substr(1);
+			} else {
+				printDebug(8, 'Could not match a username', descriptionParts[0]);
+			}
 		} else {
-			return '';
+			printDebug(8, 'Could not find the Instagram description', searchText);
 		}
+
+		return '';
 	}
 
 	static getProofStatement(searchText: string) {

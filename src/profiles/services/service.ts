@@ -40,7 +40,7 @@ export class Service {
 		});
 	}
 
-	static getBaseUrls() {
+	static getBaseUrls(): string[] {
 		return [];
 	}
 
