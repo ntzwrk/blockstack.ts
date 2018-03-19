@@ -3,7 +3,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import * as RIPEMD160 from 'ripemd160';
 
 import { NotEnoughFundsError } from '../errors';
-import { UTXO } from '../network';
+import { IUTXO } from '../network';
 
 export const DUST_MINIMUM = 5500;
 
@@ -117,7 +117,7 @@ export function decodeB40(input: string) {
  */
 export function addUTXOsToFund(
 	txBuilderIn: bitcoinjs.TransactionBuilder,
-	utxos: UTXO[],
+	utxos: IUTXO[],
 	amountToFund: number,
 	feeRate: number,
 	fundNewFees: boolean = true

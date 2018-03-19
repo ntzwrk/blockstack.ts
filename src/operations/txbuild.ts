@@ -2,7 +2,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
 import { InvalidAmountError, InvalidParameterError } from '../errors';
-import { UTXO } from '../network';
+import { IUTXO } from '../network';
 import { hexStringToECPair } from '../utils';
 import {
 	makePreorderSkeleton,
@@ -18,7 +18,7 @@ const dummyConsensusHash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 const dummyZonefileHash = 'ffffffffffffffffffffffffffffffffffffffff';
 
 function addOwnerInput(
-	utxos: UTXO[],
+	utxos: IUTXO[],
 	ownerAddress: string,
 	txB: bitcoinjs.TransactionBuilder,
 	addChangeOut: boolean = true
@@ -40,7 +40,7 @@ function addOwnerInput(
 function fundTransaction(
 	txB: bitcoinjs.TransactionBuilder,
 	paymentAddress: string,
-	utxos: UTXO[],
+	utxos: IUTXO[],
 	feeRate: number,
 	inAmounts: number,
 	changeIndex: number | null = null

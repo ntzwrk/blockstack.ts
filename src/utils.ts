@@ -1,8 +1,8 @@
-/* @flow */
-import { parse as uriParse } from 'uri-js';
-import { ECPair } from 'bitcoinjs-lib';
-import { config } from './config';
 import * as BigInteger from 'bigi';
+import { ECPair } from 'bitcoinjs-lib';
+import { parse as uriParse } from 'uri-js';
+
+import { config } from './config';
 
 export const BLOCKSTACK_HANDLER = 'blockstack';
 /**
@@ -61,8 +61,8 @@ export function isLaterVersion(v1: string, v2: string) {
 
 export function hexStringToECPair(skHex: string) {
 	const ecPairOptions = {
-		network: config.network.layer1,
-		compressed: true
+		compressed: true,
+		network: config.network.layer1
 	};
 	if (skHex.length === 66) {
 		if (skHex.slice(64) !== '01') {
@@ -117,23 +117,19 @@ export function isSameOriginAbsoluteUrl(uri1: string, uri2: string) {
 	const parsedUri1 = uriParse(uri1);
 	const parsedUri2 = uriParse(uri2);
 
-	var port1, port2;
-	if (parsedUri1.port !== undefined) {
-		port1 = typeof parsedUri1.port === 'string' ? parseInt(parsedUri1.port) : <number>parsedUri1.port;
-	} else {
-		port1 = parsedUri1.scheme === 'https' ? 443 : 80;
-	}
-	if (parsedUri2.port !== undefined) {
-		port2 = typeof parsedUri2.port === 'string' ? parseInt(parsedUri2.port) : <number>parsedUri2.port;
-	} else {
-		port2 = parsedUri2.scheme === 'https' ? 443 : 80;
-	}
+	// TODO: Refactor this with a helper function
+	const port1FromParsing = typeof parsedUri1.port === 'string' ? parseInt(parsedUri1.port, 10) : parsedUri1.port;
+	const port1FromScheme = parsedUri1.scheme === 'https' ? 443 : 80;
+	const port1 = port1FromParsing !== undefined ? port1FromParsing : port1FromScheme;
+	const port2FromParsing = typeof parsedUri2.port === 'string' ? parseInt(parsedUri2.port, 10) : parsedUri2.port;
+	const port2FromScheme = parsedUri2.scheme === 'https' ? 443 : 80;
+	const port2 = port2FromParsing !== undefined ? port2FromParsing : port2FromScheme;
 
 	const match = {
-		scheme: parsedUri1.scheme === parsedUri2.scheme,
+		absolute: parsedUri1.reference === 'absolute' && parsedUri2.reference === 'absolute',
 		hostname: parsedUri1.host === parsedUri2.host,
 		port: port1 === port2,
-		absolute: parsedUri1.reference === 'absolute' && parsedUri2.reference === 'absolute'
+		scheme: parsedUri1.scheme === parsedUri2.scheme
 	};
 
 	return match.scheme && match.hostname && match.port && match.absolute;
