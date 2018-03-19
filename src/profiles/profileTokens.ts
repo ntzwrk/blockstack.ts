@@ -142,9 +142,9 @@ export function verifyProfileToken(token: string, publicKeyOrAddress: string) {
  * @returns {Object} - the profile extracted from the encoded token
  * @throws {Error} - if the token isn't signed by the provided `publicKeyOrAddress`
  */
-export function extractProfile(token: string, publicKeyOrAddress: string|null = null) {
+export function extractProfile(token: string, publicKeyOrAddress?: string) {
 	let decodedToken;
-	if (publicKeyOrAddress) {
+	if (publicKeyOrAddress !== undefined) {
 		decodedToken = verifyProfileToken(token, publicKeyOrAddress);
 	} else {
 		decodedToken = decodeToken(token);

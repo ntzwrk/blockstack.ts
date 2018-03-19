@@ -28,8 +28,8 @@ export class CreativeWork extends Profile {
 		return inspector.validate(schemaDefinition, profile);
 	}
 
-	static fromToken(token, publicKeyOrAddress = null) {
-		const profile = extractToken(token, publicKeyOrAddress);
+	static fromToken(token: string, publicKeyOrAddress?: string) {
+		const profile = extractProfile(token, publicKeyOrAddress);
 		return new CreativeWork(profile);
 	}
 }

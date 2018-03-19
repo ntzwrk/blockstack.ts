@@ -121,7 +121,7 @@ export class Person extends Profile {
 		return inspector.validate(schemaDefinition, profile);
 	}
 
-	static fromToken(token, publicKeyOrAddress = null) {
+	static fromToken(token: string, publicKeyOrAddress?: string) {
 		const profile = extractProfile(token, publicKeyOrAddress);
 		return new Person(profile);
 	}
