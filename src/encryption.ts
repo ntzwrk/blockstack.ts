@@ -1,5 +1,5 @@
-import { ec as EllipticCurve } from 'elliptic';
 import * as crypto from 'crypto';
+import { ec as EllipticCurve } from 'elliptic';
 
 const ecurve = new EllipticCurve('secp256k1');
 
@@ -26,7 +26,7 @@ function equalConstTime(b1: Buffer, b2: Buffer) {
 	}
 	let res = 0;
 	for (let i = 0; i < b1.length; i++) {
-		res |= b1[i] ^ b2[i]; // jshint ignore:line
+		res |= b1[i] ^ b2[i]; // tslint:disable-line
 	}
 	return res === 0;
 }
@@ -43,7 +43,7 @@ function sharedSecretToKeys(sharedSecret: Buffer) {
 	};
 }
 
-export function getHexFromBN(bnInput: Object) {
+export function getHexFromBN(bnInput: object) {
 	const hexOut = bnInput.toString('hex');
 
 	if (hexOut.length === 64) {
@@ -70,12 +70,7 @@ export function getHexFromBN(bnInput: Object) {
  */
 export function encryptECIES(publicKey: string, content: string | Buffer) {
 	const isString = typeof content === 'string';
-	var plainText;
-	if (isString) {
-		plainText = new Buffer(<string>content);
-	} else {
-		plainText = content;
-	}
+	const plainText = isString ? new Buffer(content as string) : content;
 
 	const ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
 	const ephemeralSK = ecurve.genKeyPair();
@@ -94,9 +89,9 @@ export function encryptECIES(publicKey: string, content: string | Buffer) {
 	const mac = hmacSha256(sharedKeys.hmacKey, macData);
 
 	return {
-		iv: initializationVector.toString('hex'),
-		ephemeralPK: ephemeralPK.encodeCompressed('hex'),
 		cipherText: cipherText.toString('hex'),
+		ephemeralPK: ephemeralPK.encodeCompressed('hex'),
+		iv: initializationVector.toString('hex'),
 		mac: mac.toString('hex'),
 		wasString: isString
 	};

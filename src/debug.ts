@@ -11,6 +11,6 @@ const DEBUG_LEVEL = 10;
  */
 export function printDebug(importance: number, message: any, ...optionalArgs: any[]) {
 	if (importance < DEBUG_LEVEL) {
-		console.log(message, ...optionalArgs);
+		console.log(message, ...optionalArgs); // tslint:disable-line
 	}
 }
