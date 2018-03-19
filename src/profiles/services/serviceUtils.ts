@@ -1,5 +1,3 @@
-/* @flow */
-
 export interface Proof {
 	identifier: string;
 	service: string;

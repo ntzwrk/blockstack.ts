@@ -1,4 +1,3 @@
-/* @flow */
 import { Service } from './service';
 import cheerio from 'cheerio';
 

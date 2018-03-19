@@ -1,4 +1,3 @@
-/* @flow */
 import 'isomorphic-fetch';
 import { containsValidProofStatement, containsValidAddressProofStatement, Proof } from './serviceUtils';
 
