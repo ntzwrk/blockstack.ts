@@ -1,4 +1,4 @@
-import { extractToken } from '../profileTokens';
+import { extractProfile } from '../profileTokens';
 import inspector from 'schema-inspector';
 import { Profile } from '../profile';
 
