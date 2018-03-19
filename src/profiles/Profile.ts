@@ -5,13 +5,7 @@ import { signProfileToken, extractProfile } from './utils';
 import { validateProofs } from './utils';
 import { makeProfileZoneFile } from './utils';
 
-const schemaDefinition = {
-	type: 'object',
-	properties: {
-		'@context': { type: 'string', optional: true },
-		'@type': { type: 'string' }
-	}
-};
+const schemaDefinition = {};
 
 export class Profile {
 	constructor(profile = {}) {

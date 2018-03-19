@@ -3,14 +3,7 @@ import inspector from 'schema-inspector';
 import { extractProfile } from './utils';
 import { Profile } from './Profile';
 
-const schemaDefinition = {
-	type: 'object',
-	properties: {
-		'@context': { type: 'string', optional: true },
-		'@type': { type: 'string' },
-		'@id': { type: 'string', optional: true }
-	}
-};
+const schemaDefinition = {};
 
 export class Organization extends Profile {
 	constructor(profile = {}) {

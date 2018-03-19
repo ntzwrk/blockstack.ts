@@ -2,14 +2,7 @@ import { extractProfile } from './utils';
 import inspector from 'schema-inspector';
 import { Profile } from './Profile';
 
-const schemaDefinition = {
-	type: 'object',
-	properties: {
-		'@context': { type: 'string', optional: true },
-		'@type': { type: 'string' },
-		'@id': { type: 'string', optional: true }
-	}
-};
+const schemaDefinition = {};
 
 export class CreativeWork extends Profile {
 	constructor(profile = {}) {

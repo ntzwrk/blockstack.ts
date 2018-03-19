@@ -1,0 +1,16 @@
+{
+	"type": "object",
+	"properties": {
+		"@context": {
+			"type": "string",
+			"optional": true
+		},
+		"@type": {
+			"type": "string"
+		},
+		"@id": {
+			"type": "string",
+			"optional": true
+		}
+	}
+}
