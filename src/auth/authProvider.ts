@@ -1,7 +1,7 @@
 import { decodeToken, JWT } from 'jsontokens';
 import * as queryString from 'query-string';
 
-import { printDebug } from '../debug';
+import { log, DebugType } from '../debug';
 import { updateQueryStringParameter } from '../index';
 import { BLOCKSTACK_HANDLER } from '../utils';
 
@@ -44,11 +44,11 @@ export function fetchAppManifest(authRequest: string | JWT): Promise<object | st
 						resolve(responseJSON);
 					})
 					.catch(e => {
-						printDebug(5, 'Error while requesting manifest', e.stack);
+						log(DebugType.error, 'Error while requesting manifest', e.stack);
 						reject("URI request couldn't be completed");
 					});
 			} catch (e) {
-				printDebug(5, 'Error while requesting manifest', e.stack);
+				log(DebugType.error, 'Error while requesting manifest', e.stack);
 				reject("URI request couldn't be completed");
 			}
 		}
@@ -69,7 +69,7 @@ export function fetchAppManifest(authRequest: string | JWT): Promise<object | st
 export function redirectUserToApp(authRequest: string | JWT, authResponse: string) {
 	const payload = decodeToken(authRequest).payload;
 	let redirectURI = payload.redirect_uri;
-	printDebug(10, 'redirectURI: ', redirectURI);
+	log(DebugType.info, 'redirectURI: ', redirectURI);
 	if (redirectURI) {
 		redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);
 	} else {

@@ -1,16 +1,35 @@
 /**
- * Debug level (none: 0, full: 10)
+ * Available debug types
  */
-const DEBUG_LEVEL = 10;
+export const enum DebugType {
+	info = 2,
+	warn = 1,
+	error = 0
+}
+
+/**
+ * Debug level (this and everything more severe gets printed)
+ */
+let DEBUG_LEVEL: DebugType|null = DebugType.info;
 
 /**
  * Prints out debug information
  *
- * @param importance Level of importance (0: important, 10: less important)
+ * @param type Debug type of message
  * @param message Message to print
  */
-export function printDebug(importance: number, message: any, ...optionalArgs: any[]) {
-	if (importance < DEBUG_LEVEL) {
-		console.log(message, ...optionalArgs); // tslint:disable-line
+export function log(type: DebugType, message: any, ...optionalArgs: any[]) {
+	if (DEBUG_LEVEL !== null && type <= DEBUG_LEVEL) {
+		switch(type) {
+			case DebugType.info:
+				console.info(message, ...optionalArgs); // tslint:disable-line
+				break;
+			case DebugType.warn:
+				console.warn(message, ...optionalArgs); // tslint:disable-line
+				break;
+			case DebugType.error:
+				console.error(message, ...optionalArgs); // tslint:disable-line
+				break;
+		}
 	}
 }

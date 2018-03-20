@@ -1,7 +1,7 @@
 import { Service } from './service';
 import * as cheerio from 'cheerio';
 import { Proof } from '.';
-import { printDebug } from '../../debug';
+import { log, DebugType } from '../../debug';
 
 class Instagram extends Service {
 	static getBaseUrls() {
@@ -53,10 +53,10 @@ class Instagram extends Service {
 				// ...take it, trim first char (@) and return the rest (username)
 				return usernameCandidateMatches[1].substr(1);
 			} else {
-				printDebug(8, 'Could not match a username', descriptionParts[0]);
+				log(DebugType.warn, 'Could not match a username', descriptionParts[0]);
 			}
 		} else {
-			printDebug(8, 'Could not find the Instagram description', searchText);
+			log(DebugType.warn, 'Could not find the Instagram description', searchText);
 		}
 
 		return '';

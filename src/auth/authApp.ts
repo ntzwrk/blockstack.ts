@@ -2,7 +2,7 @@ import { protocolCheck } from 'custom-protocol-detection-blockstack';
 import { decodeToken } from 'jsontokens';
 import * as queryString from 'query-string';
 
-import { printDebug } from '../debug';
+import { log, DebugType } from '../debug';
 import { makeECPrivateKey } from '../index';
 import { extractProfile } from '../profiles';
 import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
@@ -70,20 +70,20 @@ export function redirectToSignInWithAuthRequest(
 	const protocolURI = `${BLOCKSTACK_HANDLER}:${authRequest}`;
 	const httpsURI = `${blockstackIDHost}?authRequest=${authRequest}`;
 	function successCallback() {
-		printDebug(10, 'Protocol handler detected');
+		log(DebugType.info, 'Protocol handler detected');
 
 		// protocolCheck should open the link for us
 	}
 
 	function failCallback() {
-		printDebug(10, 'Protocol handler not detected');
+		log(DebugType.info, 'Protocol handler not detected');
 		window.location.href = httpsURI;
 	}
 
 	function unsupportedBrowserCallback() {
 		// Safari is unsupported by protocolCheck
 
-		printDebug(10, 'Cannot detect custom protocols on this browser');
+		log(DebugType.warn, 'Cannot detect custom protocols on this browser');
 		window.location.href = protocolURI;
 	}
 
@@ -166,14 +166,14 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
 							try {
 								appPrivateKey = decryptPrivateKey(transitKey, appPrivateKey);
 							} catch (e) {
-								printDebug(7, 'Failed decryption of appPrivateKey, will try to use as given');
+								log(DebugType.warn, 'Failed decryption of appPrivateKey, will try to use as given');
 							}
 						}
 						if (coreSessionToken !== undefined && coreSessionToken !== null) {
 							try {
 								coreSessionToken = decryptPrivateKey(transitKey, coreSessionToken);
 							} catch (e) {
-								printDebug(7, 'Failed decryption of coreSessionToken, will try to use as given');
+								log(DebugType.warn, 'Failed decryption of coreSessionToken, will try to use as given');
 							}
 						}
 					}
