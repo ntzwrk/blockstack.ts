@@ -1,16 +1,5 @@
 {
-	"type": "object",
-	"properties": {
-		"@context": {
-			"type": "string",
-			"optional": true
-		},
-		"@type": {
-			"type": "string"
-		},
-		"@id": {
-			"type": "string",
-			"optional": true
-		}
-	}
+	"$schema": "http://json-schema.org/schema#",
+	"allOf": [{ "$ref": "src/profiles/schemas/Profile.json" }],
+	"type": "object"
 }
