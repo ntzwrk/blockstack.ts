@@ -1,107 +1,191 @@
-import inspector from 'schema-inspector';
-
+import { Organization } from './Organization';
 import { Profile } from './Profile';
-import { extractProfile } from './utils';
+import { Person as PersonJson } from './schemas/Person.json';
+import { getVerifiedAccounts } from './utils/person';
 import { getPersonFromLegacyFormat } from './utils/personLegacy';
-import {
-	getName,
-	getFamilyName,
-	getGivenName,
-	getAvatarUrl,
-	getDescription,
-	getVerifiedAccounts,
-	getAddress,
-	getBirthDate,
-	getConnections,
-	getOrganizations
-} from './utils/person';
 
-const schemaDefinition = {};
+// TODO: Move these schema.org interfaces in an own file
 
-export class Person extends Profile {
-	constructor(profile = {}) {
-		super(profile);
-		this._profile = Object.assign(
-			{},
-			{
-				'@type': 'Person'
-			},
-			this._profile
-		);
-	}
+export interface IImage {
+	'@type'?: string;
+	name?: string;
+	contentUrl?: string;
+	[k: string]: any;
+}
 
-	static validateSchema(profile, strict = false) {
-		schemaDefinition.strict = strict;
-		return inspector.validate(schemaDefinition, profile);
-	}
+export interface IURL {
+	'@type'?: string;
+	url?: string;
+	[k: string]: any;
+}
 
-	static fromToken(token: string, publicKeyOrAddress?: string) {
-		const profile = extractProfile(token, publicKeyOrAddress);
-		return new Person(profile);
-	}
+export interface IAccount {
+	'@type'?: string;
+	service?: string;
+	identifier?: string;
+	proofType?: string;
+	proofUrl?: string;
+	proofMessage?: string;
+	proofSignature?: string;
+	[k: string]: any;
+}
 
-	static fromLegacyFormat(legacyProfile) {
+export interface IPostalAddress {
+	'@type'?: string;
+	streetAddress?: string;
+	addressLocality?: string;
+	postalCode?: string;
+	addressCountry?: string;
+	[k: string]: any;
+}
+
+export class Person extends Profile implements PersonJson {
+	public static fromLegacyFormat(legacyProfile) {
+		// TODO: Refactor this (for type safety)
 		const profile = getPersonFromLegacyFormat(legacyProfile);
 		return new Person(profile);
 	}
 
-	toJSON() {
-		return {
-			profile: this.profile(),
-			name: this.name(),
-			givenName: this.givenName(),
-			familyName: this.familyName(),
-			description: this.description(),
-			avatarUrl: this.avatarUrl(),
-			verifiedAccounts: this.verifiedAccounts(),
-			address: this.address(),
-			birthDate: this.birthDate(),
-			connections: this.connections(),
-			organizations: this.organizations()
-		};
+	public static fromJSON(personJson: PersonJson): Person {
+		return new Person(personJson['@id']);
 	}
 
-	profile() {
-		return Object.assign({}, this._profile);
+	constructor(
+		id: string,
+		public name?: string,
+		public givenName?: string,
+		public familyName?: string,
+		public description?: string,
+		public image?: IImage[],
+		public website?: IURL[],
+		public account?: IAccount[],
+		public worksFor?: Organization[],
+		public knows?: Person[],
+		public address?: IPostalAddress,
+		public birthDate?: string,
+		public taxID?: string
+	) {
+		super(id, 'Person');
 	}
 
-	name() {
-		return getName(this.profile());
+	public toJSON(): PersonJson {
+		return { ...(this as PersonJson) };
 	}
 
-	givenName() {
-		return getGivenName(this.profile());
+	public getName() {
+		if (this.name !== undefined) {
+			return this.name;
+		}
+
+		if (this.givenName !== undefined || this.familyName !== undefined) {
+			let name = '';
+			if (this.givenName) {
+				name = this.givenName;
+			}
+			if (this.familyName) {
+				name += ` ${this.familyName}`;
+			}
+			return name;
+		}
+
+		return undefined;
 	}
 
-	familyName() {
-		return getFamilyName(this.profile());
+	public getGivenName() {
+		if (this.givenName) {
+			return this.givenName;
+		} else if (this.name) {
+			const nameParts = this.name.split(' ');
+			return nameParts.slice(0, -1).join(' ');
+		}
+
+		return undefined;
 	}
 
-	description() {
-		return getDescription(this.profile());
+	public getFamilyName() {
+		if (this.familyName !== undefined) {
+			return this.familyName;
+		} else if (this.name !== undefined) {
+			const nameParts = this.name.split(' ');
+			return nameParts.pop();
+		}
+
+		return undefined;
 	}
 
-	avatarUrl() {
-		return getAvatarUrl(this.profile());
+	public getDescription() {
+		return this.description;
 	}
 
-	verifiedAccounts(verifications) {
-		return getVerifiedAccounts(this.profile(), verifications);
+	public getAvatarUrl() {
+		if (this.image === undefined) {
+			return undefined;
+		}
+
+		return this.image.find(image => image.name === 'avatar');
 	}
 
-	address() {
-		return getAddress(this.profile());
+	public getVerifiedAccounts(verifications: any[]) {
+		// TODO: Refactor this (for type safety)
+		return getVerifiedAccounts(this.toJSON(), verifications);
 	}
 
-	birthDate() {
-		return getBirthDate(this.profile());
+	public getAddress() {
+		if (this.address === undefined) {
+			return undefined;
+		}
+
+		const addressParts = [];
+
+		if (this.address.streetAddress !== undefined) {
+			addressParts.push(this.address.streetAddress);
+		}
+		if (this.address.addressLocality) {
+			addressParts.push(this.address.addressLocality);
+		}
+		if (this.address.postalCode) {
+			addressParts.push(this.address.postalCode);
+		}
+		if (this.address.addressCountry) {
+			addressParts.push(this.address.addressCountry);
+		}
+
+		if (addressParts !== []) {
+			return addressParts.join(', ');
+		}
+
+		return undefined;
 	}
 
-	connections() {
-		return getConnections(this.profile());
+	public getFormattedBirthDate(): string | undefined {
+		if (this.birthDate === undefined) {
+			return undefined;
+		}
+
+		const monthNames = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+
+		const date = new Date(this.birthDate);
+		return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 	}
 
-	organizations() {
-		return getOrganizations(this.profile());
+	public getConnections() {
+		return this.knows;
+	}
+
+	public getOrganizations() {
+		return this.worksFor;
 	}
 }

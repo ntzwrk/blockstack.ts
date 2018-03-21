@@ -1,28 +1,16 @@
-import { extractProfile } from './utils';
-import inspector from 'schema-inspector';
 import { Profile } from './Profile';
+import { CreativeWork as CreativeWorkJson } from './schemas/CreativeWork.json';
 
-const schemaDefinition = {};
-
-export class CreativeWork extends Profile {
-	constructor(profile = {}) {
-		super(profile);
-		this._profile = Object.assign(
-			{},
-			{
-				'@type': 'CreativeWork'
-			},
-			this._profile
-		);
+export class CreativeWork extends Profile implements CreativeWorkJson {
+	public static fromJSON(creativeWorkJson: CreativeWorkJson): Profile {
+		return new CreativeWork(creativeWorkJson['@id']);
 	}
 
-	static validateSchema(profile, strict = false) {
-		schemaDefinition.strict = strict;
-		return inspector.validate(schemaDefinition, profile);
+	constructor(id: string) {
+		super(id, 'CreativeWork');
 	}
 
-	static fromToken(token: string, publicKeyOrAddress?: string) {
-		const profile = extractProfile(token, publicKeyOrAddress);
-		return new CreativeWork(profile);
+	public toJSON(): CreativeWorkJson {
+		return { ...(this as CreativeWorkJson) };
 	}
 }

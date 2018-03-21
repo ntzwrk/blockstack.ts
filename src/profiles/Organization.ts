@@ -1,29 +1,16 @@
-import inspector from 'schema-inspector';
-
-import { extractProfile } from './utils';
 import { Profile } from './Profile';
+import { Organization as OrganizationJson } from './schemas/Organization.json';
 
-const schemaDefinition = {};
-
-export class Organization extends Profile {
-	constructor(profile = {}) {
-		super(profile);
-		this._profile = Object.assign(
-			{},
-			{
-				'@type': 'Organization'
-			},
-			this._profile
-		);
+export class Organization extends Profile implements OrganizationJson {
+	public static fromJSON(organizationJson: OrganizationJson): Profile {
+		return new Organization(organizationJson['@id']);
 	}
 
-	static validateSchema(profile, strict = false) {
-		schemaDefinition.strict = strict;
-		return inspector.validate(schemaDefinition, profile);
+	constructor(id: string) {
+		super(id, 'Organization');
 	}
 
-	static fromToken(token: string, publicKeyOrAddress?: string) {
-		const profile = extractProfile(token, publicKeyOrAddress);
-		return new Organization(profile);
+	public toJSON(): OrganizationJson {
+		return { ...(this as OrganizationJson) };
 	}
 }
