@@ -10,7 +10,7 @@ export const enum DebugType {
 /**
  * Debug level (this and everything more severe gets printed)
  */
-let DEBUG_LEVEL: DebugType|null = DebugType.info;
+let DEBUG_LEVEL: DebugType | null = DebugType.info;
 
 /**
  * Prints out debug information
@@ -20,7 +20,7 @@ let DEBUG_LEVEL: DebugType|null = DebugType.info;
  */
 export function log(type: DebugType, message: any, ...optionalArgs: any[]) {
 	if (DEBUG_LEVEL !== null && type <= DEBUG_LEVEL) {
-		switch(type) {
+		switch (type) {
 			case DebugType.info:
 				console.info(message, ...optionalArgs); // tslint:disable-line
 				break;

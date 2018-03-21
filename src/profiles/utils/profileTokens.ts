@@ -3,6 +3,7 @@ import { ECPair } from 'bitcoinjs-lib';
 import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier, JWT } from 'jsontokens';
 
 import { nextYear, makeUUID4 } from '../../utils';
+import { Profile as ProfileJson } from '../schemas/Profile.json';
 
 const secp256k1 = ecurve.getCurveByName('secp256k1');
 
@@ -20,8 +21,8 @@ const secp256k1 = ecurve.getCurveByName('secp256k1');
 export function signProfileToken(
 	profile: object,
 	privateKey: string,
-	subject: { publicKey: string }|null = null,
-	issuer: { publicKey: string }|null = null,
+	subject: { publicKey: string } | null = null,
+	issuer: { publicKey: string } | null = null,
 	signingAlgorithm = 'ES256K',
 	issuedAt = new Date(),
 	expiresAt = nextYear()
@@ -51,7 +52,7 @@ export function signProfileToken(
 		claim: profile
 	};
 
-	return tokenSigner.sign(payload);
+	return tokenSigner.sign(payload, false) as string;
 }
 
 /**
@@ -150,7 +151,7 @@ export function extractProfile(token: string, publicKeyOrAddress?: string) {
 		decodedToken = decodeToken(token);
 	}
 
-	let profile = {};
+	let profile: ProfileJson = {};
 	if (decodedToken.hasOwnProperty('payload')) {
 		const payload = decodedToken.payload;
 		if (payload.hasOwnProperty('claim')) {

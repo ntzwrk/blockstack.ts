@@ -30,7 +30,7 @@ export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	return makeZoneFile(zoneFile, zoneFileTemplate);
 }
 
-export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string|undefined {
+export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string | undefined {
 	if (!zoneFileJson.hasOwnProperty('uri')) {
 		return undefined;
 	}
@@ -70,7 +70,7 @@ export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: s
 			reject(e);
 		}
 
-		let tokenFileUrl: string|undefined;
+		let tokenFileUrl: string | undefined;
 		if (zoneFileJson && Object.keys(zoneFileJson).length > 0) {
 			tokenFileUrl = getTokenFileUrl(zoneFileJson);
 		} else {
