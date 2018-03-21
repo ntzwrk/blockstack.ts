@@ -1,79 +1,85 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"allOf": [{ "$ref": "src/profiles/schemas/Profile.json" }],
-	"type": "object",
-	"properties": {
-		"name": { "type": "string" },
-		"givenName": { "type": "string" },
-		"familyName": { "type": "string" },
-		"description": { "type": "string" },
-		"image": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"@type": { "type": "string" },
-					"name": { "type": "string" },
-					"contentUrl": { "type": "string" }
-				}
-			}
+	"allOf": [
+		{
+			"$ref": "src/profiles/schemas/Profile.json"
 		},
-		"website": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"@type": { "type": "string" },
-					"url": { "type": "string" }
-				}
-			}
-		},
-		"account": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"@type": { "type": "string" },
-					"service": { "type": "string" },
-					"identifier": { "type": "string" },
-					"proofType": { "type": "string" },
-					"proofUrl": { "type": "string" },
-					"proofMessage": { "type": "string" },
-					"proofSignature": { "type": "string" }
-				}
-			}
-		},
-		"worksFor": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"@type": { "type": "string" },
-					"@id": { "type": "string" }
-				}
-			}
-		},
-		"knows": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"@type": { "type": "string" },
-					"@id": { "type": "string" }
-				}
-			}
-		},
-		"address": {
+		{
 			"type": "object",
 			"properties": {
-				"@type": { "type": "string" },
-				"streetAddress": { "type": "string" },
-				"addressLocality": { "type": "string" },
-				"postalCode": { "type": "string" },
-				"addressCountry": { "type": "string" }
+				"name": { "type": "string" },
+				"givenName": { "type": "string" },
+				"familyName": { "type": "string" },
+				"description": { "type": "string" },
+				"image": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"@type": { "type": "string" },
+							"name": { "type": "string" },
+							"contentUrl": { "type": "string" }
+						}
+					}
+				},
+				"website": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"@type": { "type": "string" },
+							"url": { "type": "string" }
+						}
+					}
+				},
+				"account": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"@type": { "type": "string" },
+							"service": { "type": "string" },
+							"identifier": { "type": "string" },
+							"proofType": { "type": "string" },
+							"proofUrl": { "type": "string" },
+							"proofMessage": { "type": "string" },
+							"proofSignature": { "type": "string" }
+						}
+					}
+				},
+				"worksFor": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"@type": { "type": "string" },
+							"@id": { "type": "string" }
+						}
+					}
+				},
+				"knows": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"@type": { "type": "string" },
+							"@id": { "type": "string" }
+						}
+					}
+				},
+				"address": {
+					"type": "object",
+					"properties": {
+						"@type": { "type": "string" },
+						"streetAddress": { "type": "string" },
+						"addressLocality": { "type": "string" },
+						"postalCode": { "type": "string" },
+						"addressCountry": { "type": "string" }
+					}
+				},
+				"birthDate": { "type": "string" },
+				"taxID": { "type": "string" }
 			}
-		},
-		"birthDate": { "type": "string" },
-		"taxID": { "type": "string" }
-	}
+		}
+	]
 }
