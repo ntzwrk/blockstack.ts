@@ -1,8 +1,10 @@
-import 'isomorphic-fetch';
-import { containsValidProofStatement, containsValidAddressProofStatement, Proof } from './serviceUtils';
+import * as fetch from 'isomorphic-fetch';
+
+import { DebugType, log } from '../../debug';
+import { containsValidAddressProofStatement, containsValidProofStatement, IProof } from './serviceUtils';
 
 export class Service {
-	static validateProof(proof: Proof, ownerAddress: string, name?: string) {
+	public static validateProof(proof: IProof, ownerAddress: string, name?: string) {
 		return new Promise(resolve => {
 			try {
 				const proofUrl = this.getProofUrl(proof);
@@ -21,42 +23,44 @@ export class Service {
 								return resolve(proof);
 							});
 						} else {
-							console.error(`Proof url ${proofUrl} returned unexpected http status ${res.status}.
-              Unable to validate proof.`);
+							log(
+								DebugType.warn,
+								`Proof url ${proofUrl} returned unexpected http status ${res.status}. Unable to validate proof.`
+							);
 							proof.valid = false;
 							resolve(proof);
 						}
 					})
 					.catch(err => {
-						console.error(err);
+						log(DebugType.warn, 'Error while requesting proof url', err);
 						proof.valid = false;
 						resolve(proof);
 					});
 			} catch (e) {
-				console.error(e);
+				log(DebugType.warn, 'Error while requesting proof url', e);
 				proof.valid = false;
 				resolve(proof);
 			}
 		});
 	}
 
-	static getBaseUrls(): string[] {
+	public static getBaseUrls(): string[] {
 		return [];
 	}
 
-	static getProofIdentity(searchText: string) {
+	public static getProofIdentity(searchText: string) {
 		return searchText;
 	}
 
-	static getProofStatement(searchText: string) {
+	public static getProofStatement(searchText: string) {
 		return searchText;
 	}
 
-	static shouldValidateIdentityInBody() {
+	public static shouldValidateIdentityInBody() {
 		return false;
 	}
 
-	static prefixScheme(proofUrl: string) {
+	public static prefixScheme(proofUrl: string) {
 		if (!proofUrl.startsWith('https://') && !proofUrl.startsWith('http://')) {
 			return `https://${proofUrl}`;
 		} else if (proofUrl.startsWith('http://')) {
@@ -66,14 +70,14 @@ export class Service {
 		}
 	}
 
-	static getProofUrl(proof: Proof) {
+	public static getProofUrl(proof: IProof) {
 		const baseUrls = this.getBaseUrls();
 
 		let proofUrl = proof.proof_url.toLowerCase();
 		proofUrl = this.prefixScheme(proofUrl);
 
-		for (let i = 0; i < baseUrls.length; i++) {
-			const requiredPrefix = `${baseUrls[i]}${proof.identifier}`.toLowerCase();
+		for (const baseUrl of baseUrls) {
+			const requiredPrefix = `${baseUrl}${proof.identifier}`.toLowerCase();
 			if (proofUrl.startsWith(requiredPrefix)) {
 				return proofUrl;
 			}

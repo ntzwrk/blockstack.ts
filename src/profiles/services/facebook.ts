@@ -1,13 +1,14 @@
-import { Service } from './service';
 import * as cheerio from 'cheerio';
-import { Proof } from '.';
 
-class Facebook extends Service {
-	static getProofUrl(proof: Proof) {
+import { IProof } from '.';
+import { Service } from './service';
+
+export class Facebook extends Service {
+	public static getProofUrl(proof: IProof) {
 		return this.normalizeFacebookUrl(proof);
 	}
 
-	static normalizeFacebookUrl(proof: Proof) {
+	public static normalizeFacebookUrl(proof: IProof) {
 		let proofUrl = proof.proof_url.toLowerCase();
 		const urlRegex = /(?:http[s]*:\/\/){0,1}(?:[a-zA-Z0-9\-]+\.)+facebook\.com/;
 
@@ -30,11 +31,9 @@ class Facebook extends Service {
 		return proofUrl;
 	}
 
-	static getProofStatement(searchText: string) {
+	public static getProofStatement(searchText: string) {
 		const $ = cheerio.load(searchText);
 		const statement = $('meta[name="description"]').attr('content');
 		return statement !== undefined ? statement.trim() : '';
 	}
 }
-
-export { Facebook };

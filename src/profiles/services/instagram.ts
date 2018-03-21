@@ -1,27 +1,27 @@
-import { Service } from './service';
 import * as cheerio from 'cheerio';
-import { Proof } from '.';
-import { log, DebugType } from '../../debug';
 
-class Instagram extends Service {
-	static getBaseUrls() {
-		const baseUrls = ['https://www.instagram.com/', 'https://instagram.com/'];
-		return baseUrls;
+import { IProof } from '.';
+import { DebugType, log } from '../../debug';
+import { Service } from './service';
+
+export class Instagram extends Service {
+	public static getBaseUrls() {
+		return ['https://www.instagram.com/', 'https://instagram.com/'];
 	}
 
-	static getProofUrl(proof: Proof) {
+	public static getProofUrl(proof: IProof) {
 		const baseUrls = this.getBaseUrls();
 		const normalizedProofUrl = this.normalizeInstagramUrl(proof);
 
-		for (let i = 0; i < baseUrls.length; i++) {
-			if (normalizedProofUrl.startsWith(`${baseUrls[i]}`)) {
+		for (const baseUrl of baseUrls) {
+			if (normalizedProofUrl.startsWith(`${baseUrl}`)) {
 				return normalizedProofUrl;
 			}
 		}
 		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
 	}
 
-	static normalizeInstagramUrl(proof: Proof) {
+	public static normalizeInstagramUrl(proof: IProof) {
 		let proofUrl = proof.proof_url;
 		proofUrl = super.prefixScheme(proofUrl);
 
@@ -32,16 +32,16 @@ class Instagram extends Service {
 		return proofUrl;
 	}
 
-	static shouldValidateIdentityInBody() {
+	public static shouldValidateIdentityInBody() {
 		return true;
 	}
 
-	static getProofIdentity(searchText: string) {
+	public static getProofIdentity(searchText: string) {
 		const $ = cheerio.load(searchText);
 		const description = $('meta[property="og:description"]').attr('content');
 
 		// if description exists...
-		if(description !== undefined) {
+		if (description !== undefined) {
 			// ...split description on each ':'
 			const descriptionParts = description.split(':');
 
@@ -49,7 +49,7 @@ class Instagram extends Service {
 			const usernameCandidateMatches = descriptionParts[0].match(/\(([^)]+)\)/);
 
 			// if there's a match...
-			if(usernameCandidateMatches !== null) {
+			if (usernameCandidateMatches !== null) {
 				// ...take it, trim first char (@) and return the rest (username)
 				return usernameCandidateMatches[1].substr(1);
 			} else {
@@ -62,7 +62,7 @@ class Instagram extends Service {
 		return '';
 	}
 
-	static getProofStatement(searchText: string) {
+	public static getProofStatement(searchText: string) {
 		const $ = cheerio.load(searchText);
 		const statement = $('meta[property="og:description"]').attr('content');
 
@@ -77,5 +77,3 @@ class Instagram extends Service {
 		}
 	}
 }
-
-export { Instagram };

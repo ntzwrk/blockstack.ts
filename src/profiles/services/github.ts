@@ -1,20 +1,19 @@
+import { IProof } from '.';
 import { Service } from './service';
-import { Proof } from '.';
 
-class Github extends Service {
-	static getBaseUrls() {
-		const baseUrls = ['https://gist.github.com/', 'http://gist.github.com', 'gist.github.com'];
-		return baseUrls;
+export class Github extends Service {
+	public static getBaseUrls() {
+		return ['https://gist.github.com/', 'http://gist.github.com', 'gist.github.com'];
 	}
 
-	static getProofUrl(proof: Proof) {
+	public static getProofUrl(proof: IProof) {
 		const baseUrls = this.getBaseUrls();
 		let proofUrl = proof.proof_url.toLowerCase();
 
 		proofUrl = super.prefixScheme(proofUrl);
 
-		for (let i = 0; i < baseUrls.length; i++) {
-			const requiredPrefix = `${baseUrls[i]}${proof.identifier}`.toLowerCase();
+		for (const baseUrl of baseUrls) {
+			const requiredPrefix = `${baseUrl}${proof.identifier}`.toLowerCase();
 			if (proofUrl.startsWith(requiredPrefix)) {
 				const raw = proofUrl.endsWith('/') ? 'raw' : '/raw';
 				return `${proofUrl}${raw}`;
@@ -23,5 +22,3 @@ class Github extends Service {
 		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
 	}
 }
-
-export { Github };

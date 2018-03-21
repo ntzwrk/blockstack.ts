@@ -1,4 +1,4 @@
-export interface Proof {
+export interface IProof {
 	identifier: string;
 	service: string;
 	proof_url: string;
@@ -46,8 +46,7 @@ export function containsValidProofStatement(searchText: string, name?: string) {
 					`verifying that &quot;${name}&quot; is my blockstack id`
 			  ];
 
-	for (let i = 0; i < verificationStyles.length; i++) {
-		const verificationStyle = verificationStyles[i];
+	for (const verificationStyle of verificationStyles) {
 		if (searchText.includes(verificationStyle)) {
 			return true;
 		}
@@ -65,8 +64,7 @@ export function containsValidAddressProofStatement(proofStatement: string, addre
 
 	const verificationStyles = [`verifying my blockstack id is secured with the address ${address}`];
 
-	for (let i = 0; i < verificationStyles.length; i++) {
-		const verificationStyle = verificationStyles[i];
+	for (const verificationStyle of verificationStyles) {
 		if (proofStatement.includes(verificationStyle)) {
 			return true;
 		}

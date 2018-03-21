@@ -1,13 +1,13 @@
-import { Service } from './service';
 import * as cheerio from 'cheerio';
 
-class Twitter extends Service {
-	static getBaseUrls() {
-		const baseUrls = ['https://twitter.com/', 'http://twitter.com/', 'twitter.com/'];
-		return baseUrls;
+import { Service } from './service';
+
+export class Twitter extends Service {
+	public static getBaseUrls() {
+		return ['https://twitter.com/', 'http://twitter.com/', 'twitter.com/'];
 	}
 
-	static getProofStatement(searchText: string) {
+	public static getProofStatement(searchText: string) {
 		const $ = cheerio.load(searchText);
 		const statement = $('meta[property="og:description"]').attr('content');
 		if (statement !== undefined) {
@@ -20,5 +20,3 @@ class Twitter extends Service {
 		}
 	}
 }
-
-export { Twitter };

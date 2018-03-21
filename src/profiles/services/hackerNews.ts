@@ -1,32 +1,32 @@
-import { Service } from './service';
 import * as cheerio from 'cheerio';
-import { Proof } from '.';
 
-class HackerNews extends Service {
-	static getBaseUrls() {
-		const baseUrls = [
+import { IProof } from '.';
+import { Service } from './service';
+
+export class HackerNews extends Service {
+	public static getBaseUrls() {
+		return [
 			'https://news.ycombinator.com/user?id=',
 			'http://news.ycombinator.com/user?id=',
 			'news.ycombinator.com/user?id='
 		];
-		return baseUrls;
 	}
 
-	static getProofUrl(proof: Proof) {
+	public static getProofUrl(proof: IProof) {
 		const baseUrls = this.getBaseUrls();
 
 		let proofUrl = proof.proof_url.toLowerCase();
 		proofUrl = super.prefixScheme(proofUrl);
 
-		for (let i = 0; i < baseUrls.length; i++) {
-			if (proofUrl === `${baseUrls[i]}${proof.identifier}`) {
+		for (const baseUrl of baseUrls) {
+			if (proofUrl === `${baseUrl}${proof.identifier}`) {
 				return proofUrl;
 			}
 		}
 		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
 	}
 
-	static getProofStatement(searchText: string) {
+	public static getProofStatement(searchText: string) {
 		const $ = cheerio.load(searchText);
 		const tables = $('#hnmain')
 			.children()
@@ -60,5 +60,3 @@ class HackerNews extends Service {
 		return statement;
 	}
 }
-
-export { HackerNews };
