@@ -1,8 +1,20 @@
-import * as hasprop from 'hasprop';
+import { IAccount, IImage } from '../Person';
+import { Person as PersonJson } from '../schemas/Person.json';
+import { PersonLegacy as PersonLegacyJson } from '../schemas/PersonLegacy.json';
 
-function formatAccount(serviceName, data) {
+function formatAccount(
+	serviceName: string,
+	data: {
+		username?: string | undefined;
+		proof?:
+			| {
+					url?: string | undefined;
+			  }
+			| undefined;
+	}
+) {
 	let proofUrl;
-	if (hasprop(data, 'proof.url')) {
+	if (data.proof !== undefined && data.proof.url !== undefined) {
 		proofUrl = data.proof.url;
 	}
 	return {
@@ -10,100 +22,103 @@ function formatAccount(serviceName, data) {
 		service: serviceName,
 		identifier: data.username,
 		proofType: 'http',
-		proofUrl
+		proofUrl: proofUrl
 	};
 }
 
-export function getPersonFromLegacyFormat(profile) {
-	const profileData = {
-		'@type': 'Person'
+export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): PersonJson {
+	const personJson: PersonJson = {
+		'@context': 'http://schema.org/',
+		'@type': 'Person',
+		'@id': '' // TODO: What should @id be? Name?
 	};
 
-	if (hasprop(profile, 'name.formatted')) {
-		profileData.name = profile.name.formatted;
+	if (personLegacyJson.name !== undefined) {
+		personJson.name = personLegacyJson.name.formatted;
 	}
 
-	if (hasprop(profile, 'bio')) {
-		profileData.description = profile.bio;
-	}
+	personJson.description = personLegacyJson.bio;
 
-	if (hasprop(profile, 'location.formatted')) {
-		profileData.address = {
+	if (personLegacyJson.location !== undefined) {
+		personJson.address = {
 			'@type': 'PostalAddress',
-			addressLocality: profile.location.formatted
+			addressLocality: personLegacyJson.location.formatted
 		};
 	}
 
-	const images = [];
-	if (hasprop(profile, 'avatar.url')) {
+	const images: IImage[] = [];
+	if (personLegacyJson.avatar !== undefined && personLegacyJson.avatar.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
 			name: 'avatar',
-			contentUrl: profile.avatar.url
+			contentUrl: personLegacyJson.avatar.url
 		});
 	}
-	if (hasprop(profile, 'cover.url')) {
+	if (personLegacyJson.cover !== undefined && personLegacyJson.cover.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
 			name: 'cover',
-			contentUrl: profile.cover.url
+			contentUrl: personLegacyJson.cover.url
 		});
 	}
-	if (images.length) {
-		profileData.image = images;
+	if (images != []) {
+		personJson.image = images;
 	}
 
-	if (hasprop(profile, 'website')) {
-		profileData.website = [
+	if (personLegacyJson.website !== undefined) {
+		personJson.website = [
 			{
 				'@type': 'WebSite',
-				url: profile.website
+				url: personLegacyJson.website
 			}
 		];
 	}
 
-	const accounts = [];
-	if (hasprop(profile, 'bitcoin.address')) {
+	const accounts: IAccount[] = [];
+	if (personLegacyJson.bitcoin !== undefined && personLegacyJson.bitcoin.address !== undefined) {
 		accounts.push({
 			'@type': 'Account',
 			role: 'payment',
 			service: 'bitcoin',
-			identifier: profile.bitcoin.address
+			identifier: personLegacyJson.bitcoin.address
 		});
 	}
-	if (hasprop(profile, 'twitter.username')) {
-		accounts.push(formatAccount('twitter', profile.twitter));
+	if (personLegacyJson.twitter !== undefined && personLegacyJson.twitter.username !== undefined) {
+		accounts.push(formatAccount('twitter', personLegacyJson.twitter));
 	}
-	if (hasprop(profile, 'facebook.username')) {
-		accounts.push(formatAccount('facebook', profile.facebook));
+	if (personLegacyJson.facebook !== undefined && personLegacyJson.facebook.username !== undefined) {
+		accounts.push(formatAccount('facebook', personLegacyJson.facebook));
 	}
-	if (hasprop(profile, 'github.username')) {
-		accounts.push(formatAccount('github', profile.github));
+	if (personLegacyJson.github !== undefined && personLegacyJson.github.username !== undefined) {
+		accounts.push(formatAccount('github', personLegacyJson.github));
 	}
-
-	if (hasprop(profile, 'auth')) {
-		if (profile.auth.length > 0) {
-			if (hasprop(profile.auth[0], 'publicKeychain')) {
+	if (personLegacyJson.auth !== undefined) {
+		if (personLegacyJson.auth.length > 0) {
+			if (personLegacyJson.auth[0].publicKeychain !== undefined) {
 				accounts.push({
 					'@type': 'Account',
 					role: 'key',
 					service: 'bip32',
-					identifier: profile.auth[0].publicKeychain
+					identifier: personLegacyJson.auth[0].publicKeychain
 				});
 			}
 		}
 	}
-	if (hasprop(profile, 'pgp.url')) {
+	if (
+		personLegacyJson.pgp !== undefined &&
+		personLegacyJson.pgp.fingerprint !== undefined &&
+		personLegacyJson.pgp.url !== undefined
+	) {
 		accounts.push({
 			'@type': 'Account',
 			role: 'key',
 			service: 'pgp',
-			identifier: profile.pgp.fingerprint,
-			contentUrl: profile.pgp.url
+			identifier: personLegacyJson.pgp.fingerprint,
+			contentUrl: personLegacyJson.pgp.url
 		});
 	}
 
-	profileData.account = accounts;
+	personJson.account = accounts;
 
-	return profileData;
+	return personJson;
 }
