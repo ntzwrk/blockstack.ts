@@ -1,0 +1,91 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "object",
+			"properties": {
+				"formatted": { "type": "string" }
+			}
+		},
+		"bio": { "type": "string" },
+		"location": {
+			"type": "object",
+			"properties": {
+				"formatted": { "type": "string" }
+			}
+		},
+		"avatar": {
+			"type": "object",
+			"properties": {
+				"url": { "type": "string" }
+			}
+		},
+		"cover": {
+			"type": "object",
+			"properties": {
+				"url": { "type": "string" }
+			}
+		},
+		"website": { "type": "string" },
+		"bitcoin": {
+			"type": "object",
+			"properties": {
+				"address": { "type": "string" }
+			}
+		},
+		"twitter": {
+			"type": "object",
+			"properties": {
+				"username": { "type": "string" },
+				"proof": {
+					"type": "object",
+					"properties": {
+						"url": { "type": "string" }
+					}
+				}
+			}
+		},
+		"facebook": {
+			"type": "object",
+			"properties": {
+				"username": { "type": "string" },
+				"proof": {
+					"type": "object",
+					"properties": {
+						"url": { "type": "string" }
+					}
+				}
+			}
+		},
+		"github": {
+			"type": "object",
+			"properties": {
+				"username": { "type": "string" },
+				"proof": {
+					"type": "object",
+					"properties": {
+						"url": { "type": "string" }
+					}
+				}
+			}
+		},
+		"auth": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"publicKeychain": { "type": "string" }
+				}
+			}
+		},
+		"email": { "type": "string" },
+		"pgp": {
+			"type": "object",
+			"properties": {
+				"url": { "type": "string" },
+				"fingerprint": { "type": "string" }
+			}
+		}
+	}
+}
