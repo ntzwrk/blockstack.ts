@@ -1,6 +1,6 @@
 import { loadUserData } from '../auth';
 import { log, DebugType } from '../debug';
-import { decryptECIES, encryptECIES } from '../encryption';
+import { decryptECIES, encryptECIES, ICipherObject } from '../encryption';
 import { getPublicKeyFromPrivate } from '../keys';
 import { lookupProfile } from '../profiles';
 import {
@@ -31,8 +31,11 @@ export function getUserAppFileUrl(
 ) {
 	return lookupProfile(username, zoneFileLookupURL)
 		.then(profile => {
-			if (profile.hasOwnProperty('apps')) {
-				if (profile.apps.hasOwnProperty(appOrigin)) {
+			if (profile === null) {
+				return null;
+			}
+			if (profile.apps !== undefined) {
+				if (profile.apps[appOrigin] !== undefined) {
 					return profile.apps[appOrigin];
 				} else {
 					return null;
@@ -92,7 +95,7 @@ export function getFile(
 		})
 		.then(
 			readUrl =>
-				new Promise((resolve, reject) => {
+				new Promise<string>((resolve, reject) => {
 					if (!readUrl) {
 						reject(null);
 					} else {
@@ -101,11 +104,11 @@ export function getFile(
 				})
 		)
 		.then(readUrl => fetch(readUrl))
-		.then(response => {
+		.then<null | string | ArrayBuffer>(response => {
 			if (response.status !== 200) {
 				if (response.status === 404) {
 					log(DebugType.info, `getFile ${path} returned 404, returning null`);
-					return null;
+					return null; // TODO: resolve(null) vs reject(null)?
 				} else {
 					throw new Error(`getFile ${path} failed with HTTP status ${response.status}`);
 				}
@@ -120,8 +123,13 @@ export function getFile(
 		.then(storedContents => {
 			if (opt.decrypt && storedContents !== null) {
 				const privateKey = loadUserData().appPrivateKey;
-				const cipherObject = JSON.parse(storedContents);
-				return decryptECIES(privateKey, cipherObject);
+				// const cipherObject = JSON.parse(storedContents);
+				if (typeof storedContents === 'string') {
+					let cipherObject = JSON.parse(storedContents) as ICipherObject;
+					return decryptECIES(privateKey, cipherObject);
+				} else {
+					// TODO: What to do with a ArrayBuffer in here?
+				}
 			} else {
 				return storedContents;
 			}
