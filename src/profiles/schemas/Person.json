@@ -38,6 +38,7 @@
 						"type": "object",
 						"properties": {
 							"@type": { "type": "string" },
+							"role": { "type": "string" },
 							"service": { "type": "string" },
 							"identifier": { "type": "string" },
 							"proofType": { "type": "string" },
@@ -78,7 +79,11 @@
 					}
 				},
 				"birthDate": { "type": "string" },
-				"taxID": { "type": "string" }
+				"taxID": { "type": "string" },
+				"apps": {
+					"type": "object",
+					"additionalProperties": { "type": "string" }
+				}
 			}
 		}
 	]

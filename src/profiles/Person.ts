@@ -1,7 +1,7 @@
 import { Organization } from './Organization';
 import { Profile } from './Profile';
 import { Person as PersonJson } from './schemas/Person.json';
-import { getVerifiedAccounts } from './utils/person';
+import { PersonLegacy as PersonLegacyJson } from './schemas/PersonLegacy.json';
 import { getPersonFromLegacyFormat } from './utils/personLegacy';
 
 // TODO: Move these schema.org interfaces in an own file
@@ -13,7 +13,7 @@ export interface IImage {
 	[k: string]: any;
 }
 
-export interface IURL {
+export interface IWebSite {
 	'@type'?: string;
 	url?: string;
 	[k: string]: any;
@@ -21,6 +21,7 @@ export interface IURL {
 
 export interface IAccount {
 	'@type'?: string;
+	role?: string;
 	service?: string;
 	identifier?: string;
 	proofType?: string;
@@ -39,11 +40,17 @@ export interface IPostalAddress {
 	[k: string]: any;
 }
 
+export interface IVerification {
+	identifier: string,
+	proofUrl: string,
+	service: string,
+	valid: boolean
+}
+
 export class Person extends Profile implements PersonJson {
-	public static fromLegacyFormat(legacyProfile) {
-		// TODO: Refactor this (for type safety)
-		const profile = getPersonFromLegacyFormat(legacyProfile);
-		return new Person(profile);
+	public static fromLegacyFormat(legacyProfileJson: PersonLegacyJson) {
+		const profileJson = getPersonFromLegacyFormat(legacyProfileJson);
+		return Person.fromJSON(profileJson);
 	}
 
 	public static fromJSON(personJson: PersonJson): Person {
@@ -57,7 +64,7 @@ export class Person extends Profile implements PersonJson {
 		public familyName?: string,
 		public description?: string,
 		public image?: IImage[],
-		public website?: IURL[],
+		public website?: IWebSite[],
 		public account?: IAccount[],
 		public worksFor?: Organization[],
 		public knows?: Person[],
@@ -125,9 +132,39 @@ export class Person extends Profile implements PersonJson {
 		return this.image.find(image => image.name === 'avatar');
 	}
 
-	public getVerifiedAccounts(verifications: any[]) {
-		// TODO: Refactor this (for type safety)
-		return getVerifiedAccounts(this.toJSON(), verifications);
+	public getVerifiedAccounts(verifications: IVerification[]) {
+		if(this.account === undefined) {
+			return undefined;
+		}
+
+		const filteredAccounts: IAccount = [];
+		for(const account of this.account) {
+			let accountIsValid = false;
+			let proofUrl = undefined;
+
+			verifications.map(verification => {
+				if (
+					verification.valid &&
+					verification.service === account.service &&
+					verification.identifier === account.identifier &&
+					verification.proofUrl === account.proofUrl
+				) {
+					accountIsValid = true;
+					proofUrl = verification.proofUrl;
+					return true;
+				} else {
+					return false;
+				}
+			});
+
+			if (accountIsValid) {
+				account.proofUrl = proofUrl;
+				filteredAccounts.push(account);
+				return account;
+			} else {
+				return undefined;
+			}
+		}
 	}
 
 	public getAddress() {
