@@ -4,11 +4,21 @@ import { BlockstackNetwork } from './BlockstackNetwork';
 import { InsightClient } from './InsightClient';
 import { LocalRegtest } from './LocalRegtest';
 
+export { BitcoindAPI } from './BitcoindAPI';
+export { BlockchainInfoApi } from './BlockchainInfoApi';
+export { BlockstackNetwork } from './BlockstackNetwork';
+export { InsightClient } from './InsightClient';
+export { LocalRegtest } from './LocalRegtest';
+
 export interface IUTXO {
 	value?: number;
 	confirmations?: number;
 	tx_hash: string;
 	tx_output_n: number;
+}
+
+export interface IUTXOWithValue extends IUTXO {
+	value: number;
 }
 
 export const SATOSHIS_PER_BTC = 1e8;

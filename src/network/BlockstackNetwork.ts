@@ -4,6 +4,7 @@ import { MissingParameterError, RemoteServiceError } from '../errors';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import {
 	IUTXO,
+	IUTXOWithValue,
 	TX_BROADCAST_SERVICE_REGISTRATION_ENDPOINT,
 	TX_BROADCAST_SERVICE_TX_ENDPOINT,
 	TX_BROADCAST_SERVICE_ZONE_FILE_ENDPOINT
@@ -14,7 +15,7 @@ export class BlockstackNetwork {
 	public broadcastServiceUrl: string;
 	public layer1: bitcoinjs.Network;
 	public DUST_MINIMUM: number;
-	public includeUtxoMap: { [address: string]: IUTXO[] };
+	public includeUtxoMap: { [address: string]: IUTXOWithValue[] };
 	public excludeUtxoSet: IUTXO[];
 	public btc: BitcoinNetwork;
 
@@ -67,7 +68,7 @@ export class BlockstackNetwork {
 			.then(obj => obj.names);
 	}
 
-	public getNamespaceBurnAddress(namespace: string) {
+	public getNamespaceBurnAddress(namespace: string | undefined) {
 		return fetch(`${this.blockstackAPIUrl}/v1/namespaces/${namespace}`)
 			.then(resp => {
 				if (resp.status === 404) {
@@ -346,7 +347,7 @@ export class BlockstackNetwork {
 		throw new Error('Not implemented.');
 	}
 
-	public getUTXOs(address: string): Promise<IUTXO[]> {
+	public getUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		return this.getNetworkedUTXOs(address).then(networkedUTXOs => {
 			let returnSet = networkedUTXOs.concat();
 			if (this.includeUtxoMap.hasOwnProperty(address)) {
@@ -393,17 +394,14 @@ export class BlockstackNetwork {
 
 		this.excludeUtxoSet = excludeSet;
 
-		const txHash = tx
-			.getHash()
-			.reverse()
-			.toString('hex');
+		const txHash = (tx.getHash().reverse() as Buffer).toString('hex');
 		tx.outs.forEach((utxoCreated, txOutputN) => {
 			if (bitcoinjs.script.classifyOutput(utxoCreated.script) === 'nulldata') {
 				return;
 			}
 			const address = bitcoinjs.address.fromOutputScript(utxoCreated.script, this.layer1);
 
-			let includeSet: IUTXO[] = [];
+			let includeSet: IUTXOWithValue[] = [];
 			if (this.includeUtxoMap.hasOwnProperty(address)) {
 				includeSet = includeSet.concat(this.includeUtxoMap[address]);
 			}
@@ -437,7 +435,7 @@ export class BlockstackNetwork {
 		return this.btc.getBlockHeight();
 	}
 
-	public getNetworkedUTXOs(address: string): Promise<IUTXO[]> {
+	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		return this.btc.getNetworkedUTXOs(address);
 	}
 }

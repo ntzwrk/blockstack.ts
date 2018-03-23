@@ -95,7 +95,7 @@ export function makeRenewalSkeleton(
 	nextOwnerAddress: string,
 	lastOwnerAddress: string,
 	burnAddress: string,
-	burnAmount: string,
+	burnAmount: number,
 	valueHash?: string
 ) {
 	const network = config.network;

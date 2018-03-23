@@ -1,5 +1,5 @@
 import { BitcoinNetwork } from './BitcoinNetwork';
-import { IUTXO } from './index';
+import { IUTXOWithValue } from './index';
 
 export class InsightClient extends BitcoinNetwork {
 	public apiUrl: string;
@@ -37,7 +37,7 @@ export class InsightClient extends BitcoinNetwork {
 			.then(blockInfo => ({ block_height: blockInfo.height }));
 	}
 
-	public getNetworkedUTXOs(address: string): Promise<IUTXO[]> {
+	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		return fetch(`${this.apiUrl}/addr/${address}/utxo`)
 			.then(resp => resp.json())
 			.then(utxos =>

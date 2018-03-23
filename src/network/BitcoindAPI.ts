@@ -1,5 +1,5 @@
 import { BitcoinNetwork } from './BitcoinNetwork';
-import { IUTXO, SATOSHIS_PER_BTC } from './index';
+import { IUTXOWithValue, SATOSHIS_PER_BTC } from './index';
 
 export class BitcoindAPI extends BitcoinNetwork {
 	public bitcoindUrl: string;
@@ -83,7 +83,7 @@ export class BitcoindAPI extends BitcoinNetwork {
 			.then(respObj => ({ block_height: respObj.result.height }));
 	}
 
-	public getNetworkedUTXOs(address: string): Promise<IUTXO[]> {
+	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		const jsonRPCImport = {
 			jsonrpc: '1.0',
 			method: 'importaddress',

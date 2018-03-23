@@ -1,10 +1,11 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
-import * as FormData from 'form-data';
+import * as fetch from 'isomorphic-fetch';
+// import * as FormData from 'form-data'; // TODO: Evaluate the need later
 
 import { log, DebugType } from '../debug';
 import { RemoteServiceError } from '../errors';
 import { BitcoinNetwork } from './BitcoinNetwork';
-import { IUTXO } from './index';
+import { IUTXOWithValue } from './index';
 
 export class BlockchainInfoApi extends BitcoinNetwork {
 	public utxoProviderUrl: string;
@@ -20,7 +21,7 @@ export class BlockchainInfoApi extends BitcoinNetwork {
 			.then(blockObj => blockObj.height);
 	}
 
-	public getNetworkedUTXOs(address: string): Promise<IUTXO[]> {
+	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		return fetch(`${this.utxoProviderUrl}/unspent?format=json&active=${address}&cors=true`)
 			.then(resp => {
 				if (resp.status === 500) {
@@ -67,10 +68,10 @@ export class BlockchainInfoApi extends BitcoinNetwork {
 			const text = resp.text();
 			return text.then((respText: string) => {
 				if (respText.toLowerCase().indexOf('transaction submitted') >= 0) {
-					return bitcoinjs.Transaction.fromHex(transaction)
+					const reversed = bitcoinjs.Transaction.fromHex(transaction)
 						.getHash()
-						.reverse()
-						.toString('hex'); // big_endian
+						.reverse();
+					return (reversed as Buffer).toString('hex'); // big_endian
 				} else {
 					throw new RemoteServiceError(resp, `Broadcast transaction failed with message: ${respText}`);
 				}

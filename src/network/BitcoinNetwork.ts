@@ -1,7 +1,7 @@
-import { IUTXO } from './index';
+import { IUTXOWithValue } from './index';
 
 export class BitcoinNetwork {
-	public broadcastTransaction(transaction: string): Promise<object> {
+	public broadcastTransaction(transaction: string): Promise<string> {
 		return Promise.reject(new Error(`Not implemented, broadcastTransaction(${transaction})`));
 	}
 	public getBlockHeight(): Promise<number> {
@@ -10,7 +10,7 @@ export class BitcoinNetwork {
 	public getTransactionInfo(txid: string): Promise<{ block_height: number }> {
 		return Promise.reject(new Error(`Not implemented, getTransactionInfo(${txid})`));
 	}
-	public getNetworkedUTXOs(address: string): Promise<IUTXO[]> {
+	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
 		return Promise.reject(new Error(`Not implemented, getNetworkedUTXOs(${address})`));
 	}
 }
