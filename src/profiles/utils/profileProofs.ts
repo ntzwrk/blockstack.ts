@@ -1,5 +1,7 @@
 /* @flow */
 import { profileServices } from '../services';
+import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { IAccount } from '../Person';
 
 /**
  * Validates the social proofs in a user's profile. Currently supports validation of
@@ -10,15 +12,15 @@ import { profileServices } from '../services';
  * @param {string} [name=null] The Blockstack name to be validated
  * @returns {Promise} that resolves to an array of validated proof objects
  */
-export function validateProofs(profile: Object, ownerAddress: string, name?: string) {
+export function validateProofs(profile: ProfileJson, ownerAddress: string, name?: string): Promise<IAccount> {
 	if (!profile) {
 		throw new Error('Profile must not be null');
 	}
 
-	let accounts: any[] = [];
-	const proofsToValidate = [];
+	let accounts: IAccount[] = [];
+	let proofsToValidate: IAccount[] = [];
 
-	if (profile.hasOwnProperty('account')) {
+	if (profile.account !== undefined) {
 		accounts = profile.account;
 	} else {
 		return new Promise(resolve => {
@@ -28,7 +30,7 @@ export function validateProofs(profile: Object, ownerAddress: string, name?: str
 
 	accounts.forEach(account => {
 		// skip if proof service is not supported
-		if (account.hasOwnProperty('service') && !profileServices.hasOwnProperty(account.service)) {
+		if (account.service !== undefined && profileServices[account.service] !== undefined)) {
 			return;
 		}
 

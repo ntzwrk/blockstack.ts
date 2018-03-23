@@ -1,10 +1,15 @@
 import { parseZoneFile } from 'zone-file';
 
 import { Person } from '../Person';
+import { Person as PersonJson } from '../schemas/Person.json';
 import { getTokenFileUrl } from './profileZoneFiles';
 import { extractProfile } from './profileTokens';
 
-export function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: string, callback) {
+export function resolveZoneFileToPerson(
+	zoneFile: string,
+	publicKeyOrAddress: string,
+	callback: (profile: PersonJson | null) => any
+) {
 	let zoneFileJson = null;
 	try {
 		zoneFileJson = parseZoneFile(zoneFile);
@@ -22,9 +27,10 @@ export function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: st
 	} else {
 		let profile = null;
 		try {
+			// TODO: What's this and why?
 			profile = JSON.parse(zoneFile);
 			const person = Person.fromLegacyFormat(profile);
-			profile = person.profile();
+			profile = person.toJSON();
 		} catch (error) {
 			console.warn(error);
 		}
@@ -49,7 +55,7 @@ export function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: st
 			});
 	} else {
 		console.warn('Token file url not found');
-		callback({});
+		callback(null);
 		return;
 	}
 }

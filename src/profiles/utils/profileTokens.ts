@@ -151,7 +151,7 @@ export function extractProfile(token: string, publicKeyOrAddress?: string) {
 		decodedToken = decodeToken(token);
 	}
 
-	let profile: ProfileJson = {};
+	let profile;
 	if (decodedToken.hasOwnProperty('payload')) {
 		const payload = decodedToken.payload;
 		if (payload.hasOwnProperty('claim')) {
@@ -159,5 +159,5 @@ export function extractProfile(token: string, publicKeyOrAddress?: string) {
 		}
 	}
 
-	return profile;
+	return profile as ProfileJson; // TODO: What happens if profile is undefined?
 }

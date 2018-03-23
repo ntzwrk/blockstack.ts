@@ -1,4 +1,4 @@
-/* @flow */
+import { Person as PersonJson } from '../schemas/Person.json';
 import { resolveZoneFileToProfile } from './profileZoneFiles';
 
 /**
@@ -9,11 +9,11 @@ import { resolveZoneFileToProfile } from './profileZoneFiles';
  * to use for zonefile lookup
  * @returns {Promise} that resolves to a profile object
  */
-export function lookupProfile(username: string, zoneFileLookupURL: string = 'https://core.blockstack.org/v1/names/') {
+export function lookupProfile(
+	username: string,
+	zoneFileLookupURL: string = 'https://core.blockstack.org/v1/names/'
+): Promise<PersonJson | null> {
 	return new Promise((resolve, reject) => {
-		if (!username) {
-			reject();
-		}
 		const url = `${zoneFileLookupURL.replace(/\/$/, '')}/${username}`;
 		try {
 			fetch(url)

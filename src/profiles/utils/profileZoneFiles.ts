@@ -1,6 +1,8 @@
 import { makeZoneFile, parseZoneFile, JsonZoneFile } from 'zone-file';
 import { extractProfile } from './profileTokens';
 import { Person } from '../Person';
+import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { Person as PersonJson } from '../schemas/Person.json';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
@@ -58,7 +60,8 @@ export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string | undefined 
 	return tokenFileUrl;
 }
 
-export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string) {
+// TODO: Should this return ProfileJson or PersonJson?
+export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string): Promise<PersonJson | null> {
 	return new Promise((resolve, reject) => {
 		let zoneFileJson = null;
 		try {
@@ -77,7 +80,7 @@ export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: s
 			let profile = null;
 			try {
 				profile = JSON.parse(zoneFile);
-				profile = Person.fromLegacyFormat(profile).profile();
+				profile = Person.fromLegacyFormat(profile).toJSON();
 			} catch (error) {
 				reject(error);
 			}
@@ -101,7 +104,7 @@ export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: s
 				});
 		} else {
 			console.log('Token file url not found. Resolving to blank profile.');
-			resolve({});
+			resolve(null);
 			return;
 		}
 	});
