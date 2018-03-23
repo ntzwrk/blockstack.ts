@@ -1,7 +1,16 @@
 import * as crypto from 'crypto';
 import { ec as EllipticCurve } from 'elliptic';
+import { BN } from 'bn.js';
 
 const ecurve = new EllipticCurve('secp256k1');
+
+export interface ICipherObject {
+	ephemeralPK: string;
+	iv: string;
+	cipherText: string;
+	mac: string;
+	wasString: boolean;
+}
 
 function aes256CbcEncrypt(iv: Buffer, key: Buffer, plaintext: Buffer) {
 	const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
@@ -43,7 +52,7 @@ function sharedSecretToKeys(sharedSecret: Buffer) {
 	};
 }
 
-export function getHexFromBN(bnInput: object) {
+export function getHexFromBN(bnInput: BN) {
 	const hexOut = bnInput.toString('hex');
 
 	if (hexOut.length === 64) {
@@ -68,9 +77,9 @@ export function getHexFromBN(bnInput: object) {
  *  mac (message authentication code), ephemeral public key
  *  wasString (boolean indicating with or not to return a buffer or string on decrypt)
  */
-export function encryptECIES(publicKey: string, content: string | Buffer) {
+export function encryptECIES(publicKey: string, content: string | Buffer): ICipherObject {
 	const isString = typeof content === 'string';
-	const plainText = isString ? new Buffer(content as string) : content;
+	const plainText = typeof content === 'string' ? new Buffer(content as string) : content;
 
 	const ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
 	const ephemeralSK = ecurve.genKeyPair();
@@ -108,7 +117,7 @@ export function encryptECIES(publicKey: string, content: string | Buffer) {
  * @return {Buffer} plaintext
  * @throws {Error} if unable to decrypt
  */
-export function decryptECIES(privateKey: string, cipherObject: string) {
+export function decryptECIES(privateKey: string, cipherObject: ICipherObject) {
 	const ecSK = ecurve.keyFromPrivate(privateKey, 'hex');
 	const ephemeralPK = ecurve.keyFromPublic(cipherObject.ephemeralPK, 'hex').getPublic();
 	const sharedSecret = ecSK.derive(ephemeralPK);
@@ -127,9 +136,5 @@ export function decryptECIES(privateKey: string, cipherObject: string) {
 	}
 	const plainText = aes256CbcDecrypt(ivBuffer, sharedKeys.encryptionKey, cipherTextBuffer);
 
-	if (cipherObject.wasString) {
-		return plainText.toString();
-	} else {
-		return plainText;
-	}
+	return cipherObject.wasString ? plainText.toString() : plainText;
 }
