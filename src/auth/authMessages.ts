@@ -19,6 +19,21 @@ export interface IAuthMetadata {
 	profileUrl?: string;
 }
 
+export interface IAuthRequestPayload {
+	do_not_include_profile: boolean;
+	domain_name: string;
+	exp: number;
+	iat: number;
+	iss: string | null;
+	jti: string;
+	manifest_uri: string;
+	public_keys: string[];
+	redirect_uri: string;
+	scopes: string[];
+	supports_hub_url: boolean;
+	version: string;
+}
+
 /**
  * Generates an authentication request that can be sent to the Blockstack
  * browser for the user to approve sign in. This authentication request can
@@ -47,7 +62,7 @@ export function makeAuthRequest(
 	expiresAt: number = nextHour().getTime()
 ): string {
 	/* Create the payload */
-	const payload = {
+	const payload: IAuthRequestPayload = {
 		do_not_include_profile: true,
 		domain_name: appDomain,
 		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
