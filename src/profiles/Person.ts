@@ -41,10 +41,10 @@ export interface IPostalAddress {
 }
 
 export interface IVerification {
-	identifier: string,
-	proofUrl: string,
-	service: string,
-	valid: boolean
+	identifier: string;
+	proofUrl: string;
+	service: string;
+	valid: boolean;
 }
 
 export class Person extends Profile implements PersonJson {
@@ -133,12 +133,12 @@ export class Person extends Profile implements PersonJson {
 	}
 
 	public getVerifiedAccounts(verifications: IVerification[]) {
-		if(this.account === undefined) {
+		if (this.account === undefined) {
 			return undefined;
 		}
 
 		const filteredAccounts: IAccount = [];
-		for(const account of this.account) {
+		for (const account of this.account) {
 			let accountIsValid = false;
 			let proofUrl = undefined;
 
