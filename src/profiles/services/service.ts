@@ -4,7 +4,7 @@ import { DebugType, log } from '../../debug';
 import { containsValidAddressProofStatement, containsValidProofStatement, IProof } from './serviceUtils';
 
 export class Service {
-	public static validateProof(proof: IProof, ownerAddress: string, name?: string) {
+	public static validateProof(proof: IProof, ownerAddress: string, name?: string): Promise<IProof> {
 		return new Promise(resolve => {
 			try {
 				const proofUrl = this.getProofUrl(proof);
