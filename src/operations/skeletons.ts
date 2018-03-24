@@ -43,7 +43,7 @@ export function makePreorderSkeleton(
 	hashed.copy(opReturnBuffer, 3);
 	opReturnBuffer.write(consensusHash, 23, 16, 'hex');
 
-	const nullOutput = bitcoin.script.nullDataOutput(opReturnBuffer);
+	const nullOutput = bitcoin.script.nullData.output.encode(opReturnBuffer);
 
 	const tx = new bitcoin.TransactionBuilder(network.layer1);
 
@@ -80,7 +80,7 @@ export function makeRegisterSkeleton(fullyQualifiedName: string, ownerAddress: s
 	}
 
 	const opReturnBuffer = Buffer.concat([Buffer.from('id:', 'ascii'), payload]);
-	const nullOutput = bitcoin.script.nullDataOutput(opReturnBuffer);
+	const nullOutput = bitcoin.script.nullData.output.encode(opReturnBuffer);
 
 	const tx = new bitcoin.TransactionBuilder(network.layer1);
 
@@ -133,7 +133,7 @@ export function makeTransferSkeleton(
 	hashed.copy(opRet, 4);
 	opRet.write(consensusHash, 20, 16, 'hex');
 
-	const opRetPayload = bitcoin.script.nullDataOutput(opRet);
+	const opRetPayload = bitcoin.script.nullData.output.encode(opRet);
 
 	const tx = new bitcoin.TransactionBuilder(network.layer1);
 
@@ -162,7 +162,7 @@ export function makeUpdateSkeleton(fullyQualifiedName: string, consensusHash: st
 	hashedName.copy(opRet, 3);
 	opRet.write(valueHash, 19, 20, 'hex');
 
-	const opRetPayload = bitcoin.script.nullDataOutput(opRet);
+	const opRetPayload = bitcoin.script.nullData.output.encode(opRet);
 
 	const tx = new bitcoin.TransactionBuilder(network.layer1);
 
