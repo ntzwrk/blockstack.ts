@@ -40,4 +40,5 @@ jspm_packages
 # Custom
 dist/
 src/**/*.js
+src/auth/schema/*d.ts
 src/profile/schema/*.d.ts
