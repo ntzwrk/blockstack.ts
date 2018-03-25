@@ -3,12 +3,12 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import { MissingParameterError, RemoteServiceError } from '../../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import {
-	IUTXO,
-	IUTXOWithValue,
 	TX_BROADCAST_SERVICE_REGISTRATION_ENDPOINT,
 	TX_BROADCAST_SERVICE_TX_ENDPOINT,
 	TX_BROADCAST_SERVICE_ZONE_FILE_ENDPOINT
-} from './index';
+} from './constants';
+import { IUTXO } from './interfaces/IUTXO';
+import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
 
 export class BlockstackNetwork {
 	public blockstackAPIUrl: string;

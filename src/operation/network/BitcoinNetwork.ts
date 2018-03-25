@@ -1,4 +1,4 @@
-import { IUTXOWithValue } from './index';
+import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
 
 export class BitcoinNetwork {
 	public broadcastTransaction(transaction: string): Promise<string> {

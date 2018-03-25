@@ -2,7 +2,8 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
 import { InvalidAmountError, InvalidParameterError } from '../error';
-import { IUTXO, IUTXOWithValue } from './network';
+import { IUTXO } from './network/interfaces/IUTXO';
+import { IUTXOWithValue } from './network/interfaces/IUTXOWithValue';
 import { hexStringToECPair } from '../utils';
 import {
 	makePreorderSkeleton,

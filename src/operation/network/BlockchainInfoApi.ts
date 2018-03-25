@@ -5,7 +5,7 @@ import * as fetch from 'isomorphic-fetch';
 import { DebugType, log } from '../../debug';
 import { RemoteServiceError } from '../../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
-import { IUTXOWithValue } from './index';
+import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
 
 export class BlockchainInfoApi extends BitcoinNetwork {
 	public utxoProviderUrl: string;

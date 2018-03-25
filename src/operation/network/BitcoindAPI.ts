@@ -1,5 +1,6 @@
 import { BitcoinNetwork } from './BitcoinNetwork';
-import { IUTXOWithValue, SATOSHIS_PER_BTC } from './index';
+import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
+import { SATOSHIS_PER_BTC } from './constants';
 
 export class BitcoindAPI extends BitcoinNetwork {
 	public bitcoindUrl: string;
