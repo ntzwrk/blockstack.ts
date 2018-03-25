@@ -56,6 +56,7 @@ export function validateProofs(profile: ProfileJson, ownerAddress: string, name?
 		const service: Service | undefined = profileServices.get(account.service);
 		if (service !== undefined) {
 			// FIXME: Seems to work, but gets shown as error
+			// @ts-ignore
 			const validatedProof = service.validateProof(proof, ownerAddress, name);
 			proofsToValidate.push(validatedProof);
 		}
