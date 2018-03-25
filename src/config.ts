@@ -1,3 +1,3 @@
-import { BlockstackNetwork, network } from './network';
+import { BlockstackNetwork, network } from './operation/network';
 
 export const config = { network: network.defaults.MAINNET_DEFAULT };

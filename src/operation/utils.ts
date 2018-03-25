@@ -3,7 +3,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import * as RIPEMD160 from 'ripemd160';
 
 import { NotEnoughFundsError } from '../error';
-import { IUTXOWithValue } from '../network';
+import { IUTXOWithValue } from './network';
 
 export const DUST_MINIMUM = 5500;
 
