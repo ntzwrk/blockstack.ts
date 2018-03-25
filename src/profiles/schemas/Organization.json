@@ -1,5 +1,5 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"allOf": [{ "$ref": "src/profiles/schemas/Profile.json" }],
+	"allOf": [{ "$ref": "Profile.json" }],
 	"type": "object"
 }

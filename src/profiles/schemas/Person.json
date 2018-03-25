@@ -2,7 +2,7 @@
 	"$schema": "http://json-schema.org/schema#",
 	"allOf": [
 		{
-			"$ref": "src/profiles/schemas/Profile.json"
+			"$ref": "Profile.json"
 		},
 		{
 			"type": "object",
@@ -14,37 +14,28 @@
 				"image": {
 					"type": "array",
 					"items": {
-						"type": "object",
-						"properties": {
-							"@type": { "type": "string" },
-							"name": { "type": "string" },
-							"contentUrl": { "type": "string" }
-						}
+						"allOf": [{ "$ref": "components/Image.json" }]
 					}
 				},
 				"website": {
 					"type": "array",
 					"items": {
-						"type": "object",
-						"properties": {
-							"@type": { "type": "string" },
-							"url": { "type": "string" }
-						}
+						"allOf": [{ "$ref": "components/WebSite.json" }]
 					}
 				},
 				"account": {
 					"type": "array",
 					"items": {
+						"allOf": [{ "$ref": "components/Account.json" }]
+					}
+				},
+				"knows": {
+					"type": "array",
+					"items": {
 						"type": "object",
 						"properties": {
 							"@type": { "type": "string" },
-							"role": { "type": "string" },
-							"service": { "type": "string" },
-							"identifier": { "type": "string" },
-							"proofType": { "type": "string" },
-							"proofUrl": { "type": "string" },
-							"proofMessage": { "type": "string" },
-							"proofSignature": { "type": "string" }
+							"@id": { "type": "string" }
 						}
 					}
 				},
@@ -58,25 +49,8 @@
 						}
 					}
 				},
-				"knows": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"@type": { "type": "string" },
-							"@id": { "type": "string" }
-						}
-					}
-				},
 				"address": {
-					"type": "object",
-					"properties": {
-						"@type": { "type": "string" },
-						"streetAddress": { "type": "string" },
-						"addressLocality": { "type": "string" },
-						"postalCode": { "type": "string" },
-						"addressCountry": { "type": "string" }
-					}
+					"allOf": [{ "$ref": "components/PostalAddress.json" }]
 				},
 				"birthDate": { "type": "string" },
 				"taxID": { "type": "string" },

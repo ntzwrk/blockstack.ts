@@ -19,7 +19,7 @@
     "clean": "rm -r ./dist/",
     "test": "yarn run build && mocha --require ts-node/register 'tests/**/*.spec.ts'",
     "document": "typedoc --out ./docs/code/ ./src/ --sourcefile-url-prefix https://github.com/ntzwrk/blockstack.ts/blob/master/src/",
-    "generate-json-interfaces": "find src/profiles/schemas/ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\;"
+    "generate-json-interfaces": "find src/profiles/schemas/ -name \"*.json\" -exec json2ts -cwd src/profiles/schemas/ --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\;"
   },
   "dependencies": {
     "@types/bigi": "^1.4.0",
