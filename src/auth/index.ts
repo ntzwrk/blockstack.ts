@@ -9,10 +9,11 @@ export {
 	signUserOut,
 	generateAndStoreTransitKey,
 	getTransitKey
-} from './authApp';
-export { makeAuthRequest, makeAuthResponse, IAuthMetadata } from './authMessages';
-export { getAuthRequestFromURL, fetchAppManifest, redirectUserToApp } from './authProvider';
-export { makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession } from './authSession';
+} from './app';
+export { BLOCKSTACK_DEFAULT_GAIA_HUB_URL, BLOCKSTACK_STORAGE_LABEL } from './constants';
+export { makeAuthRequest, makeAuthResponse, IAuthMetadata } from './messages';
+export { getAuthRequestFromURL, fetchAppManifest, redirectUserToApp } from './provider';
+export { makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession } from './session';
 export {
 	verifyAuthRequest,
 	verifyAuthResponse,
@@ -24,4 +25,4 @@ export {
 	isManifestUriValid,
 	isRedirectUriValid,
 	verifyAuthRequestAndLoadManifest
-} from './authVerification';
+} from './verification';
