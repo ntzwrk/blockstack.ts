@@ -3,7 +3,7 @@ import * as ecurve from 'ecurve';
 import { decodeToken, JWT, SECP256K1Client, TokenSigner, TokenVerifier } from 'jsontokens';
 
 import { makeUUID4, nextYear } from '../../utils';
-import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { Profile as ProfileJson } from '../schema/Profile.json';
 
 const secp256k1 = ecurve.getCurveByName('secp256k1');
 

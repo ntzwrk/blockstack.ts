@@ -1,5 +1,5 @@
-import { Account } from '../schemas/components/Account.json';
-import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { Account } from '../schema/components/Account.json';
+import { Profile as ProfileJson } from '../schema/Profile.json';
 import { profileServices } from '../service';
 import { Service } from '../service/service';
 import { IProof } from '../service/serviceUtils';

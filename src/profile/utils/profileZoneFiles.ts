@@ -2,8 +2,8 @@ import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
 import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
-import { Person as PersonJson } from '../schemas/Person.json';
-import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { Person as PersonJson } from '../schema/Person.json';
+import { Profile as ProfileJson } from '../schema/Profile.json';
 import { extractProfile } from './profileTokens';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {

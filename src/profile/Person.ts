@@ -1,11 +1,11 @@
 import { Organization } from './Organization';
 import { Profile } from './Profile';
-import { Account } from './schemas/components/Account.json';
-import { Image } from './schemas/components/Image.json';
-import { PostalAddress } from './schemas/components/PostalAddress.json';
-import { WebSite } from './schemas/components/WebSite.json';
-import { Person as PersonJson } from './schemas/Person.json';
-import { PersonLegacy as PersonLegacyJson } from './schemas/PersonLegacy.json';
+import { Account } from './schema/components/Account.json';
+import { Image } from './schema/components/Image.json';
+import { PostalAddress } from './schema/components/PostalAddress.json';
+import { WebSite } from './schema/components/WebSite.json';
+import { Person as PersonJson } from './schema/Person.json';
+import { PersonLegacy as PersonLegacyJson } from './schema/PersonLegacy.json';
 import { getPersonFromLegacyFormat } from './utils/personLegacy';
 
 export interface IVerification {

@@ -1,7 +1,7 @@
-import { Account } from '../schemas/components/Account.json';
-import { Image } from '../schemas/components/Image.json';
-import { Person as PersonJson } from '../schemas/Person.json';
-import { PersonLegacy as PersonLegacyJson } from '../schemas/PersonLegacy.json';
+import { Account } from '../schema/components/Account.json';
+import { Image } from '../schema/components/Image.json';
+import { Person as PersonJson } from '../schema/Person.json';
+import { PersonLegacy as PersonLegacyJson } from '../schema/PersonLegacy.json';
 
 function formatAccount(
 	serviceName: string,

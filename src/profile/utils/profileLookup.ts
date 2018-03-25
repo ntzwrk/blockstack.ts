@@ -1,4 +1,4 @@
-import { Person as PersonJson } from '../schemas/Person.json';
+import { Person as PersonJson } from '../schema/Person.json';
 import { resolveZoneFileToProfile } from './profileZoneFiles';
 
 /**
