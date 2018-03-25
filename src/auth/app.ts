@@ -4,7 +4,7 @@ import * as queryString from 'query-string';
 
 import { DebugType, log } from '../debug';
 import { makeECPrivateKey } from '../index';
-import { extractProfile } from '../profiles';
+import { extractProfile } from '../profile';
 import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
 import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils';
 import {
