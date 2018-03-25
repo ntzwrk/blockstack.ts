@@ -10,7 +10,7 @@ import {
 	nextMonth,
 	publicKeyToAddress
 } from '../index';
-import { DEFAULT_SCOPE } from './constants';
+import { DEFAULT_SCOPE } from '../constants';
 
 const VERSION = '1.1.0';
 

@@ -13,7 +13,7 @@ import {
 	BLOCKSTACK_STORAGE_LABEL,
 	DEFAULT_BLOCKSTACK_HOST,
 	DEFAULT_SCOPE
-} from './constants';
+} from '../constants';
 import { decryptPrivateKey } from './messages';
 import { makeAuthRequest, verifyAuthResponse } from './index';
 
