@@ -6,8 +6,9 @@ import { DebugType, log } from '../debug';
 import { makeECPrivateKey } from '../index';
 import { extractProfile } from '../profile';
 import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
-import { BLOCKSTACK_HANDLER, isLaterVersion } from '../utils';
+import { isLaterVersion } from '../utils';
 import {
+	BLOCKSTACK_HANDLER,
 	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
 	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
 	BLOCKSTACK_STORAGE_LABEL,

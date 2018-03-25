@@ -3,8 +3,8 @@ import { ECPair } from 'bitcoinjs-lib';
 import { parse as uriParse } from 'uri-js';
 
 import { config } from './config';
+import { BLOCKSTACK_HANDLER } from './constants';
 
-export const BLOCKSTACK_HANDLER = 'blockstack';
 /**
  * Time
  * @private
