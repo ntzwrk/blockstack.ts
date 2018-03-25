@@ -1,44 +1,12 @@
 import { Organization } from './Organization';
 import { Profile } from './Profile';
+import { Account } from './schemas/components/Account.json';
+import { Image } from './schemas/components/Image.json';
+import { PostalAddress } from './schemas/components/PostalAddress.json';
+import { WebSite } from './schemas/components/WebSite.json';
 import { Person as PersonJson } from './schemas/Person.json';
 import { PersonLegacy as PersonLegacyJson } from './schemas/PersonLegacy.json';
 import { getPersonFromLegacyFormat } from './utils/personLegacy';
-
-// TODO: Move these schema.org interfaces in an own file
-
-export interface IImage {
-	'@type'?: string;
-	name?: string;
-	contentUrl?: string;
-	[k: string]: any;
-}
-
-export interface IWebSite {
-	'@type'?: string;
-	url?: string;
-	[k: string]: any;
-}
-
-export interface IAccount {
-	'@type'?: string;
-	role?: string;
-	service?: string;
-	identifier?: string;
-	proofType?: string;
-	proofUrl?: string;
-	proofMessage?: string;
-	proofSignature?: string;
-	[k: string]: any;
-}
-
-export interface IPostalAddress {
-	'@type'?: string;
-	streetAddress?: string;
-	addressLocality?: string;
-	postalCode?: string;
-	addressCountry?: string;
-	[k: string]: any;
-}
 
 export interface IVerification {
 	identifier: string;
@@ -63,12 +31,12 @@ export class Person extends Profile implements PersonJson {
 		public givenName?: string,
 		public familyName?: string,
 		public description?: string,
-		public image?: IImage[],
-		public website?: IWebSite[],
-		public account?: IAccount[],
+		public image?: Image[],
+		public website?: WebSite[],
+		public account?: Account[],
 		public worksFor?: Organization[],
 		public knows?: Person[],
-		public address?: IPostalAddress,
+		public address?: PostalAddress,
 		public birthDate?: string,
 		public taxID?: string
 	) {
@@ -137,7 +105,7 @@ export class Person extends Profile implements PersonJson {
 			return undefined;
 		}
 
-		const filteredAccounts: IAccount = [];
+		const filteredAccounts: Account = [];
 		for (const account of this.account) {
 			let accountIsValid = false;
 			let proofUrl;

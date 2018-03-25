@@ -1,4 +1,4 @@
-import { IAccount } from '../Person';
+import { Account } from '../schemas/components/Account.json';
 import { Profile as ProfileJson } from '../schemas/Profile.json';
 import { profileServices } from '../services';
 import { Service } from '../services/service';
@@ -18,7 +18,7 @@ export function validateProofs(profile: ProfileJson, ownerAddress: string, name?
 		throw new Error('Profile must not be null');
 	}
 
-	let accounts: IAccount[];
+	let accounts: Account[];
 	let proofsToValidate: Array<Promise<IProof>> = [];
 
 	if (profile.account !== undefined) {

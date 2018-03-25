@@ -1,4 +1,5 @@
-import { IAccount, IImage } from '../Person';
+import { Account } from '../schemas/components/Account.json';
+import { Image } from '../schemas/components/Image.json';
 import { Person as PersonJson } from '../schemas/Person.json';
 import { PersonLegacy as PersonLegacyJson } from '../schemas/PersonLegacy.json';
 
@@ -46,7 +47,7 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 		};
 	}
 
-	const images: IImage[] = [];
+	const images: Image[] = [];
 	if (personLegacyJson.avatar !== undefined && personLegacyJson.avatar.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
@@ -74,7 +75,7 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 		];
 	}
 
-	const accounts: IAccount[] = [];
+	const accounts: Account[] = [];
 	if (personLegacyJson.bitcoin !== undefined && personLegacyJson.bitcoin.address !== undefined) {
 		accounts.push({
 			'@type': 'Account',
