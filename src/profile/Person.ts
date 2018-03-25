@@ -1,4 +1,4 @@
-import { Organization } from './Organization';
+import { Basic } from './schema/components/Basic.json';
 import { Profile } from './Profile';
 import { Account } from './schema/components/Account.json';
 import { Image } from './schema/components/Image.json';
@@ -34,8 +34,8 @@ export class Person extends Profile implements PersonJson {
 		public image?: Image[],
 		public website?: WebSite[],
 		public account?: Account[],
-		public worksFor?: Organization[],
-		public knows?: Person[],
+		public worksFor?: Basic[],
+		public knows?: Basic[],
 		public address?: PostalAddress,
 		public birthDate?: string,
 		public taxID?: string
