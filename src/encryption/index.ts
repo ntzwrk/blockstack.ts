@@ -2,6 +2,8 @@ import { BN } from 'bn.js';
 import * as crypto from 'crypto';
 import { ec as EllipticCurve } from 'elliptic';
 
+export * from './keys';
+
 const ecurve = new EllipticCurve('secp256k1');
 
 export interface ICipherObject {

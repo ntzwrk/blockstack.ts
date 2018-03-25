@@ -1,7 +1,7 @@
 import { loadUserData } from '../auth';
 import { DebugType, log } from '../debug';
 import { decryptECIES, encryptECIES, ICipherObject } from '../encryption';
-import { getPublicKeyFromPrivate } from '../keys';
+import { getPublicKeyFromPrivate } from '../encryption';
 import { lookupProfile } from '../profiles';
 import {
 	BLOCKSTACK_GAIA_HUB_LABEL,

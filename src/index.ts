@@ -3,7 +3,7 @@ export * from './profiles';
 export * from './storage';
 
 export { makeDIDFromAddress, makeDIDFromPublicKey, getDIDType, getAddressFromDID } from './dids';
-export { getEntropy, makeECPrivateKey, publicKeyToAddress, getPublicKeyFromPrivate } from './keys';
+export { getEntropy, makeECPrivateKey, publicKeyToAddress, getPublicKeyFromPrivate } from './encryption';
 export {
 	nextYear,
 	nextMonth,
