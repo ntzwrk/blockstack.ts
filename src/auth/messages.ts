@@ -12,12 +12,18 @@ import {
 } from '../index';
 import { DEFAULT_SCOPE } from '../constants';
 
+import { Profile as ProfileJson } from '../profile/schema/Profile.json';
+
 const VERSION = '1.1.0';
 
 export interface IAuthMetadata {
 	email?: string;
 	profileUrl?: string;
 }
+
+/*
+ * See https://forum.blockstack.org/t/review-spec-creation-for-blockstack-authentication/4034
+ */
 
 export interface IAuthRequestPayload {
 	do_not_include_profile: boolean;
@@ -32,6 +38,22 @@ export interface IAuthRequestPayload {
 	scopes: string[];
 	supports_hub_url: boolean;
 	version: string;
+}
+
+export interface IAuthResponsePayload {
+	jti: string;
+	iat: number;
+	exp: number;
+	iss: string;
+	private_key: string;
+	public_keys: string[];
+	profile: ProfileJson;
+	username: string;
+	core_token: string;
+	email?: string;
+	profile_url?: string;
+	hubUrl?: string;
+	version?: string;
 }
 
 /**
@@ -142,7 +164,7 @@ export function decryptPrivateKey(privateKey: string, hexedEncrypted: string): s
  */
 export function makeAuthResponse(
 	privateKey: string,
-	profile: {} = {},
+	profile: ProfileJson,
 	username: string | null = null,
 	metadata: IAuthMetadata,
 	coreToken: string | null,
@@ -177,22 +199,23 @@ export function makeAuthResponse(
 		log(DebugType.warn, 'Generating a _legacy_ auth response');
 	}
 
+	const properties: IAuthResponsePayload = {
+		core_token: coreTokenPayload,
+		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
+		iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
+		iss: makeDIDFromAddress(address),
+		jti: makeUUID4(),
+		private_key: privateKeyPayload,
+		profile: profile,
+		public_keys: [publicKey],
+		username: username
+	};
+
 	/* Create the payload */
-	const payload = Object.assign(
-		{},
-		{
-			core_token: coreTokenPayload,
-			exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
-			iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
-			iss: makeDIDFromAddress(address),
-			jti: makeUUID4(),
-			private_key: privateKeyPayload,
-			profile,
-			public_keys: [publicKey],
-			username
-		},
-		additionalProperties
-	);
+	const payload: IAuthResponsePayload = {
+		...properties,
+		...additionalProperties
+	};
 
 	/* Sign and return the token */
 	const tokenSigner = new TokenSigner('ES256k', privateKey);

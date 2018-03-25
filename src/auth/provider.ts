@@ -2,8 +2,10 @@ import { decodeToken, JWT } from 'jsontokens';
 import * as queryString from 'query-string';
 
 import { DebugType, log } from '../debug';
-import { updateQueryStringParameter } from '../index';
-import { BLOCKSTACK_HANDLER } from '../utils';
+import { updateQueryStringParameter } from '../utils';
+import { BLOCKSTACK_HANDLER } from '../constants';
+import { IAuthRequestPayload } from './messages';
+import { WebAppManifest as WebAppManifestJson } from './schema/WebAppManifest.json';
 
 /**
  * Retrieves the authentication request from the query string
@@ -29,17 +31,17 @@ export function getAuthRequestFromURL() {
  * message.
  * @private
  */
-export function fetchAppManifest(authRequest: string | JWT): Promise<object | string> {
+export function fetchAppManifest(authRequest: string | JWT): Promise<WebAppManifestJson> {
 	return new Promise((resolve, reject) => {
 		if (!authRequest) {
 			reject('Invalid auth request');
 		} else {
-			const payload = decodeToken(authRequest).payload;
+			const payload = decodeToken(authRequest).payload as IAuthRequestPayload;
 			const manifestURI = payload.manifest_uri;
 			try {
 				fetch(manifestURI)
 					.then(response => response.text())
-					.then(responseText => JSON.parse(responseText))
+					.then(responseText => JSON.parse(responseText) as WebAppManifestJson)
 					.then(responseJSON => {
 						resolve(responseJSON);
 					})
