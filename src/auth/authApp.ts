@@ -2,7 +2,7 @@ import { protocolCheck } from 'custom-protocol-detection-blockstack';
 import { decodeToken } from 'jsontokens';
 import * as queryString from 'query-string';
 
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 import { makeECPrivateKey } from '../index';
 import { extractProfile } from '../profiles';
 import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';

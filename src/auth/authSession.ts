@@ -1,7 +1,7 @@
 import * as fetch from 'isomorphic-fetch';
 import { decodeToken, SECP256K1Client, TokenSigner } from 'jsontokens';
 
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 
 /**
  * Create an authentication token to be sent to the Core API server

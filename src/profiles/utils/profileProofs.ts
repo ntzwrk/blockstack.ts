@@ -1,7 +1,7 @@
+import { IAccount } from '../Person';
+import { Profile as ProfileJson } from '../schemas/Profile.json';
 import { profileServices } from '../services';
 import { Service } from '../services/service';
-import { Profile as ProfileJson } from '../schemas/Profile.json';
-import { IAccount } from '../Person';
 import { IProof } from '../services/serviceUtils';
 
 /**
@@ -19,7 +19,7 @@ export function validateProofs(profile: ProfileJson, ownerAddress: string, name?
 	}
 
 	let accounts: IAccount[];
-	let proofsToValidate: Promise<IProof>[] = [];
+	let proofsToValidate: Array<Promise<IProof>> = [];
 
 	if (profile.account !== undefined) {
 		accounts = profile.account;
@@ -47,13 +47,13 @@ export function validateProofs(profile: ProfileJson, ownerAddress: string, name?
 		}
 
 		const proof: IProof = {
-			service: account.service,
-			proof_url: account.proofUrl,
 			identifier: account.identifier,
+			proof_url: account.proofUrl,
+			service: account.service,
 			valid: false
 		};
 
-		let service: Service|undefined = profileServices.get(account.service);
+		const service: Service | undefined = profileServices.get(account.service);
 		if (service !== undefined) {
 			// FIXME: Seems to work, but gets shown as error
 			const validatedProof = service.validateProof(proof, ownerAddress, name);

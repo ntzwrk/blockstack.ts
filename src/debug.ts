@@ -10,7 +10,7 @@ export const enum DebugType {
 /**
  * Debug level (this and everything more severe gets printed)
  */
-let DEBUG_LEVEL: DebugType | null = DebugType.info;
+const DEBUG_LEVEL: DebugType | null = DebugType.info;
 
 /**
  * Prints out debug information

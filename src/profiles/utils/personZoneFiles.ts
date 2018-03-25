@@ -1,9 +1,10 @@
 import { parseZoneFile } from 'zone-file';
 
+import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
 import { Person as PersonJson } from '../schemas/Person.json';
-import { getTokenFileUrl } from './profileZoneFiles';
 import { extractProfile } from './profileTokens';
+import { getTokenFileUrl } from './profileZoneFiles';
 
 export function resolveZoneFileToPerson(
 	zoneFile: string,
@@ -18,7 +19,7 @@ export function resolveZoneFileToPerson(
 			throw new Error('zone file is missing an origin');
 		}
 	} catch (e) {
-		console.error(e);
+		log(DebugType.error, 'Could not parse zone file', e);
 	}
 
 	let tokenFileUrl = null;
@@ -32,7 +33,7 @@ export function resolveZoneFileToPerson(
 			const person = Person.fromLegacyFormat(profile);
 			profile = person.toJSON();
 		} catch (error) {
-			console.warn(error);
+			log(DebugType.error, 'Could not parse legacy zone file', error);
 		}
 		callback(profile);
 		return;
@@ -51,10 +52,10 @@ export function resolveZoneFileToPerson(
 				return;
 			})
 			.catch(error => {
-				console.warn(error);
+				log(DebugType.error, 'Could not extract profile', error);
 			});
 	} else {
-		console.warn('Token file url not found');
+		log(DebugType.warn, 'Token file url not found');
 		callback(null);
 		return;
 	}

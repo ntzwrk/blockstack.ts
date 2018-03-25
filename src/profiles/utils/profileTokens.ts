@@ -1,8 +1,8 @@
-import * as ecurve from 'ecurve';
 import { ECPair } from 'bitcoinjs-lib';
-import { decodeToken, SECP256K1Client, TokenSigner, TokenVerifier, JWT } from 'jsontokens';
+import * as ecurve from 'ecurve';
+import { decodeToken, JWT, SECP256K1Client, TokenSigner, TokenVerifier } from 'jsontokens';
 
-import { nextYear, makeUUID4 } from '../../utils';
+import { makeUUID4, nextYear } from '../../utils';
 import { Profile as ProfileJson } from '../schemas/Profile.json';
 
 const secp256k1 = ecurve.getCurveByName('secp256k1');
@@ -44,12 +44,12 @@ export function signProfileToken(
 	const tokenSigner = new TokenSigner(signingAlgorithm, privateKey);
 
 	const payload = {
-		jti: makeUUID4(),
-		iat: issuedAt.toISOString(),
+		claim: profile,
 		exp: expiresAt.toISOString(),
-		subject,
+		iat: issuedAt.toISOString(),
 		issuer,
-		claim: profile
+		jti: makeUUID4(),
+		subject
 	};
 
 	return tokenSigner.sign(payload, false) as string;
@@ -62,8 +62,8 @@ export function signProfileToken(
  */
 export function wrapProfileToken(token: string) {
 	return {
-		token,
-		decodedToken: decodeToken(token)
+		decodedToken: decodeToken(token),
+		token
 	};
 }
 
@@ -144,12 +144,8 @@ export function verifyProfileToken(token: string, publicKeyOrAddress: string) {
  * @throws {Error} - if the token isn't signed by the provided `publicKeyOrAddress`
  */
 export function extractProfile(token: string, publicKeyOrAddress?: string) {
-	let decodedToken;
-	if (publicKeyOrAddress !== undefined) {
-		decodedToken = verifyProfileToken(token, publicKeyOrAddress);
-	} else {
-		decodedToken = decodeToken(token);
-	}
+	const decodedToken =
+		publicKeyOrAddress !== undefined ? verifyProfileToken(token, publicKeyOrAddress) : decodeToken(token);
 
 	let profile;
 	if (decodedToken.hasOwnProperty('payload')) {

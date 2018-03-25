@@ -1,6 +1,6 @@
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 import { decryptECIES, encryptECIES } from '../encryption';
 import {
 	generateAndStoreTransitKey,

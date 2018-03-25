@@ -1,5 +1,5 @@
 import { loadUserData } from '../auth';
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 import { decryptECIES, encryptECIES, ICipherObject } from '../encryption';
 import { getPublicKeyFromPrivate } from '../keys';
 import { lookupProfile } from '../profiles';
@@ -123,9 +123,8 @@ export function getFile(
 		.then(storedContents => {
 			if (opt.decrypt && storedContents !== null) {
 				const privateKey = loadUserData().appPrivateKey;
-				// const cipherObject = JSON.parse(storedContents);
 				if (typeof storedContents === 'string') {
-					let cipherObject = JSON.parse(storedContents) as ICipherObject;
+					const cipherObject = JSON.parse(storedContents) as ICipherObject;
 					return decryptECIES(privateKey, cipherObject);
 				} else {
 					// TODO: What to do with a ArrayBuffer in here?

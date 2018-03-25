@@ -1,6 +1,6 @@
+import { BN } from 'bn.js';
 import * as crypto from 'crypto';
 import { ec as EllipticCurve } from 'elliptic';
-import { BN } from 'bn.js';
 
 const ecurve = new EllipticCurve('secp256k1');
 
@@ -79,7 +79,7 @@ export function getHexFromBN(bnInput: BN) {
  */
 export function encryptECIES(publicKey: string, content: string | Buffer): ICipherObject {
 	const isString = typeof content === 'string';
-	const plainText = typeof content === 'string' ? new Buffer(content as string) : content;
+	const plainText = typeof content === 'string' ? new Buffer(content) : content;
 
 	const ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
 	const ephemeralSK = ecurve.genKeyPair();

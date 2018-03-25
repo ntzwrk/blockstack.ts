@@ -140,7 +140,7 @@ export class Person extends Profile implements PersonJson {
 		const filteredAccounts: IAccount = [];
 		for (const account of this.account) {
 			let accountIsValid = false;
-			let proofUrl = undefined;
+			let proofUrl;
 
 			verifications.map(verification => {
 				if (

@@ -1,7 +1,7 @@
 import { decodeToken, JWT } from 'jsontokens';
 import * as queryString from 'query-string';
 
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 import { updateQueryStringParameter } from '../index';
 import { BLOCKSTACK_HANDLER } from '../utils';
 

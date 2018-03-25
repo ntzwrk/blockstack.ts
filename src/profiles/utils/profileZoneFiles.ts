@@ -1,8 +1,10 @@
-import { makeZoneFile, parseZoneFile, JsonZoneFile } from 'zone-file';
-import { extractProfile } from './profileTokens';
+import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
+
+import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
-import { Profile as ProfileJson } from '../schemas/Profile.json';
 import { Person as PersonJson } from '../schemas/Person.json';
+import { Profile as ProfileJson } from '../schemas/Profile.json';
+import { extractProfile } from './profileTokens';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
@@ -21,8 +23,8 @@ export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 			{
 				name: '_http._tcp',
 				priority: 10,
-				weight: 1,
-				target: `${urlScheme}://${domain}${pathname}`
+				target: `${urlScheme}://${domain}${pathname}`,
+				weight: 1
 			}
 		]
 	};
@@ -99,11 +101,11 @@ export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: s
 					return;
 				})
 				.catch(error => {
-					console.log(`resolveZoneFileToProfile: error fetching token file ${tokenFileUrl}`, error);
+					log(DebugType.error, `resolveZoneFileToProfile: error fetching token file ${tokenFileUrl}`, error);
 					reject(error);
 				});
 		} else {
-			console.log('Token file url not found. Resolving to blank profile.');
+			log(DebugType.error, 'Token file url not found. Resolving to blank profile.');
 			resolve(null);
 			return;
 		}

@@ -3,8 +3,8 @@ import { Github } from './github';
 import { HackerNews } from './hackerNews';
 import { Instagram } from './instagram';
 import { LinkedIn } from './linkedIn';
-import { Twitter } from './twitter';
 import { Service } from './service';
+import { Twitter } from './twitter';
 
 export const profileServices: Map<string, Service> = new Map([
 	['facebook', Facebook],

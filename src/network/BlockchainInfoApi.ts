@@ -2,7 +2,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import * as fetch from 'isomorphic-fetch';
 // import * as FormData from 'form-data'; // TODO: Evaluate the need later
 
-import { log, DebugType } from '../debug';
+import { DebugType, log } from '../debug';
 import { RemoteServiceError } from '../errors';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import { IUTXOWithValue } from './index';

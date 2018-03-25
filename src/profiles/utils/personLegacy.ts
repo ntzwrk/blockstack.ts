@@ -19,18 +19,18 @@ function formatAccount(
 	}
 	return {
 		'@type': 'Account',
-		service: serviceName,
 		identifier: data.username,
 		proofType: 'http',
-		proofUrl: proofUrl
+		proofUrl: proofUrl,
+		service: serviceName
 	};
 }
 
 export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): PersonJson {
 	const personJson: PersonJson = {
 		'@context': 'http://schema.org/',
-		'@type': 'Person',
-		'@id': '' // TODO: What should @id be? Name?
+		'@id': '', // TODO: What should @id be? Name?
+		'@type': 'Person'
 	};
 
 	if (personLegacyJson.name !== undefined) {
@@ -50,18 +50,18 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 	if (personLegacyJson.avatar !== undefined && personLegacyJson.avatar.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
-			name: 'avatar',
-			contentUrl: personLegacyJson.avatar.url
+			contentUrl: personLegacyJson.avatar.url,
+			name: 'avatar'
 		});
 	}
 	if (personLegacyJson.cover !== undefined && personLegacyJson.cover.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
-			name: 'cover',
-			contentUrl: personLegacyJson.cover.url
+			contentUrl: personLegacyJson.cover.url,
+			name: 'cover'
 		});
 	}
-	if (images != []) {
+	if (images !== []) {
 		personJson.image = images;
 	}
 
@@ -78,9 +78,9 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 	if (personLegacyJson.bitcoin !== undefined && personLegacyJson.bitcoin.address !== undefined) {
 		accounts.push({
 			'@type': 'Account',
+			identifier: personLegacyJson.bitcoin.address,
 			role: 'payment',
-			service: 'bitcoin',
-			identifier: personLegacyJson.bitcoin.address
+			service: 'bitcoin'
 		});
 	}
 	if (personLegacyJson.twitter !== undefined && personLegacyJson.twitter.username !== undefined) {
@@ -97,9 +97,9 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 			if (personLegacyJson.auth[0].publicKeychain !== undefined) {
 				accounts.push({
 					'@type': 'Account',
+					identifier: personLegacyJson.auth[0].publicKeychain,
 					role: 'key',
-					service: 'bip32',
-					identifier: personLegacyJson.auth[0].publicKeychain
+					service: 'bip32'
 				});
 			}
 		}
@@ -111,10 +111,10 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 	) {
 		accounts.push({
 			'@type': 'Account',
-			role: 'key',
-			service: 'pgp',
+			contentUrl: personLegacyJson.pgp.url,
 			identifier: personLegacyJson.pgp.fingerprint,
-			contentUrl: personLegacyJson.pgp.url
+			role: 'key',
+			service: 'pgp'
 		});
 	}
 

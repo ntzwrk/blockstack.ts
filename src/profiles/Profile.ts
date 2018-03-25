@@ -1,6 +1,6 @@
 import { Profile as ProfileJson } from './schemas/Profile.json';
-import { extractProfile, makeProfileZoneFile, signProfileToken, validateProofs } from './utils';
 import { IProof } from './services';
+import { extractProfile, makeProfileZoneFile, signProfileToken, validateProofs } from './utils';
 
 export class Profile implements ProfileJson {
 	public static makeZoneFile(domainName: string, tokenFileURL: string): string {
