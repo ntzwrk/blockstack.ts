@@ -16,10 +16,10 @@
     "lint": "yarn run prettify && tslint --project ./",
     "build": "yarn run generate-json-interfaces && tsc",
     "prepublishOnly": "yarn run build",
-    "clean": "rm -r ./dist/",
+    "clean": "rm -r ./dist/ && rm ./src/{auth,profile}/schema/*.d.ts",
     "test": "yarn run build && mocha --require ts-node/register 'tests/**/*.spec.ts'",
     "document": "typedoc --out ./docs/code/ ./src/ --sourcefile-url-prefix https://github.com/ntzwrk/blockstack.ts/blob/master/src/",
-    "generate-json-interfaces": "cd src/profile/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd ../../../"
+    "generate-json-interfaces": "cd ./src/auth/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd - && cd ./src/profile/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd -"
   },
   "dependencies": {
     "@types/bigi": "^1.4.0",
@@ -57,6 +57,7 @@
     "prettier": "^1.11.1",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.10.0",
+    "tslint-no-circular-imports": "^0.2.1",
     "tslint-sonarts": "^1.6.0",
     "typedoc": "^0.11.1",
     "typedoc-plugin-sourcefile-url": "^1.0.3"

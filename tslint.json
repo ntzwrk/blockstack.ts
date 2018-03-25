@@ -3,6 +3,7 @@
 	"extends": [
 		"tslint:latest",
 		"tslint-sonarts",
+		"tslint-no-circular-imports",
 		"tslint-config-prettier"
 	],
 	"jsRules": {},
