@@ -2,7 +2,7 @@ import { parseZoneFile } from 'zone-file';
 
 import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
-import { Person as PersonJson } from '../schema/Person.json';
+import { PersonJson } from '../schema/Person.json';
 import { extractProfile } from './profileTokens';
 import { getTokenFileUrl } from './profileZoneFiles';
 

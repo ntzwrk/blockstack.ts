@@ -1,4 +1,4 @@
-import { Profile as ProfileJson } from './schema/Profile.json';
+import { ProfileJson } from './schema/Profile.json';
 import { IProof } from './service';
 import { extractProfile, makeProfileZoneFile, signProfileToken, validateProofs } from './utils';
 

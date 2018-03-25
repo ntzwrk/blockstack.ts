@@ -1,5 +1,5 @@
 import { Profile } from './Profile';
-import { Organization as OrganizationJson } from './schema/Organization.json';
+import { OrganizationJson } from './schema/Organization.json';
 
 export class Organization extends Profile implements OrganizationJson {
 	public static fromJSON(organizationJson: OrganizationJson): Profile {

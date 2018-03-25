@@ -1,11 +1,11 @@
-import { Basic } from './schema/components/Basic.json';
+import { BasicJson } from './schema/components/Basic.json';
 import { Profile } from './Profile';
-import { Account } from './schema/components/Account.json';
-import { Image } from './schema/components/Image.json';
-import { PostalAddress } from './schema/components/PostalAddress.json';
-import { WebSite } from './schema/components/WebSite.json';
-import { Person as PersonJson } from './schema/Person.json';
-import { PersonLegacy as PersonLegacyJson } from './schema/PersonLegacy.json';
+import { AccountJson } from './schema/components/Account.json';
+import { ImageJson } from './schema/components/Image.json';
+import { PostalAddressJson } from './schema/components/PostalAddress.json';
+import { WebSiteJson } from './schema/components/WebSite.json';
+import { PersonJson } from './schema/Person.json';
+import { PersonLegacyJson } from './schema/PersonLegacy.json';
 import { getPersonFromLegacyFormat } from './utils/personLegacy';
 
 export interface IVerification {
@@ -31,12 +31,12 @@ export class Person extends Profile implements PersonJson {
 		public givenName?: string,
 		public familyName?: string,
 		public description?: string,
-		public image?: Image[],
-		public website?: WebSite[],
-		public account?: Account[],
-		public worksFor?: Basic[],
-		public knows?: Basic[],
-		public address?: PostalAddress,
+		public image?: ImageJson[],
+		public website?: WebSiteJson[],
+		public account?: AccountJson[],
+		public worksFor?: BasicJson[],
+		public knows?: BasicJson[],
+		public address?: PostalAddressJson,
 		public birthDate?: string,
 		public taxID?: string
 	) {
@@ -105,7 +105,7 @@ export class Person extends Profile implements PersonJson {
 			return undefined;
 		}
 
-		const filteredAccounts: Account = [];
+		const filteredAccounts: AccountJson = [];
 		for (const account of this.account) {
 			let accountIsValid = false;
 			let proofUrl;

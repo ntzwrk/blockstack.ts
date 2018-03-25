@@ -5,7 +5,7 @@ import { DebugType, log } from '../debug';
 import { updateQueryStringParameter } from '../utils';
 import { BLOCKSTACK_HANDLER } from '../constants';
 import { IAuthRequestPayload } from './messages';
-import { WebAppManifest as WebAppManifestJson } from './schema/WebAppManifest.json';
+import { WebAppManifestJson } from './schema/WebAppManifest.json';
 
 /**
  * Retrieves the authentication request from the query string

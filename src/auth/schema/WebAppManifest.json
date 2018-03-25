@@ -1,5 +1,6 @@
 {
 	"$schema": "http://json-schema.org/schema#",
+	"id": "WebAppManifest.json",
 	"type": "object",
 	"allOf": [{ "$ref": "http://json.schemastore.org/web-manifest" }]
 }

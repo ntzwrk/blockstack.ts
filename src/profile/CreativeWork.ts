@@ -1,5 +1,5 @@
 import { Profile } from './Profile';
-import { CreativeWork as CreativeWorkJson } from './schema/CreativeWork.json';
+import { CreativeWorkJson } from './schema/CreativeWork.json';
 
 export class CreativeWork extends Profile implements CreativeWorkJson {
 	public static fromJSON(creativeWorkJson: CreativeWorkJson): Profile {

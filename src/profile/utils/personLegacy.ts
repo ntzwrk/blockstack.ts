@@ -1,7 +1,7 @@
-import { Account } from '../schema/components/Account.json';
-import { Image } from '../schema/components/Image.json';
-import { Person as PersonJson } from '../schema/Person.json';
-import { PersonLegacy as PersonLegacyJson } from '../schema/PersonLegacy.json';
+import { AccountJson } from '../schema/components/Account.json';
+import { ImageJson } from '../schema/components/Image.json';
+import { PersonJson } from '../schema/Person.json';
+import { PersonLegacyJson } from '../schema/PersonLegacy.json';
 
 function formatAccount(
 	serviceName: string,
@@ -43,7 +43,7 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 		};
 	}
 
-	const images: Image[] = [];
+	const images: ImageJson[] = [];
 	if (personLegacyJson.avatar !== undefined && personLegacyJson.avatar.url !== undefined) {
 		images.push({
 			'@type': 'ImageObject',
@@ -71,7 +71,7 @@ export function getPersonFromLegacyFormat(personLegacyJson: PersonLegacyJson): P
 		];
 	}
 
-	const accounts: Account[] = [];
+	const accounts: AccountJson[] = [];
 	if (personLegacyJson.bitcoin !== undefined && personLegacyJson.bitcoin.address !== undefined) {
 		accounts.push({
 			'@type': 'Account',

@@ -12,7 +12,7 @@ import {
 } from '../index';
 import { DEFAULT_SCOPE } from '../constants';
 
-import { Profile as ProfileJson } from '../profile/schema/Profile.json';
+import { ProfileJson } from '../profile/schema/Profile.json';
 
 const VERSION = '1.1.0';
 
