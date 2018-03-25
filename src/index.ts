@@ -16,7 +16,7 @@ export {
 	ecPairToHexString
 } from './utils';
 
-export { transactions, safety } from './operations';
+export { transactions, safety } from './operation';
 
 export { network } from './network';
 
