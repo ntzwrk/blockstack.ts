@@ -7,11 +7,7 @@ function formatAccount(
 	serviceName: string,
 	data: {
 		username?: string | undefined;
-		proof?:
-			| {
-					url?: string | undefined;
-			  }
-			| undefined;
+		proof?: { url?: string | undefined } | undefined;
 	}
 ) {
 	let proofUrl;
