@@ -1,6 +1,6 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
-import { MissingParameterError, RemoteServiceError } from '../errors';
+import { MissingParameterError, RemoteServiceError } from '../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import {
 	IUTXO,

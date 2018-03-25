@@ -1,7 +1,7 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
-import { InvalidAmountError, InvalidParameterError } from '../errors';
+import { InvalidAmountError, InvalidParameterError } from '../error';
 import { IUTXO, IUTXOWithValue } from '../network';
 import { hexStringToECPair } from '../utils';
 import {

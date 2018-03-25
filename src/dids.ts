@@ -1,4 +1,4 @@
-import { InvalidDIDError } from './errors';
+import { InvalidDIDError } from './error';
 
 export function makeDIDFromAddress(address: string) {
 	return `did:btc-addr:${address}`;
