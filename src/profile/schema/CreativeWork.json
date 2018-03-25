@@ -1,5 +1,6 @@
 {
 	"$schema": "http://json-schema.org/schema#",
-	"allOf": [{ "$ref": "Profile.json" }],
-	"type": "object"
+	"id": "CreativeWork.json",
+	"type": "object",
+	"allOf": [{ "$ref": "Profile.json" }]
 }

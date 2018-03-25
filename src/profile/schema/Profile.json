@@ -1,5 +1,6 @@
 {
 	"$schema": "http://json-schema.org/schema#",
+	"id": "Profile.json",
 	"type": "object",
 	"properties": {
 		"@context": { "type": "string" },
