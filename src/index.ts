@@ -18,7 +18,7 @@ export {
 
 export { transactions, safety } from './operation';
 
-export { network } from './operation/network';
+export * from './operation/network';
 
 export { decodeToken } from 'jsontokens';
 
