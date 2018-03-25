@@ -17,4 +17,4 @@ export {
 	extractProfile
 } from './utils';
 
-export { profileServices, containsValidProofStatement, containsValidAddressProofStatement } from './services';
+export { profileServices, containsValidProofStatement, containsValidAddressProofStatement } from './service';
