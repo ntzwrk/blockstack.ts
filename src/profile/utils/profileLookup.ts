@@ -1,5 +1,5 @@
 import { PersonJson } from '../schema/Person.json';
-import { resolveZoneFileToProfile } from './profileZoneFiles';
+import { resolveZoneFileToProfile } from '../../zoneFile';
 
 /**
  * Look up a user profile by blockstack ID

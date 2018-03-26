@@ -1,6 +1,7 @@
 export * from './auth';
 export * from './profile';
 export * from './storage';
+export * from './zoneFile';
 
 export { makeDIDFromAddress, makeDIDFromPublicKey, getDIDType, getAddressFromDID } from './dids';
 export { getEntropy, makeECPrivateKey, publicKeyToAddress, getPublicKeyFromPrivate } from './encryption';

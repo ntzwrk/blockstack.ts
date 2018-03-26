@@ -12,12 +12,8 @@ export {
 } from './jwt';
 
 export {
-	makeProfileZoneFile,
-	getTokenFileUrl,
-	resolveZoneFileToProfile,
 	lookupProfile,
-	validateProofs,
-	resolveZoneFileToPerson
+	validateProofs
 } from './utils';
 
 export { Service, profileServices } from './service';
