@@ -1,5 +1,4 @@
-import { IProof } from '.';
-import { Service } from './service';
+import { IProof, Service } from './service';
 
 export class Github extends Service {
 	public static getBaseUrls() {

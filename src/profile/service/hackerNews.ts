@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio';
 
-import { IProof } from '.';
-import { Service } from './service';
+import { IProof, Service } from './service';
 
 export class HackerNews extends Service {
 	public static getBaseUrls() {
