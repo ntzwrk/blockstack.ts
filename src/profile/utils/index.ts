@@ -1,1 +1,0 @@
-export { lookupProfile } from './profileLookup';
