@@ -12,8 +12,13 @@ export {
 } from './jwt';
 
 export {
-	lookupProfile,
-	validateProofs
+	validateProofs,
+	containsValidProofStatement,
+	containsValidAddressProofStatement
+ } from './proof';
+
+export {
+	lookupProfile
 } from './utils';
 
 export { Service, profileServices } from './service';
