@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 
-import { IProof, Service } from './service';
+import { IProof, Service } from './Service';
 
 export class Facebook extends Service {
 	public static getProofUrl(proof: IProof) {

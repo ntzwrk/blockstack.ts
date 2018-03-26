@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 
 import { DebugType, log } from '../../debug';
-import { IProof, Service } from './service';
+import { IProof, Service } from './Service';
 
 export class Instagram extends Service {
 	public static getBaseUrls() {

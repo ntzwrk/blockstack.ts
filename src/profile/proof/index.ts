@@ -1,8 +1,7 @@
 import { AccountJson } from '../schema/components/Account.json';
 import { ProfileJson } from '../schema/Profile.json';
 import { profileServices } from '../service';
-import { Service } from '../service/service';
-import { IProof } from '../service/service';
+import { IProof, Service } from '../service/Service';
 
 /**
  * Validates the social proofs in a user's profile. Currently supports validation of

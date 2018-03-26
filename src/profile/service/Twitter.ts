@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 
-import { Service } from './service';
+import { Service } from './Service';
 
 export class Twitter extends Service {
 	public static getBaseUrls() {

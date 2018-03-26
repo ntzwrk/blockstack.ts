@@ -1,10 +1,10 @@
-import { Facebook } from './facebook';
-import { Github } from './github';
-import { HackerNews } from './hackerNews';
-import { Instagram } from './instagram';
-import { LinkedIn } from './linkedIn';
-import { Service } from './service';
-import { Twitter } from './twitter';
+import { Facebook } from './Facebook';
+import { Github } from './Github';
+import { HackerNews } from './HackerNews';
+import { Instagram } from './Instagram';
+import { LinkedIn } from './LinkedIn';
+import { Service } from './Service';
+import { Twitter } from './Twitter';
 
 export const profileServices: Map<string, Service> = new Map([
 	['facebook', Facebook],
@@ -15,4 +15,4 @@ export const profileServices: Map<string, Service> = new Map([
 	['twitter', Twitter]
 ]);
 
-export { Service } from './service';
+export { Service } from './Service';
