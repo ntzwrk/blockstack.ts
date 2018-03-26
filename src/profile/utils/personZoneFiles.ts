@@ -3,7 +3,7 @@ import { parseZoneFile } from 'zone-file';
 import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
 import { PersonJson } from '../schema/Person.json';
-import { extractProfile } from './profileTokens';
+import { extractProfile } from '../jwt';
 import { getTokenFileUrl } from './profileZoneFiles';
 
 export function resolveZoneFileToPerson(

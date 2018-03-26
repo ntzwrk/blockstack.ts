@@ -4,7 +4,7 @@ import { DebugType, log } from '../../debug';
 import { Person } from '../Person';
 import { PersonJson } from '../schema/Person.json';
 import { ProfileJson } from '../schema/Profile.json';
-import { extractProfile } from './profileTokens';
+import { extractProfile } from '../jwt';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {

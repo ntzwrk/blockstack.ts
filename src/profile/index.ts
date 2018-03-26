@@ -5,16 +5,19 @@ export { Organization } from './Organization';
 export { CreativeWork } from './CreativeWork';
 
 export {
+	signProfileToken,
+	wrapProfileToken,
+	verifyProfileToken,
+	extractProfile
+} from './jwt';
+
+export {
 	makeProfileZoneFile,
 	getTokenFileUrl,
 	resolveZoneFileToProfile,
 	lookupProfile,
 	validateProofs,
-	resolveZoneFileToPerson,
-	signProfileToken,
-	wrapProfileToken,
-	verifyProfileToken,
-	extractProfile
+	resolveZoneFileToPerson
 } from './utils';
 
 export { Service, profileServices } from './service';
