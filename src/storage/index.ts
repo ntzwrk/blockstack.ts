@@ -1,5 +1,5 @@
 import { loadUserData } from '../auth';
-import { DebugType, log } from '../debug';
+import { DebugType, Logger } from '../debug';
 import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../encryption';
 import { lookupProfile } from '../profile';
 import {
@@ -106,7 +106,7 @@ export function getFile(
 		.then<null | string | ArrayBuffer>(response => {
 			if (response.status !== 200) {
 				if (response.status === 404) {
-					log(DebugType.info, `getFile ${path} returned 404, returning null`);
+					Logger.log(DebugType.info, `getFile ${path} returned 404, returning null`);
 					return null; // TODO: resolve(null) vs reject(null)?
 				} else {
 					throw new Error(`getFile ${path} failed with HTTP status ${response.status}`);

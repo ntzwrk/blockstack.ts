@@ -1,7 +1,7 @@
 import * as fetch from 'isomorphic-fetch';
 import { decodeToken, SECP256K1Client, TokenSigner } from 'jsontokens';
 
-import { DebugType, log } from '../debug';
+import { DebugType, Logger } from '../debug';
 
 /**
  * Create an authentication token to be sent to the Core API server
@@ -105,7 +105,7 @@ export function sendCoreSessionRequest(
 				return token;
 			})
 			.catch(error => {
-				log(DebugType.error, 'Got invalid Core response (non-JSON)', error);
+				Logger.log(DebugType.error, 'Got invalid Core response (non-JSON)', error);
 				reject('Invalid Core response: not JSON');
 			});
 	});
@@ -154,7 +154,7 @@ export function getCoreSession(
 		}
 		payload = authRequestObject.payload;
 	} catch (e) {
-		log(DebugType.error, 'Failed to parse authRequest in URL');
+		Logger.log(DebugType.error, 'Failed to parse authRequest in URL');
 		return Promise.reject('Failed to parse authRequest in URL');
 	}
 

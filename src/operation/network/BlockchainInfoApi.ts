@@ -2,7 +2,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 import * as fetch from 'isomorphic-fetch';
 // import * as FormData from 'form-data'; // TODO: Evaluate the need later
 
-import { DebugType, log } from '../../debug';
+import { DebugType, Logger } from '../../debug';
 import { RemoteServiceError } from '../../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
@@ -25,7 +25,7 @@ export class BlockchainInfoApi extends BitcoinNetwork {
 		return fetch(`${this.utxoProviderUrl}/unspent?format=json&active=${address}&cors=true`)
 			.then(resp => {
 				if (resp.status === 500) {
-					log(DebugType.info, 'UTXO provider returned status code 500, usually means no UTXOs: returning []');
+					Logger.log(DebugType.info, 'UTXO provider returned status code 500, usually means no UTXOs: returning []');
 					return {
 						unspent_outputs: []
 					};

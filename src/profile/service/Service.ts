@@ -1,6 +1,6 @@
 import * as fetch from 'isomorphic-fetch';
 
-import { DebugType, log } from '../../debug';
+import { DebugType, Logger } from '../../debug';
 import { containsValidAddressProofStatement, containsValidProofStatement } from '../proof';
 
 export interface IProof {
@@ -30,7 +30,7 @@ export class Service {
 								return resolve(proof);
 							});
 						} else {
-							log(
+							Logger.log(
 								DebugType.warn,
 								`Proof url ${proofUrl} returned unexpected http status ${res.status}. Unable to validate proof.`
 							);
@@ -39,12 +39,12 @@ export class Service {
 						}
 					})
 					.catch(err => {
-						log(DebugType.warn, 'Error while requesting proof url', err);
+						Logger.log(DebugType.warn, 'Error while requesting proof url', err);
 						proof.valid = false;
 						resolve(proof);
 					});
 			} catch (e) {
-				log(DebugType.warn, 'Error while requesting proof url', e);
+				Logger.log(DebugType.warn, 'Error while requesting proof url', e);
 				proof.valid = false;
 				resolve(proof);
 			}

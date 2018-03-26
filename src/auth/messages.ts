@@ -1,7 +1,7 @@
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
 import { DEFAULT_SCOPE } from '../constants';
-import { DebugType, log } from '../debug';
+import { DebugType, Logger } from '../debug';
 import { decryptECIES, encryptECIES } from '../encryption';
 import {
 	generateAndStoreTransitKey,
@@ -99,7 +99,7 @@ export function makeAuthRequest(
 		version: VERSION
 	};
 
-	log(DebugType.info, `Generating a "v${VERSION}" auth request`);
+	Logger.log(DebugType.info, `Generating a "v${VERSION}" auth request`);
 
 	/* Convert the private key to a public key to an issuer */
 	const publicKey = SECP256K1Client.derivePublicKey(transitPrivateKey);
@@ -182,7 +182,7 @@ export function makeAuthResponse(
 	let coreTokenPayload = coreToken;
 	let additionalProperties = {};
 	if (appPrivateKey !== undefined && appPrivateKey !== null) {
-		log(DebugType.info, `Generating a "v${VERSION}" auth response`);
+		Logger.log(DebugType.info, `Generating a "v${VERSION}" auth response`);
 		if (transitPublicKey !== undefined && transitPublicKey !== null) {
 			privateKeyPayload = encryptPrivateKey(transitPublicKey, appPrivateKey);
 			if (coreToken !== undefined && coreToken !== null) {
@@ -196,7 +196,7 @@ export function makeAuthResponse(
 			version: VERSION
 		};
 	} else {
-		log(DebugType.warn, 'Generating a _legacy_ auth response');
+		Logger.log(DebugType.warn, 'Generating a _legacy_ auth response');
 	}
 
 	const properties: IAuthResponsePayload = {

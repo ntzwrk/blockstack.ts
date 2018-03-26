@@ -3,7 +3,7 @@ import * as bitcoin from 'bitcoinjs-lib';
 
 import { loadUserData } from '../auth';
 import { BLOCKSTACK_DEFAULT_GAIA_HUB_URL, BLOCKSTACK_STORAGE_LABEL } from '../constants';
-import { DebugType, log } from '../debug';
+import { DebugType, Logger } from '../debug';
 
 export const BLOCKSTACK_GAIA_HUB_LABEL = 'blockstack-gaia-hub-config';
 
@@ -21,7 +21,7 @@ export function uploadToGaiaHub(
 	contentType: string = 'application/octet-stream'
 ): Promise<any> {
 	return new Promise(resolve => {
-		log(DebugType.info, `uploadToGaiaHub: uploading ${filename} to ${hubConfig.server}`);
+		Logger.log(DebugType.info, `uploadToGaiaHub: uploading ${filename} to ${hubConfig.server}`);
 		return fetch(`${hubConfig.server}/store/${hubConfig.address}/${filename}`, {
 			body: contents,
 			headers: {
@@ -43,7 +43,7 @@ export function getFullReadUrl(filename: string, hubConfig: IGaiaHubConfig): str
 }
 
 export function connectToGaiaHub(gaiaHubUrl: string, challengeSignerHex: string): Promise<IGaiaHubConfig> {
-	log(DebugType.info, `connectToGaiaHub: ${gaiaHubUrl}/hub_info`);
+	Logger.log(DebugType.info, `connectToGaiaHub: ${gaiaHubUrl}/hub_info`);
 	const challengeSigner = new bitcoin.ECPair(bigi.fromHex(challengeSignerHex));
 	return new Promise(resolve => {
 		fetch(`${gaiaHubUrl}/hub_info`)
@@ -105,7 +105,7 @@ export function getOrSetLocalGaiaHubConnection(): Promise<IGaiaHubConfig> {
 }
 
 export function getBucketUrl(gaiaHubUrl: string, appPrivateKey: string): Promise<string> {
-	log(DebugType.info, `connectToGaiaHub: ${gaiaHubUrl}/hub_info`);
+	Logger.log(DebugType.info, `connectToGaiaHub: ${gaiaHubUrl}/hub_info`);
 	const challengeSigner = new bitcoin.ECPair(bigi.fromHex(appPrivateKey));
 	return new Promise(resolve => {
 		fetch(`${gaiaHubUrl}/hub_info`)

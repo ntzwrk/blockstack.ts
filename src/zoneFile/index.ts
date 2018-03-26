@@ -1,6 +1,6 @@
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
-import { DebugType, log } from '../debug';
+import { DebugType, Logger } from '../debug';
 import { extractProfile } from '../profile/jwt';
 import { Person } from '../profile/Person';
 import { PersonJson } from '../profile/schema/Person.json';
@@ -101,11 +101,11 @@ export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: s
 					return;
 				})
 				.catch(error => {
-					log(DebugType.error, `resolveZoneFileToProfile: error fetching token file ${tokenFileUrl}`, error);
+					Logger.log(DebugType.error, `resolveZoneFileToProfile: error fetching token file ${tokenFileUrl}`, error);
 					reject(error);
 				});
 		} else {
-			log(DebugType.error, 'Token file url not found. Resolving to blank profile.');
+			Logger.log(DebugType.error, 'Token file url not found. Resolving to blank profile.');
 			resolve(null);
 			return;
 		}
@@ -125,7 +125,7 @@ export function resolveZoneFileToPerson(
 			throw new Error('zone file is missing an origin');
 		}
 	} catch (e) {
-		log(DebugType.error, 'Could not parse zone file', e);
+		Logger.log(DebugType.error, 'Could not parse zone file', e);
 	}
 
 	let tokenFileUrl = null;
@@ -139,7 +139,7 @@ export function resolveZoneFileToPerson(
 			const person = Person.fromLegacyFormat(profile);
 			profile = person.toJSON();
 		} catch (error) {
-			log(DebugType.error, 'Could not parse legacy zone file', error);
+			Logger.log(DebugType.error, 'Could not parse legacy zone file', error);
 		}
 		callback(profile);
 		return;
@@ -158,10 +158,10 @@ export function resolveZoneFileToPerson(
 				return;
 			})
 			.catch(error => {
-				log(DebugType.error, 'Could not extract profile', error);
+				Logger.log(DebugType.error, 'Could not extract profile', error);
 			});
 	} else {
-		log(DebugType.warn, 'Token file url not found');
+		Logger.log(DebugType.warn, 'Token file url not found');
 		callback(null);
 		return;
 	}

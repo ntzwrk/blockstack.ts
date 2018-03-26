@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 
-import { DebugType, log } from '../../debug';
+import { DebugType, Logger } from '../../debug';
 import { IProof, Service } from './Service';
 
 export class Instagram extends Service {
@@ -52,10 +52,10 @@ export class Instagram extends Service {
 				// ...take it, trim first char (@) and return the rest (username)
 				return usernameCandidateMatches[1].substr(1);
 			} else {
-				log(DebugType.warn, 'Could not match a username', descriptionParts[0]);
+				Logger.log(DebugType.warn, 'Could not match a username', descriptionParts[0]);
 			}
 		} else {
-			log(DebugType.warn, 'Could not find the Instagram description', searchText);
+			Logger.log(DebugType.warn, 'Could not find the Instagram description', searchText);
 		}
 
 		return '';
