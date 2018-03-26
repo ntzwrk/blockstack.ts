@@ -1,10 +1,10 @@
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
 import { DebugType, log } from '../debug';
+import { extractProfile } from '../profile/jwt';
 import { Person } from '../profile/Person';
 import { PersonJson } from '../profile/schema/Person.json';
 import { ProfileJson } from '../profile/schema/Profile.json';
-import { extractProfile } from '../profile/jwt';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {

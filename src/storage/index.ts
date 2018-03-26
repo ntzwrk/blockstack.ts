@@ -1,7 +1,6 @@
 import { loadUserData } from '../auth';
 import { DebugType, log } from '../debug';
-import { decryptECIES, encryptECIES, ICipherObject } from '../encryption';
-import { getPublicKeyFromPrivate } from '../encryption';
+import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../encryption';
 import { lookupProfile } from '../profile';
 import {
 	BLOCKSTACK_GAIA_HUB_LABEL,
@@ -83,7 +82,7 @@ export function getFile(
 		zoneFileLookupURL: 'http://localhost:6270/v1/names/'
 	};
 
-	const opt = Object.assign({}, defaults, options);
+	const opt = { ...defaults, ...options };
 
 	return getOrSetLocalGaiaHubConnection()
 		.then(gaiaHubConfig => {
@@ -149,7 +148,7 @@ export function putFile(path: string, content: string | Buffer, options?: { encr
 		encrypt: false
 	};
 
-	const opt = Object.assign({}, defaults, options);
+	const opt = { ...defaults, ...options };
 
 	let contentType = 'text/plain';
 	if (typeof content !== 'string') {

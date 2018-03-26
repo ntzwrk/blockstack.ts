@@ -1,8 +1,8 @@
 import { makeProfileZoneFile } from '../zoneFile';
 import { extractProfile, signProfileToken } from './jwt';
+import { validateProofs } from './proof';
 import { ProfileJson } from './schema/Profile.json';
 import { IProof } from './service/Service';
-import { validateProofs } from './proof';
 
 export class Profile implements ProfileJson {
 	public static makeZoneFile(domainName: string, tokenFileURL: string): string {

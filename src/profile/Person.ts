@@ -1,6 +1,6 @@
-import { BasicJson } from './schema/components/Basic.json';
 import { Profile } from './Profile';
 import { AccountJson } from './schema/components/Account.json';
+import { BasicJson } from './schema/components/Basic.json';
 import { ImageJson } from './schema/components/Image.json';
 import { PostalAddressJson } from './schema/components/PostalAddress.json';
 import { WebSiteJson } from './schema/components/WebSite.json';
@@ -39,7 +39,7 @@ export class Person extends Profile implements PersonJson {
 			'@type': 'Account',
 			identifier: data.username,
 			proofType: 'http',
-			proofUrl: proofUrl,
+			proofUrl,
 			service: serviceName
 		};
 	}

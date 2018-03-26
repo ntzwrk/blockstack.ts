@@ -108,7 +108,7 @@ export class BlockstackNetwork {
 				//  blockstackd gets into trouble because it tries to coerce back to mainnet
 				//  and the regtest transaction generation libraries want to use testnet addresses
 				if (nameInfo.address) {
-					return Object.assign({}, nameInfo, { address: this.coerceAddress(nameInfo.address) });
+					return { ...nameInfo, ...{ address: this.coerceAddress(nameInfo.address) } };
 				} else {
 					return nameInfo;
 				}

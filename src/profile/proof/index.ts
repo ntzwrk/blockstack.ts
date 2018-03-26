@@ -97,13 +97,13 @@ export function containsValidProofStatement(searchText: string, name?: string) {
 					`verifying that "${name}" is my blockstack id`, // id
 					`verifying that ${name} is my blockstack id`,
 					`verifying that &quot;${name}&quot; is my blockstack id`
-			]
+			  ]
 			: [
 					// only these formats are valid for non-.id tlds
 					`verifying that "${name}" is my blockstack id`, // id
 					`verifying that ${name} is my blockstack id`,
 					`verifying that &quot;${name}&quot; is my blockstack id`
-			];
+			  ];
 
 	for (const verificationStyle of verificationStyles) {
 		if (searchText.includes(verificationStyle)) {

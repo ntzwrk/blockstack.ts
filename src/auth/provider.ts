@@ -1,9 +1,9 @@
 import { decodeToken, JWT } from 'jsontokens';
 import * as queryString from 'query-string';
 
+import { BLOCKSTACK_HANDLER } from '../constants';
 import { DebugType, log } from '../debug';
 import { updateQueryStringParameter } from '../utils';
-import { BLOCKSTACK_HANDLER } from '../constants';
 import { IAuthRequestPayload } from './messages';
 import { WebAppManifestJson } from './schema/WebAppManifest.json';
 

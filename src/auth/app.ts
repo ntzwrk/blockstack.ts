@@ -2,21 +2,21 @@ import { protocolCheck } from 'custom-protocol-detection-blockstack';
 import { decodeToken } from 'jsontokens';
 import * as queryString from 'query-string';
 
+import {
+	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
+	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
+	BLOCKSTACK_HANDLER,
+	BLOCKSTACK_STORAGE_LABEL,
+	DEFAULT_BLOCKSTACK_HOST,
+	DEFAULT_SCOPE
+} from '../constants';
 import { DebugType, log } from '../debug';
 import { makeECPrivateKey } from '../index';
 import { extractProfile } from '../profile';
 import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
 import { isLaterVersion } from '../utils';
-import {
-	BLOCKSTACK_HANDLER,
-	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
-	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
-	BLOCKSTACK_STORAGE_LABEL,
-	DEFAULT_BLOCKSTACK_HOST,
-	DEFAULT_SCOPE
-} from '../constants';
-import { decryptPrivateKey } from './messages';
 import { makeAuthRequest, verifyAuthResponse } from './index';
+import { decryptPrivateKey } from './messages';
 
 const DEFAULT_PROFILE = {
 	'@context': 'http://schema.org',
@@ -205,7 +205,7 @@ export function handlePendingSignIn(nameLookupURL: string = 'https://core.blocks
 					fetch(profileURL).then(response => {
 						if (!response.ok) {
 							// return blank profile if we fail to fetch
-							userData.profile = Object.assign({}, DEFAULT_PROFILE);
+							userData.profile = DEFAULT_PROFILE;
 							window.localStorage.setItem(BLOCKSTACK_STORAGE_LABEL, JSON.stringify(userData));
 							resolve(userData);
 						} else {

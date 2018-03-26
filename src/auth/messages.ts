@@ -1,5 +1,6 @@
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
+import { DEFAULT_SCOPE } from '../constants';
 import { DebugType, log } from '../debug';
 import { decryptECIES, encryptECIES } from '../encryption';
 import {
@@ -10,7 +11,6 @@ import {
 	nextMonth,
 	publicKeyToAddress
 } from '../index';
-import { DEFAULT_SCOPE } from '../constants';
 
 import { ProfileJson } from '../profile/schema/Profile.json';
 
@@ -206,9 +206,9 @@ export function makeAuthResponse(
 		iss: makeDIDFromAddress(address),
 		jti: makeUUID4(),
 		private_key: privateKeyPayload,
-		profile: profile,
+		profile,
 		public_keys: [publicKey],
-		username: username
+		username
 	};
 
 	/* Create the payload */
