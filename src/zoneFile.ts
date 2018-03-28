@@ -1,11 +1,11 @@
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
-import { DebugType, Logger } from '../debug';
-import { InvalidTokenFileUrlError, MissingOriginError } from '../error';
-import { extractProfile } from '../profile/jwt';
-import { Person } from '../profile/Person';
-import { PersonJson } from '../profile/schema/Person.json';
-import { ProfileJson } from '../profile/schema/Profile.json';
+import { DebugType, Logger } from './debug';
+import { InvalidTokenFileUrlError, MissingOriginError } from './error';
+import { extractProfile } from './profile/jwt';
+import { Person } from './profile/Person';
+import { PersonJson } from './profile/schema/Person.json';
+import { ProfileJson } from './profile/schema/Profile.json';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
