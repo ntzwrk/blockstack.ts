@@ -24,6 +24,7 @@
     <a href="https://www.npmjs.com/package/blockstack.ts"><img src="https://img.shields.io/npm/v/blockstack.ts.svg?style=flat-square" alt="npm"></a>
     <a href="https://github.com/ntzwrk/blockstack.ts/blob/master/LICENSE.md"><img src="https://img.shields.io/npm/l/blockstack.ts.svg?style=flat-square" alt="license"></a>
     <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier"></a>
+    <a href="https://semver.org"><img src="https://img.shields.io/badge/Semantic-Versioning-lightgrey.svg?style=flat-square" alt="semver"></a>
     <!-- commented out, because it looks too official
 		<a href="https://chat.blockstack.org"><img src="https://img.shields.io/badge/join-slack-e32072.svg?style=flat-square" alt="slack"></a>
 		-->
