@@ -1,16 +1,14 @@
-import { BlockstackError } from './index';
-
-export class InvalidAmountError extends BlockstackError {
+export class InvalidAmountError extends Error {
+	public readonly name: string = 'InvalidAmountError';
+	public readonly message: string;
 	public readonly fees: number;
 	public readonly specifiedAmount: number;
+
 	constructor(fees: number, specifiedAmount: number) {
-		const message =
-			`Not enough coin to fund fees transaction fees. Fees would be ${fees},` +
-			` specified spend is  ${specifiedAmount}`;
-		super({ code: 'invalid_amount_error', message });
-		this.specifiedAmount = specifiedAmount;
+		super();
+
+		this.message = `Not enough coins to fund fees transaction fees. Fees would be "${fees}", specified spend is "${specifiedAmount}"`;
 		this.fees = fees;
-		this.name = 'InvalidAmountError';
-		this.message = message;
+		this.specifiedAmount = specifiedAmount;
 	}
 }

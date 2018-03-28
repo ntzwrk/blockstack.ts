@@ -1,9 +1,12 @@
-import { BlockstackError } from './index';
+export class InvalidDIDError extends Error {
+	public readonly name: string = 'InvalidDIDError';
+	public readonly message: string;
+	public readonly did: string;
 
-export class InvalidDIDError extends BlockstackError {
-	constructor(message: string = '') {
-		super({ code: 'invalid_did_error', message, parameter: '' });
-		this.name = 'InvalidDIDError';
-		this.message = message;
+	constructor(did?: string, message?: string) {
+		super(message);
+
+		this.message = message !== undefined ? message : 'The given DID is invalid';
+		this.did = did;
 	}
 }

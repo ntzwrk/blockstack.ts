@@ -1,33 +1,32 @@
-export const ERROR_CODES = {
-	MISSING_PARAMETER: 'missing_parameter',
-	REMOTE_SERVICE_ERROR: 'remote_service_error',
-	UNKNOWN: 'unknown'
-};
-
-export interface IErrorType {
-	code: string;
-	parameter?: string;
-	message: string;
-}
-
-export class BlockstackError extends Error {
-	public readonly code: string;
-	public readonly parameter?: string;
-
-	constructor(error: IErrorType) {
-		super(error.message);
-		this.code = error.code;
-		this.parameter = error.parameter ? error.parameter : undefined;
-	}
-
-	public toString() {
-		return `${super.toString()} code: ${this.code} param: ${this.parameter ? this.parameter : 'n/a'}`;
-	}
-}
-
-export { InvalidAmountError } from './InvalidAmountError';
+// ./
 export { InvalidDIDError } from './InvalidDIDError';
 export { InvalidParameterError } from './InvalidParameterError';
-export { MissingParameterError } from './MissingParameterError';
-export { NotEnoughFundsError } from './NotEnoughFundsError';
-export { RemoteServiceError } from './RemoteServiceError';
+export { NotImplementedError } from './NotImplementedError';
+
+// ./auth/
+export { MultiplePublicKeysNotSupportedError } from './auth/MultiplePublicKeysNotSupportedError';
+
+// ./encryption/
+export { InputNumberTooBigError } from './encryption/InputNumberTooBigError';
+export { InvalidHexStringError } from './encryption/InvalidHexStringError';
+export { MacValidationError } from './encryption/MacValidationError';
+
+// ./operation/
+export { InvalidAmountError } from './operation/InvalidAmountError';
+export { NotEnoughFundsError } from './operation/NotEnoughFundsError';
+export { NoUTXOFoundError } from './operation/NoUTXOFoundError';
+export { RemoteServiceError } from './operation/RemoteServiceError';
+
+// ./profile/
+export { InvalidNameError } from './profile/InvalidNameError';
+export { InvalidProfileTokenError } from './profile/InvalidProfileTokenError';
+export { InvalidProofUrlError } from './profile/InvalidProofUrlError';
+export { SigningAlgorithmNotSupportedError } from './profile/SigningAlgorithmNotSupportedError';
+export { TokenVerificationFailedError } from './profile/TokenVerificationFailedError';
+
+// ./storage/
+export { GetFileError } from './storage/GetFileError';
+
+// ./zoneFile/
+export { InvalidTokenFileUrlError } from './zoneFile/InvalidTokenFileUrlError';
+export { MissingOriginError } from './zoneFile/MissingOriginError';
