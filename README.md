@@ -79,6 +79,8 @@ For more examples see [`examples/`](https://github.com/ntzwrk/blockstack.ts/blob
 ## Documentation
 The code documentation lives in `docs/code/`. You can find a live version at https://ntzwrk.github.io/blockstack.ts/code/.
 
+_Please note that this code reference represents the state of the last release. Also if you're a developer using this library, you probably want to take a look at the [quick start](#quick-start) section and the documentation linked there._
+
 
 ## Contributing
 See [`CONTRIBUTING.md`](https://github.com/ntzwrk/blockstack.ts/blob/master/CONTRIBUTING.md) for a guide on how to contribute to this library.
