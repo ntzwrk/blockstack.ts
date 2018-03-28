@@ -1,0 +1,76 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"id": "AuthRequest.json",
+	"type": "object",
+	"properties": {
+		"jti": {
+			"description": "UUID for this JWT",
+			"type": "string"
+		},
+		"iat": {
+			"description": "JWT creation time in seconds",
+			"type": "number"
+		},
+		"exp": {
+			"description": "JWT expiration time in seconds",
+			"type": "number"
+		},
+		"iss": {
+			"description": "Legacy decentralized identifier generated from transit key",
+			"type": "string"
+		},
+		"public_keys": {
+			"description": "Single entry array with public key of transit key",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"domain_name": {
+			"description": "App origin",
+			"type": "string"
+		},
+		"manifest_uri": {
+			"description": "URL to manifest.json file - must be hosted on app origin",
+			"type": "string"
+		},
+		"redirect_uri": {
+			"description": "URL to which the browser redirects user on auth approval - must be hosted on app origin",
+			"type": "string"
+		},
+		"version": {
+			"description": "Version tuple",
+			"type": "string"
+		},
+		"do_not_include_profile": {
+			"description": "Flag asking browser to send profile URL instead of profile object",
+			"type": "boolean"
+		},
+		"supports_hub_url": {
+			"description": "Flag indicating Gaia hub support",
+			"type": "boolean"
+		},
+		"scopes": {
+			"description": "Requested scopes",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	},
+	"additionalProperties": false,
+	"required": [
+		"do_not_include_profile",
+		"domain_name",
+		"exp",
+		"iat",
+		"iss",
+		"jti",
+		"manifest_uri",
+		"public_keys",
+		"redirect_url",
+		"scopes",
+		"supports_hub_url",
+		"version"
+	]
+}

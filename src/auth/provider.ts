@@ -4,7 +4,7 @@ import * as queryString from 'query-string';
 import { BLOCKSTACK_HANDLER } from '../constants';
 import { DebugType, Logger } from '../debug';
 import { updateQueryStringParameter } from '../utils';
-import { IAuthRequestPayload } from './messages';
+import { AuthRequestJson } from './schema/AuthRequest.json';
 import { WebAppManifestJson } from './schema/WebAppManifest.json';
 
 /**
@@ -36,7 +36,7 @@ export function fetchAppManifest(authRequest: string | JWT): Promise<WebAppManif
 		if (!authRequest) {
 			reject('Invalid auth request');
 		} else {
-			const payload = decodeToken(authRequest).payload as IAuthRequestPayload;
+			const payload = decodeToken(authRequest).payload as AuthRequestJson;
 			const manifestURI = payload.manifest_uri;
 			try {
 				fetch(manifestURI)
@@ -69,7 +69,7 @@ export function fetchAppManifest(authRequest: string | JWT): Promise<WebAppManif
  * @private
  */
 export function redirectUserToApp(authRequest: string | JWT, authResponse: string) {
-	const payload = decodeToken(authRequest).payload;
+	const payload = decodeToken(authRequest).payload as AuthRequestJson;
 	let redirectURI = payload.redirect_uri;
 	Logger.log(DebugType.info, 'redirectURI: ', redirectURI);
 	redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);

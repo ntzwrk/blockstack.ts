@@ -11,49 +11,15 @@ import {
 	nextMonth,
 	publicKeyToAddress
 } from '../index';
-
 import { ProfileJson } from '../profile/schema/Profile.json';
+import { AuthRequestJson as IAuthRequestPayload } from './schema/AuthRequest.json';
+import { AuthResponseJson as IAuthResponsePayload } from './schema/AuthResponse.json';
 
 const VERSION = '1.1.0';
 
 export interface IAuthMetadata {
 	email?: string;
 	profileUrl?: string;
-}
-
-/*
- * See https://forum.blockstack.org/t/review-spec-creation-for-blockstack-authentication/4034
- */
-
-export interface IAuthRequestPayload {
-	do_not_include_profile: boolean;
-	domain_name: string;
-	exp: number;
-	iat: number;
-	iss: string | null;
-	jti: string;
-	manifest_uri: string;
-	public_keys: string[];
-	redirect_uri: string;
-	scopes: string[];
-	supports_hub_url: boolean;
-	version: string;
-}
-
-export interface IAuthResponsePayload {
-	jti: string;
-	iat: number;
-	exp: number;
-	iss: string;
-	private_key: string;
-	public_keys: string[];
-	profile: ProfileJson;
-	username: string;
-	core_token: string;
-	email?: string;
-	profile_url?: string;
-	hubUrl?: string;
-	version?: string;
 }
 
 /**

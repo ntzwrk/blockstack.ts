@@ -1,0 +1,74 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"id": "AuthResponse.json",
+	"type": "object",
+	"properties": {
+		"jti": {
+			"description": "UUID for this JWT",
+			"type": "string"
+		},
+		"iat": {
+			"description": "JWT creation time in seconds",
+			"type": "number"
+		},
+		"exp": {
+			"description": "JWT expiration time in seconds",
+			"type": "number"
+		},
+		"iss": {
+			"description": "Legacy decentralized identifier (string prefix + identity address)",
+			"type": "string"
+		},
+		"private_key": {
+			"description": "Encrypted private key payload",
+			"type": "string"
+		},
+		"public_keys": {
+			"description": "Single entry array with public key",
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"profile": {
+			"description": "Profile object or null if passed by profile_url",
+			"allOf": [{ "$ref": "../../profile/schema/Profile.json" }]
+		},
+		"username": {
+			"description": "Blockstack id username (if any)",
+			"type": "string"
+		},
+		"core_token": {
+			"description": "Encrypted core token payload",
+			"type": "string"
+		},
+		"email": {
+			"description": "Email if email scope is requested & email available",
+			"type": "string"
+		},
+		"profile_url": {
+			"description": "URL to signed profile token",
+			"type": "string"
+		},
+		"hubUrl": {
+			"description": "URL pointing to user's Gaia hub",
+			"type": "string"
+		},
+		"version": {
+			"description": "Version tuple",
+			"type": "string"
+		}
+	},
+	"additionalProperties": false,
+	"required": [
+		"jti",
+		"iat",
+		"exp",
+		"iss",
+		"private_key",
+		"public_keys",
+		"profile",
+		"username",
+		"core_token"
+	]
+}
