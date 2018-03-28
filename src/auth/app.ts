@@ -5,6 +5,7 @@ import * as queryString from 'query-string';
 import {
 	BLOCKSTACK_APP_PRIVATE_KEY_LABEL,
 	BLOCKSTACK_DEFAULT_GAIA_HUB_URL,
+	BLOCKSTACK_GAIA_HUB_LABEL,
 	BLOCKSTACK_HANDLER,
 	BLOCKSTACK_STORAGE_LABEL,
 	DEFAULT_BLOCKSTACK_HOST,
@@ -13,7 +14,6 @@ import {
 import { DebugType, Logger } from '../debug';
 import { makeECPrivateKey } from '../index';
 import { extractProfile } from '../profile';
-import { BLOCKSTACK_GAIA_HUB_LABEL } from '../storage';
 import { isLaterVersion } from '../utils';
 import { makeAuthRequest, verifyAuthResponse } from './index';
 import { decryptPrivateKey } from './messages';

@@ -2,10 +2,8 @@ import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 
 import { loadUserData } from '../auth';
-import { BLOCKSTACK_DEFAULT_GAIA_HUB_URL, BLOCKSTACK_STORAGE_LABEL } from '../constants';
+import { BLOCKSTACK_DEFAULT_GAIA_HUB_URL, BLOCKSTACK_GAIA_HUB_LABEL, BLOCKSTACK_STORAGE_LABEL } from '../constants';
 import { DebugType, Logger } from '../debug';
-
-export const BLOCKSTACK_GAIA_HUB_LABEL = 'blockstack-gaia-hub-config';
 
 export interface IGaiaHubConfig {
 	address: string;
