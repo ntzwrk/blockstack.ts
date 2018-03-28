@@ -76,10 +76,6 @@ _Please note that the version on NPM is **just a placeholder** and doesn't conta
 For more examples see [`examples/`](https://github.com/ntzwrk/blockstack.ts/blob/master/examples/).
 
 
-## Tutorials
-`@todo`
-
-
 ## Documentation
 The code documentation lives in `docs/code/`. You can find a live version at https://ntzwrk.github.io/blockstack.ts/code/.
 
