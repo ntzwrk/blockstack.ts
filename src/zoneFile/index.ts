@@ -1,6 +1,7 @@
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
 import { DebugType, Logger } from '../debug';
+import { InvalidTokenFileUrlError, MissingOriginError } from '../error';
 import { extractProfile } from '../profile/jwt';
 import { Person } from '../profile/Person';
 import { PersonJson } from '../profile/schema/Person.json';
@@ -8,7 +9,7 @@ import { ProfileJson } from '../profile/schema/Profile.json';
 
 export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	if (tokenFileUrl.indexOf('://') < 0) {
-		throw new Error('Invalid token file url');
+		throw new InvalidTokenFileUrlError(tokenFileUrl);
 	}
 
 	const urlScheme = tokenFileUrl.split('://')[0];
@@ -121,10 +122,11 @@ export function resolveZoneFileToPerson(
 	try {
 		zoneFileJson = parseZoneFile(zoneFile);
 		if (!zoneFileJson.hasOwnProperty('$origin')) {
-			zoneFileJson = null;
-			throw new Error('zone file is missing an origin');
+			// TODO: This probably couldn't happen anymore with typed zone files
+			throw new MissingOriginError(zoneFileJson);
 		}
 	} catch (e) {
+		zoneFileJson = null;
 		Logger.log(DebugType.error, 'Could not parse zone file', e);
 	}
 

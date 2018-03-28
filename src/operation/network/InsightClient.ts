@@ -1,3 +1,4 @@
+import { RemoteServiceError } from '../../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
 
@@ -30,6 +31,8 @@ export class InsightClient extends BitcoinNetwork {
 			.then(transactionInfo => {
 				if (transactionInfo.error) {
 					throw new Error(`Error finding transaction: ${transactionInfo.error}`);
+					// TODO: How to get resp into RemoteServiceError here?
+					// throw new RemoteServiceError(resp, `Error finding transaction: ${transactionInfo.error}`);
 				}
 				return fetch(`${this.apiUrl}/block/${transactionInfo.blockHash}`);
 			})

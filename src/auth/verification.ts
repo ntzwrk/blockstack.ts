@@ -1,5 +1,6 @@
 import { decodeToken, TokenVerifier } from 'jsontokens';
 
+import { MultiplePublicKeysNotSupportedError } from '../error';
 import { fetchAppManifest, getAddressFromDID, isSameOriginAbsoluteUrl, publicKeyToAddress } from '../index';
 
 /**
@@ -28,7 +29,7 @@ export function doSignaturesMatchPublicKeys(token: string) {
 			return false;
 		}
 	} else {
-		throw new Error('Multiple public keys are not supported');
+		throw new MultiplePublicKeysNotSupportedError();
 	}
 }
 
@@ -53,7 +54,7 @@ export function doPublicKeysMatchIssuer(token: string) {
 			return true;
 		}
 	} else {
-		throw new Error('Multiple public keys are not supported');
+		throw new MultiplePublicKeysNotSupportedError();
 	}
 
 	return false;

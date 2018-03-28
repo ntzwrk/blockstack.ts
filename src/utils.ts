@@ -4,6 +4,7 @@ import { parse as uriParse } from 'uri-js';
 
 import { config } from './config';
 import { BLOCKSTACK_HANDLER } from './constants';
+import { InvalidParameterError } from './error';
 
 /**
  * Time
@@ -66,9 +67,9 @@ export function hexStringToECPair(skHex: string) {
 	};
 	if (skHex.length === 66) {
 		if (skHex.slice(64) !== '01') {
-			throw new Error(
-				'Improperly formatted private-key hex string. 66-length hex usually ' +
-					'indicates compressed key, but last byte must be == 1'
+			throw new InvalidParameterError(
+				'skHex',
+				'Improperly formatted private-key hex string. 66-length hex usually indicates compressed key, but last byte must be == 1'
 			);
 		}
 		return new ECPair(BigInteger.fromHex(skHex.slice(0, 64)), undefined, ecPairOptions);
@@ -76,7 +77,7 @@ export function hexStringToECPair(skHex: string) {
 		ecPairOptions.compressed = false;
 		return new ECPair(BigInteger.fromHex(skHex), undefined, ecPairOptions);
 	} else {
-		throw new Error('Improperly formatted private-key hex string: length should be 64 or 66.');
+		throw new InvalidParameterError('skHex', 'Improperly formatted private-key hex string: length should be 64 or 66.');
 	}
 }
 

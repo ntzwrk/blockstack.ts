@@ -1,6 +1,7 @@
 import { loadUserData } from '../auth';
 import { DebugType, Logger } from '../debug';
 import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../encryption';
+import { NotImplementedError, RemoteServiceError } from '../error';
 import { lookupProfile } from '../profile';
 import {
 	BLOCKSTACK_GAIA_HUB_LABEL,
@@ -109,7 +110,7 @@ export function getFile(
 					Logger.log(DebugType.info, `getFile ${path} returned 404, returning null`);
 					return null; // TODO: resolve(null) vs reject(null)?
 				} else {
-					throw new Error(`getFile ${path} failed with HTTP status ${response.status}`);
+					throw new RemoteServiceError(response, `getFile ${path} failed with HTTP status ${response.status}`);
 				}
 			}
 			const contentType = response.headers.get('Content-Type');
@@ -184,7 +185,7 @@ export function getAppBucketUrl(gaiaHubUrl: string, appPrivateKey: string) {
  * or rejects with an error
  */
 export function deleteFile(path: string) {
-	throw new Error(`Delete of ${path} not supported by gaia hubs`);
+	throw new NotImplementedError('deleteFile', `Delete of "${path}" not supported by gaia hubs`);
 }
 
 export { connectToGaiaHub, uploadToGaiaHub, BLOCKSTACK_GAIA_HUB_LABEL, IGaiaHubConfig };

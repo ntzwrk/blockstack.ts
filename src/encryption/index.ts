@@ -2,6 +2,8 @@ import { BN } from 'bn.js';
 import * as crypto from 'crypto';
 import { ec as EllipticCurve } from 'elliptic';
 
+import { InputNumberTooBigError, MacValidationError } from '../error';
+
 export * from './keys';
 
 const ecurve = new EllipticCurve('secp256k1');
@@ -65,7 +67,7 @@ export function getHexFromBN(bnInput: BN) {
 		const padding = '0'.repeat(64 - hexOut.length);
 		return `${padding}${hexOut}`;
 	} else {
-		throw new Error('Generated a > 32-byte BN for encryption. Failing.');
+		throw new InputNumberTooBigError(bnInput);
 	}
 }
 
@@ -134,7 +136,7 @@ export function decryptECIES(privateKey: string, cipherObject: ICipherObject) {
 	const actualMac = hmacSha256(sharedKeys.hmacKey, macData);
 	const expectedMac = new Buffer(cipherObject.mac, 'hex');
 	if (!equalConstTime(expectedMac, actualMac)) {
-		throw new Error('Decryption failed: failure in MAC check');
+		throw new MacValidationError(expectedMac, actualMac);
 	}
 	const plainText = aes256CbcDecrypt(ivBuffer, sharedKeys.encryptionKey, cipherTextBuffer);
 

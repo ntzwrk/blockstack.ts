@@ -1,3 +1,4 @@
+import { InvalidNameError } from '../../error';
 import { AccountJson } from '../schema/components/Account.json';
 import { ProfileJson } from '../schema/Profile.json';
 import { profileServices } from '../service';
@@ -13,10 +14,6 @@ import { IProof, Service } from '../service/Service';
  * @returns {Promise} that resolves to an array of validated proof objects
  */
 export function validateProofs(profile: ProfileJson, ownerAddress: string, name?: string): Promise<IProof[]> {
-	if (!profile) {
-		throw new Error('Profile must not be null');
-	}
-
 	let accounts: AccountJson[];
 	let proofsToValidate: Array<Promise<IProof>> = [];
 
@@ -72,7 +69,7 @@ export function containsValidProofStatement(searchText: string, name?: string) {
 	searchText = searchText.toLowerCase();
 
 	if (name.split('.').length !== 2) {
-		throw new Error('Please provide the fully qualified Blockstack name.');
+		throw new InvalidNameError(name);
 	}
 
 	let username = null;

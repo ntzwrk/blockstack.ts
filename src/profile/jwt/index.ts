@@ -2,6 +2,7 @@ import { ECPair } from 'bitcoinjs-lib';
 import * as ecurve from 'ecurve';
 import { decodeToken, JWT, SECP256K1Client, TokenSigner, TokenVerifier } from 'jsontokens';
 
+import { InvalidProfileTokenError, SigningAlgorithmNotSupportedError, TokenVerificationFailedError } from '../../error';
 import { makeUUID4, nextYear } from '../../utils';
 import { ProfileJson } from '../schema/Profile.json';
 
@@ -28,7 +29,7 @@ export function signProfileToken(
 	expiresAt = nextYear()
 ) {
 	if (signingAlgorithm !== 'ES256K') {
-		throw new Error('Signing algorithm not supported');
+		throw new SigningAlgorithmNotSupportedError(signingAlgorithm);
 	}
 
 	const publicKey: string = SECP256K1Client.derivePublicKey(privateKey);
@@ -82,24 +83,24 @@ export function verifyProfileToken(token: string, publicKeyOrAddress: string) {
 	// Inspect and verify the subject
 	if (payload.hasOwnProperty('subject')) {
 		if (!payload.subject.hasOwnProperty('publicKey')) {
-			throw new Error("Token doesn't have a subject public key");
+			throw new InvalidProfileTokenError(token, 'Token does not have a subject public key');
 		}
 	} else {
-		throw new Error("Token doesn't have a subject");
+		throw new InvalidProfileTokenError(token, 'Token does not have a subject');
 	}
 
 	// Inspect and verify the issuer
 	if (payload.hasOwnProperty('issuer')) {
 		if (!payload.issuer.hasOwnProperty('publicKey')) {
-			throw new Error("Token doesn't have an issuer public key");
+			throw new InvalidProfileTokenError(token, 'Token does not have an issuer public key');
 		}
 	} else {
-		throw new Error("Token doesn't have an issuer");
+		throw new InvalidProfileTokenError(token, 'Token does not have an issuer');
 	}
 
 	// Inspect and verify the claim
 	if (!payload.hasOwnProperty('claim')) {
-		throw new Error("Token doesn't have a claim");
+		throw new InvalidProfileTokenError(token, 'Token does not have a claim');
 	}
 
 	const issuerPublicKey = payload.issuer.publicKey;
@@ -118,17 +119,14 @@ export function verifyProfileToken(token: string, publicKeyOrAddress: string) {
 	} else if (publicKeyOrAddress === uncompressedAddress) {
 		// pass
 	} else {
-		throw new Error('Token issuer public key does not match the verifying value');
+		throw new InvalidProfileTokenError(token, 'Token issuer public key does not match the verifying value');
 	}
 
 	const tokenVerifier = new TokenVerifier(decodedToken.header.alg, issuerPublicKey);
-	if (!tokenVerifier) {
-		throw new Error('Invalid token verifier');
-	}
 
 	const tokenVerified = tokenVerifier.verify(token);
 	if (!tokenVerified) {
-		throw new Error('Token verification failed');
+		throw new TokenVerificationFailedError(token);
 	}
 
 	return decodedToken;

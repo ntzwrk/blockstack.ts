@@ -1,7 +1,7 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
-import { InvalidAmountError, InvalidParameterError } from '../error';
+import { InvalidAmountError, InvalidParameterError, NoUTXOFoundError } from '../error';
 import { hexStringToECPair } from '../utils';
 import { IUTXO } from './network/interfaces/IUTXO';
 import { IUTXOWithValue } from './network/interfaces/IUTXOWithValue';
@@ -26,7 +26,7 @@ function addOwnerInput(
 ) {
 	// add an owner UTXO and a change out.
 	if (utxos.length < 0) {
-		throw new Error('Owner has no UTXOs for UPDATE.');
+		throw new NoUTXOFoundError();
 	}
 
 	utxos.sort((a, b) => a.value - b.value);
@@ -483,7 +483,7 @@ function makeRenewal(
 		const ownerOutput = txB.tx.outs[2];
 		const ownerOutputAddr = bitcoinjs.address.fromOutputScript(ownerOutput.script, network.layer1);
 		if (ownerOutputAddr !== ownerAddress) {
-			throw new Error(
+			throw new Error( // TODO: Revisit this for a better name
 				`Original owner ${ownerAddress} should have an output at ` + `index 2 in transaction was ${ownerOutputAddr}`
 			);
 		}
@@ -524,7 +524,7 @@ function makeRenewal(
  */
 function makeBitcoinSpend(destinationAddress: string, paymentKeyHex: string, amount: number) {
 	if (amount <= 0) {
-		return Promise.reject(new InvalidParameterError('amount', 'amount must be greater than zero'));
+		return Promise.reject(new InvalidParameterError('amount', '"amount" must be greater than zero'));
 	}
 
 	const network = config.network;

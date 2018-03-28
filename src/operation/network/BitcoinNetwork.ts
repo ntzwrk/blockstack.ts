@@ -1,16 +1,17 @@
+import { NotImplementedError } from '../../error';
 import { IUTXOWithValue } from './interfaces/IUTXOWithValue';
 
 export class BitcoinNetwork {
 	public broadcastTransaction(transaction: string): Promise<string> {
-		return Promise.reject(new Error(`Not implemented, broadcastTransaction(${transaction})`));
+		return Promise.reject(new NotImplementedError('broadcastTransaction'));
 	}
 	public getBlockHeight(): Promise<number> {
-		return Promise.reject(new Error('Not implemented, getBlockHeight()'));
+		return Promise.reject(new NotImplementedError('getBlockHeight'));
 	}
 	public getTransactionInfo(txid: string): Promise<{ block_height: number }> {
-		return Promise.reject(new Error(`Not implemented, getTransactionInfo(${txid})`));
+		return Promise.reject(new NotImplementedError('getTransactionInfo'));
 	}
 	public getNetworkedUTXOs(address: string): Promise<IUTXOWithValue[]> {
-		return Promise.reject(new Error(`Not implemented, getNetworkedUTXOs(${address})`));
+		return Promise.reject(new NotImplementedError('getNetworkedUTXOs'));
 	}
 }

@@ -1,6 +1,7 @@
 import * as fetch from 'isomorphic-fetch';
 
 import { DebugType, Logger } from '../../debug';
+import { InvalidProofUrlError } from '../../error';
 import { containsValidAddressProofStatement, containsValidProofStatement } from '../proof';
 
 export interface IProof {
@@ -89,6 +90,6 @@ export class Service {
 				return proofUrl;
 			}
 		}
-		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
+		throw new InvalidProofUrlError(proof.proof_url, proof.service);
 	}
 }

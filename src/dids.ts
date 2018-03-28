@@ -12,11 +12,11 @@ export function getDIDType(decentralizedID: string) {
 	const didParts = decentralizedID.split(':');
 
 	if (didParts.length !== 3) {
-		throw new InvalidDIDError('Decentralized IDs must have 3 parts');
+		throw new InvalidDIDError(decentralizedID, 'Decentralized IDs must have 3 parts');
 	}
 
 	if (didParts[0].toLowerCase() !== 'did') {
-		throw new InvalidDIDError('Decentralized IDs must start with "did"');
+		throw new InvalidDIDError(decentralizedID, 'Decentralized IDs must start with "did"');
 	}
 
 	return didParts[1].toLowerCase();

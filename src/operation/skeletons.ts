@@ -1,6 +1,7 @@
 import * as bitcoin from 'bitcoinjs-lib';
 
 import { config } from '../config';
+import { InvalidParameterError } from '../error';
 import { decodeB40, DUST_MINIMUM, hash128, hash160 } from './utils';
 
 // todo : add name length / character verification
@@ -70,7 +71,7 @@ export function makeRegisterSkeleton(fullyQualifiedName: string, ownerAddress: s
 
 	if (valueHash) {
 		if (valueHash.length !== 40) {
-			throw new Error('Value hash length incorrect. Expecting 20-bytes, hex-encoded');
+			throw new InvalidParameterError('valueHash', 'Value hash length incorrect. Expecting 20-bytes, hex-encoded');
 		}
 		payload = Buffer.alloc(57, 0);
 		payload.write(fullyQualifiedName, 0, 37, 'ascii');

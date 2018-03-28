@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 
+import { InvalidProofUrlError } from '../../error';
 import { IProof, Service } from './Service';
 
 export class HackerNews extends Service {
@@ -22,7 +23,7 @@ export class HackerNews extends Service {
 				return proofUrl;
 			}
 		}
-		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
+		throw new InvalidProofUrlError(proof.proof_url, proof.service);
 	}
 
 	public static getProofStatement(searchText: string) {

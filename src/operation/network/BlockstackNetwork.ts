@@ -1,6 +1,6 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
-import { MissingParameterError, RemoteServiceError } from '../../error';
+import { NotImplementedError, RemoteServiceError } from '../../error';
 import { BitcoinNetwork } from './BitcoinNetwork';
 import {
 	TX_BROADCAST_SERVICE_REGISTRATION_ENDPOINT,
@@ -43,16 +43,12 @@ export class BlockstackNetwork {
 	public getNamePrice(fullyQualifiedName: string) {
 		return fetch(`${this.blockstackAPIUrl}/v1/prices/names/${fullyQualifiedName}`)
 			.then(resp => resp.json())
-			.then(x => x.name_price.satoshis)
+			.then((x: { name_price: { satoshis: number } }) => x.name_price.satoshis)
 			.then(satoshis => {
-				if (satoshis) {
-					if (satoshis < this.DUST_MINIMUM) {
-						return this.DUST_MINIMUM;
-					} else {
-						return satoshis;
-					}
+				if (satoshis < this.DUST_MINIMUM) {
+					return this.DUST_MINIMUM;
 				} else {
-					throw new Error('Failed to parse price of name');
+					return satoshis;
 				}
 			});
 	}
@@ -72,7 +68,7 @@ export class BlockstackNetwork {
 		return fetch(`${this.blockstackAPIUrl}/v1/namespaces/${namespace}`)
 			.then(resp => {
 				if (resp.status === 404) {
-					throw new Error(`No such namespace '${namespace}'`);
+					throw new RemoteServiceError(resp, `No such namespace "${namespace}"`);
 				} else {
 					return resp.json();
 				}
@@ -96,9 +92,9 @@ export class BlockstackNetwork {
 		return fetch(`${this.blockstackAPIUrl}/v1/names/${fullyQualifiedName}`)
 			.then(resp => {
 				if (resp.status === 404) {
-					throw new Error('Name not found');
+					throw new RemoteServiceError(resp, 'Name not found');
 				} else if (resp.status !== 200) {
-					throw new Error(`Bad response status: ${resp.status}`);
+					throw new RemoteServiceError(resp, `Bad response status: ${resp.status}`);
 				} else {
 					return resp.json();
 				}
@@ -173,16 +169,6 @@ export class BlockstackNetwork {
 		transactionToWatch: string | null = null,
 		confirmations: number = 6
 	) {
-		if (!transaction) {
-			const error = new MissingParameterError('transaction');
-			return Promise.reject(error);
-		}
-
-		if (!confirmations && confirmations !== 0) {
-			const error = new MissingParameterError('confirmations');
-			return Promise.reject(error);
-		}
-
 		if (transactionToWatch === null) {
 			return this.btc.broadcastTransaction(transaction);
 		} else {
@@ -223,10 +209,6 @@ export class BlockstackNetwork {
 	 *   parameter
 	 */
 	public broadcastZoneFile(zoneFile: string, transactionToWatch: string | null = null) {
-		if (!zoneFile) {
-			return Promise.reject(new MissingParameterError('zoneFile'));
-		}
-
 		// TODO: validate zonefile
 
 		if (transactionToWatch) {
@@ -311,21 +293,6 @@ export class BlockstackNetwork {
        * })
        */
 
-		if (!preorderTransaction) {
-			const error = new MissingParameterError('preorderTransaction');
-			return Promise.reject(error);
-		}
-
-		if (!registerTransaction) {
-			const error = new MissingParameterError('registerTransaction');
-			return Promise.reject(error);
-		}
-
-		if (!zoneFile) {
-			const error = new MissingParameterError('zoneFile');
-			return Promise.reject(error);
-		}
-
 		const requestBody = {
 			preorderTransaction,
 			registerTransaction,
@@ -344,7 +311,7 @@ export class BlockstackNetwork {
 	}
 
 	public countDustOutputs() {
-		throw new Error('Not implemented.');
+		throw new NotImplementedError('countDustOutputs');
 	}
 
 	public getUTXOs(address: string): Promise<IUTXOWithValue[]> {

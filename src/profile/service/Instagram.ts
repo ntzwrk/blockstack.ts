@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 
 import { DebugType, Logger } from '../../debug';
+import { InvalidProofUrlError } from '../../error';
 import { IProof, Service } from './Service';
 
 export class Instagram extends Service {
@@ -17,7 +18,7 @@ export class Instagram extends Service {
 				return normalizedProofUrl;
 			}
 		}
-		throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
+		throw new InvalidProofUrlError(proof.proof_url, proof.service);
 	}
 
 	public static normalizeInstagramUrl(proof: IProof) {

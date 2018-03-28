@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 
+import { InvalidProofUrlError } from '../../error';
 import { IProof, Service } from './Service';
 
 export class Facebook extends Service {
@@ -24,7 +25,7 @@ export class Facebook extends Service {
 			const postId = tokens[1];
 			proofUrl = `https://www.facebook.com/${proof.identifier}/posts/${postId}`;
 		} else {
-			throw new Error(`Proof url ${proof.proof_url} is not valid for service ${proof.service}`);
+			throw new InvalidProofUrlError(proof.proof_url, proof.service);
 		}
 
 		return proofUrl;

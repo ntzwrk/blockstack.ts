@@ -72,10 +72,6 @@ export function redirectUserToApp(authRequest: string | JWT, authResponse: strin
 	const payload = decodeToken(authRequest).payload;
 	let redirectURI = payload.redirect_uri;
 	Logger.log(DebugType.info, 'redirectURI: ', redirectURI);
-	if (redirectURI) {
-		redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);
-	} else {
-		throw new Error('Invalid redirect URI');
-	}
+	redirectURI = updateQueryStringParameter(redirectURI, 'authResponse', authResponse);
 	window.location.href = redirectURI;
 }

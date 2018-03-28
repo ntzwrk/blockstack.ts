@@ -52,7 +52,7 @@ export class BlockchainInfoApi extends BitcoinNetwork {
 				if (resp.status === 200) {
 					return resp.json();
 				} else {
-					throw new Error(`Could not lookup transaction info for '${txHash}'. Server error.`);
+					throw new RemoteServiceError(resp, `Could not lookup transaction info for "${txHash}"`);
 				}
 			})
 			.then(respObj => ({ block_height: respObj.block_height }));
