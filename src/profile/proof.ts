@@ -1,8 +1,14 @@
-import { InvalidNameError } from '../../error';
-import { AccountJson } from '../schema/components/Account.json';
-import { ProfileJson } from '../schema/Profile.json';
-import { profileServices } from '../service';
-import { IProof, Service } from '../service/Service';
+import { InvalidNameError } from '../error';
+import { AccountJson } from './schema/components/Account.json';
+import { ProfileJson } from './schema/Profile.json';
+import { profileServices, Service } from './service';
+
+export interface IProof {
+	identifier: string;
+	service: string;
+	proof_url: string;
+	valid: boolean;
+}
 
 /**
  * Validates the social proofs in a user's profile. Currently supports validation of

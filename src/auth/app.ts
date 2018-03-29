@@ -12,11 +12,11 @@ import {
 	DEFAULT_SCOPE
 } from '../constants';
 import { DebugType, Logger } from '../debug';
-import { makeECPrivateKey } from '../index';
+import { makeECPrivateKey } from '../encryption';
 import { extractProfile } from '../profile';
 import { isLaterVersion } from '../utils';
-import { makeAuthRequest, verifyAuthResponse } from './index';
-import { decryptPrivateKey } from './messages';
+import { decryptPrivateKey, makeAuthRequest } from './messages';
+import { verifyAuthResponse } from './verification';
 
 const DEFAULT_PROFILE = {
 	'@context': 'http://schema.org',

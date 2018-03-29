@@ -1,5 +1,6 @@
 import { InvalidProofUrlError } from '../../error';
-import { IProof, Service } from './Service';
+import { IProof } from '../proof';
+import { Service } from './Service';
 
 export class Github extends Service {
 	public static getBaseUrls() {

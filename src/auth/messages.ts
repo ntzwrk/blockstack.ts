@@ -2,16 +2,11 @@ import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
 import { DEFAULT_SCOPE } from '../constants';
 import { DebugType, Logger } from '../debug';
-import { decryptECIES, encryptECIES } from '../encryption';
-import {
-	generateAndStoreTransitKey,
-	makeDIDFromAddress,
-	makeUUID4,
-	nextHour,
-	nextMonth,
-	publicKeyToAddress
-} from '../index';
+import { decryptECIES, encryptECIES, publicKeyToAddress } from '../encryption';
+import { makeDIDFromAddress } from '../dids';
 import { ProfileJson } from '../profile/schema/Profile.json';
+import { makeUUID4, nextHour, nextMonth } from '../utils';
+import { generateAndStoreTransitKey } from './app';
 import { AuthRequestJson as IAuthRequestPayload } from './schema/AuthRequest.json';
 import { AuthResponseJson as IAuthResponsePayload } from './schema/AuthResponse.json';
 

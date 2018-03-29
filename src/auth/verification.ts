@@ -1,7 +1,10 @@
 import { decodeToken, TokenVerifier } from 'jsontokens';
 
+import { getAddressFromDID } from '../dids';
+import { publicKeyToAddress } from '../encryption';
 import { MultiplePublicKeysNotSupportedError } from '../error';
-import { fetchAppManifest, getAddressFromDID, isSameOriginAbsoluteUrl, publicKeyToAddress } from '../index';
+import { isSameOriginAbsoluteUrl } from '../utils';
+import { fetchAppManifest } from './provider';
 
 /**
  * Checks if the ES256k signature on passed `token` match the claimed public key

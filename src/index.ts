@@ -1,26 +1,6 @@
 export * from './auth';
+export * from './encryption';
+export * from './operation';
 export * from './profile';
 export * from './storage';
 export * from './zoneFile';
-
-export { makeDIDFromAddress, makeDIDFromPublicKey, getDIDType, getAddressFromDID } from './dids';
-export { getEntropy, makeECPrivateKey, publicKeyToAddress, getPublicKeyFromPrivate } from './encryption';
-export {
-	nextYear,
-	nextMonth,
-	nextHour,
-	makeUUID4,
-	updateQueryStringParameter,
-	isLaterVersion,
-	isSameOriginAbsoluteUrl,
-	hexStringToECPair,
-	ecPairToHexString
-} from './utils';
-
-export { transactions, safety } from './operation';
-
-export * from './operation/network';
-
-export { decodeToken } from 'jsontokens';
-
-export { config } from './config';

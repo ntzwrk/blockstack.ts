@@ -2,9 +2,9 @@ import { ECPair } from 'bitcoinjs-lib';
 import * as ecurve from 'ecurve';
 import { decodeToken, JWT, SECP256K1Client, TokenSigner, TokenVerifier } from 'jsontokens';
 
-import { InvalidProfileTokenError, SigningAlgorithmNotSupportedError, TokenVerificationFailedError } from '../../error';
-import { makeUUID4, nextYear } from '../../utils';
-import { ProfileJson } from '../schema/Profile.json';
+import { InvalidProfileTokenError, SigningAlgorithmNotSupportedError, TokenVerificationFailedError } from '../error';
+import { makeUUID4, nextYear } from '../utils';
+import { ProfileJson } from './schema/Profile.json';
 
 const secp256k1 = ecurve.getCurveByName('secp256k1');
 
@@ -155,3 +155,5 @@ export function extractProfile(token: string, publicKeyOrAddress?: string) {
 
 	return profile as ProfileJson; // TODO: What happens if profile is undefined?
 }
+
+export { decodeToken } from 'jsontokens';

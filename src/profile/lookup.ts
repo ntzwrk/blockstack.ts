@@ -1,4 +1,3 @@
-
 import { resolveZoneFileToProfile } from '../zoneFile';
 import { PersonJson } from './schema/Person.json';
 

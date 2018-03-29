@@ -1,7 +1,8 @@
 import * as cheerio from 'cheerio';
 
 import { InvalidProofUrlError } from '../../error';
-import { IProof, Service } from './Service';
+import { IProof } from '../proof';
+import { Service } from './Service';
 
 export class LinkedIn extends Service {
 	public static getBaseUrls() {

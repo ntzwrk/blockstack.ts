@@ -2,14 +2,7 @@ import * as fetch from 'isomorphic-fetch';
 
 import { DebugType, Logger } from '../../debug';
 import { InvalidProofUrlError } from '../../error';
-import { containsValidAddressProofStatement, containsValidProofStatement } from '../proof';
-
-export interface IProof {
-	identifier: string;
-	service: string;
-	proof_url: string;
-	valid: boolean;
-}
+import { containsValidAddressProofStatement, containsValidProofStatement, IProof } from '../proof';
 
 export class Service {
 	public static validateProof(proof: IProof, ownerAddress: string, name?: string): Promise<IProof> {

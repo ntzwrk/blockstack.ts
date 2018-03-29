@@ -10,9 +10,13 @@ export {
 	generateAndStoreTransitKey,
 	getTransitKey
 } from './app';
-export { makeAuthRequest, makeAuthResponse, IAuthMetadata } from './messages';
+
+export { makeAuthRequest, makeAuthResponse } from './messages';
+
 export { getAuthRequestFromURL, fetchAppManifest, redirectUserToApp } from './provider';
+
 export { makeCoreSessionRequest, sendCoreSessionRequest, getCoreSession } from './session';
+
 export {
 	verifyAuthRequest,
 	verifyAuthResponse,

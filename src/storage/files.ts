@@ -3,12 +3,7 @@ import { DebugType, Logger } from '../debug';
 import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../encryption';
 import { NotImplementedError, RemoteServiceError } from '../error';
 import { lookupProfile } from '../profile';
-import {
-	getBucketUrl,
-	getFullReadUrl,
-	getOrSetLocalGaiaHubConnection,
-	uploadToGaiaHub
-} from './hub';
+import { getBucketUrl, getFullReadUrl, getOrSetLocalGaiaHubConnection, uploadToGaiaHub } from './hub';
 
 /**
  * Fetch the public read URL of a user file for the specified app.

@@ -2,7 +2,8 @@ import * as cheerio from 'cheerio';
 
 import { DebugType, Logger } from '../../debug';
 import { InvalidProofUrlError } from '../../error';
-import { IProof, Service } from './Service';
+import { IProof } from '../proof';
+import { Service } from './Service';
 
 export class Instagram extends Service {
 	public static getBaseUrls() {
