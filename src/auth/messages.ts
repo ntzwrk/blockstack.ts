@@ -2,13 +2,13 @@ import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
 import { DEFAULT_SCOPE } from '../constants';
 import { DebugType, Logger } from '../debug';
-import { decryptECIES, encryptECIES, publicKeyToAddress } from '../encryption';
 import { makeDIDFromAddress } from '../dids';
+import { decryptECIES, encryptECIES, publicKeyToAddress } from '../encryption';
 import { ProfileJson } from '../profile/schema/Profile.json';
 import { makeUUID4, nextHour, nextMonth } from '../utils';
 import { generateAndStoreTransitKey } from './app';
-import { AuthRequestJson as IAuthRequestPayload } from './schema/AuthRequest.json';
-import { AuthResponseJson as IAuthResponsePayload } from './schema/AuthResponse.json';
+import { AuthRequestJson } from './schema/AuthRequest.json';
+import { AuthResponseJson } from './schema/AuthResponse.json';
 
 const VERSION = '1.1.0';
 
@@ -45,7 +45,7 @@ export function makeAuthRequest(
 	expiresAt: number = nextHour().getTime()
 ): string {
 	/* Create the payload */
-	const payload: IAuthRequestPayload = {
+	const payload: AuthRequestJson = {
 		do_not_include_profile: true,
 		domain_name: appDomain,
 		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
@@ -160,7 +160,7 @@ export function makeAuthResponse(
 		Logger.log(DebugType.warn, 'Generating a _legacy_ auth response');
 	}
 
-	const properties: IAuthResponsePayload = {
+	const properties: AuthResponseJson = {
 		core_token: coreTokenPayload,
 		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
 		iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
@@ -173,7 +173,7 @@ export function makeAuthResponse(
 	};
 
 	/* Create the payload */
-	const payload: IAuthResponsePayload = {
+	const payload: AuthResponseJson = {
 		...properties,
 		...additionalProperties
 	};
