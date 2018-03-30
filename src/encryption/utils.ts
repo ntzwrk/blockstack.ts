@@ -2,7 +2,7 @@ import { BN } from 'bn.js';
 import * as crypto from 'crypto';
 import { ec as EllipticCurve } from 'elliptic';
 
-import { InputNumberTooBigError, MacValidationError } from '../error';
+import { InvalidParameterError, MacValidationError } from '../error';
 
 const ecurve = new EllipticCurve('secp256k1');
 
@@ -65,7 +65,7 @@ export function getHexFromBN(bnInput: BN) {
 		const padding = '0'.repeat(64 - hexOut.length);
 		return `${padding}${hexOut}`;
 	} else {
-		throw new InputNumberTooBigError(bnInput);
+		throw new InvalidParameterError('bnInput', 'The given BN is too big (no support for BNs > 32 byte)', bnInput);
 	}
 }
 

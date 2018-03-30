@@ -1,4 +1,4 @@
-import { InvalidNameError } from '../error';
+import { InvalidParameterError } from '../error';
 import { AccountJson } from './schema/components/Account.json';
 import { ProfileJson } from './schema/Profile.json';
 import { profileServices, Service } from './service';
@@ -74,8 +74,9 @@ export function containsValidProofStatement(searchText: string, name?: string) {
 
 	searchText = searchText.toLowerCase();
 
+	// TODO: This doesn't support sub domains
 	if (name.split('.').length !== 2) {
-		throw new InvalidNameError(name);
+		throw new InvalidParameterError('name', 'The given name was invalid', name);
 	}
 
 	let username = null;
