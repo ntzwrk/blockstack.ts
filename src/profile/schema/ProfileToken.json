@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/schema#",
+	"id": "ProfileToken.json",
+	"type": "array",
+	"items": {
+		"properties": {
+			"token": { "type": "string" },
+			"decodedToken": {
+				"type": "object",
+				"properties": {
+					"header": {
+						"type": "object",
+						"properties": {
+							"typ": { "type": "string" },
+							"alg": { "type": "string" }
+						}
+					},
+					"payload": {
+						"type": "object",
+						"properties": {
+							"jti": { "type": "string" },
+							"iat": { "type": "string" },
+							"exp": { "type": "string" },
+							"subject": {
+								"type": "object",
+								"properties": {
+									"publicKey": { "type": "string" }
+								}
+							},
+							"issuer": {
+								"type": "object",
+								"properties": {
+									"publicKey": { "type": "string" }
+								}
+							},
+							"claim": {
+								"allOf": [{ "$ref": "Profile.json" }]
+							}
+						}
+					},
+					"signature": { "type": "string" }
+				}
+			}
+		}
+	}
+}
