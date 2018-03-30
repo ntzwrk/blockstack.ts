@@ -524,7 +524,7 @@ function makeRenewal(
  */
 function makeBitcoinSpend(destinationAddress: string, paymentKeyHex: string, amount: number) {
 	if (amount <= 0) {
-		return Promise.reject(new InvalidParameterError('amount', '"amount" must be greater than zero'));
+		return Promise.reject(new InvalidParameterError('amount', '"amount" must be greater than zero', amount));
 	}
 
 	const network = config.network;

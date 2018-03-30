@@ -3,8 +3,9 @@ export class InvalidParameterError extends Error {
 	public readonly message: string;
 	public readonly parameter: string;
 	public readonly reason: string;
+	public readonly value: any;
 
-	constructor(parameter?: string, reason?: string) {
+	constructor(parameter?: string, reason?: string, value?: any) {
 		super();
 
 		const messageWithoutReason =
@@ -12,5 +13,6 @@ export class InvalidParameterError extends Error {
 		this.message = reason !== undefined ? reason : messageWithoutReason;
 		this.parameter = parameter;
 		this.reason = reason;
+		this.value = value;
 	}
 }
