@@ -2,13 +2,17 @@
 # yarn lockfile v1
 
 
-"@types/bigi@*", "@types/bigi@^1.4.0":
+"@types/bigi@*":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@types/bigi/-/bigi-1.4.0.tgz#6c651df0a66f39075ae92745d648e2281cb9aeb9"
 
-"@types/bitcoinjs-lib@^3.3.2":
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/@types/bitcoinjs-lib/-/bitcoinjs-lib-3.3.2.tgz#92606bb03e8031024d81dac2ee9c84def8c9c0d4"
+"@types/bigi@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@types/bigi/-/bigi-1.4.1.tgz#d2a75ad76b76bb53c38e1a6670c8a08d457edef7"
+
+"@types/bitcoinjs-lib@^3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@types/bitcoinjs-lib/-/bitcoinjs-lib-3.3.3.tgz#1a39b8e7907e02ba5057a24409117907e6668eed"
   dependencies:
     "@types/bigi" "*"
     "@types/node" "*"

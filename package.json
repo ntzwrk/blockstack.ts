@@ -22,8 +22,8 @@
     "generate-json-interfaces": "cd ./src/auth/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd - && cd ./src/profile/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd -"
   },
   "dependencies": {
-    "@types/bigi": "^1.4.0",
-    "@types/bitcoinjs-lib": "^3.3.2",
+    "@types/bigi": "^1.4.1",
+    "@types/bitcoinjs-lib": "^3.3.3",
     "@types/cheerio": "^0.22.7",
     "@types/ecurve": "^1.0.0",
     "@types/form-data": "^2.2.1",
