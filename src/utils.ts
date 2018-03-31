@@ -78,7 +78,11 @@ export function hexStringToECPair(skHex: string) {
 		ecPairOptions.compressed = false;
 		return new ECPair(BigInteger.fromHex(skHex), undefined, ecPairOptions);
 	} else {
-		throw new InvalidParameterError('skHex', 'Improperly formatted private-key hex string: length should be 64 or 66', skHex);
+		throw new InvalidParameterError(
+			'skHex',
+			'Improperly formatted private-key hex string: length should be 64 or 66',
+			skHex
+		);
 	}
 }
 

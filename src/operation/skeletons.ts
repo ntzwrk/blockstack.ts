@@ -71,7 +71,11 @@ export function makeRegisterSkeleton(fullyQualifiedName: string, ownerAddress: s
 
 	if (valueHash) {
 		if (valueHash.length !== 40) {
-			throw new InvalidParameterError('valueHash', 'Value hash length incorrect. Expecting 20-bytes, hex-encoded', valueHash);
+			throw new InvalidParameterError(
+				'valueHash',
+				'Value hash length incorrect. Expecting 20-bytes, hex-encoded',
+				valueHash
+			);
 		}
 		payload = Buffer.alloc(57, 0);
 		payload.write(fullyQualifiedName, 0, 37, 'ascii');
