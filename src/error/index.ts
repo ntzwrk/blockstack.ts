@@ -1,4 +1,5 @@
 // ./
+export { DidNotSatisfyJsonSchemaError } from './DidNotSatisfyJsonSchemaError';
 export { InvalidDIDError } from './InvalidDIDError';
 export { InvalidParameterError } from './InvalidParameterError';
 export { NotImplementedError } from './NotImplementedError';
