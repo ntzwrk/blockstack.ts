@@ -3,6 +3,8 @@
 	"id": "ProfileToken.json",
 	"type": "array",
 	"items": {
+		"id": "ProfileTokenEntryJson",
+		"type": "object",
 		"properties": {
 			"token": { "type": "string" },
 			"decodedToken": {
