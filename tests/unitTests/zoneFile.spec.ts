@@ -46,7 +46,7 @@ describe('zoneFile.ts', () => {
 				]
 			};
 
-			chai.expect(getTokenFileUrl(jsonZoneFile)).to.equal(tokenFileUrl);;
+			chai.expect(getTokenFileUrl(jsonZoneFile)).to.equal(tokenFileUrl);
 			chai.expect(getTokenFileUrl(jsonZoneFileWithoutProtocol)).to.equal('https://example.org');
 		});
 
@@ -88,7 +88,8 @@ describe('zoneFile.ts', () => {
 				]
 			};
 			const zoneFile = makeZoneFile(jsonZoneFile, '{$origin}\n{$ttl}\n{uri}\n');
-			const staticZoneFile = '$ORIGIN some-name.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/0/profile.json"\n\n';
+			const staticZoneFile =
+				'$ORIGIN some-name.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/0/profile.json"\n\n';
 
 			chai.expect(makeProfileZoneFile(name, tokenFileUrl)).to.equal(zoneFile);
 			chai.expect(makeProfileZoneFile(name, tokenFileUrl)).to.equal(staticZoneFile);
@@ -115,10 +116,10 @@ describe('zoneFile.ts', () => {
 			const tokenFileUrl = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/0/profile.json';
 
 			const personJson: PersonJson = {
-				"@context": "http://schema.org",
-				"@type": "Person",
-				"@id": name,
-				name: "John Doe"
+				'@context': 'http://schema.org',
+				'@type': 'Person',
+				'@id': name,
+				name: 'John Doe'
 			};
 			const signedToken = signProfileToken(personJson, privateKey);
 
@@ -141,19 +142,21 @@ describe('zoneFile.ts', () => {
 
 			const name = 'some-name.id';
 			const tokenFileUrl = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/0/profile.json';
-			const tokenFileUrlForInvalidTokenFile = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/1/profile.json';
+			const tokenFileUrlForInvalidTokenFile =
+				'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/1/profile.json';
 			const tokenFileUrlForEmptyToken = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/2/profile.json';
-			const tokenFileUrlForIncorrectToken = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/3/profile.json';
+			const tokenFileUrlForIncorrectToken =
+				'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/3/profile.json';
 			const tokenFileUrlForUnsignedToken = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/4/profile.json';
 
 			const personJson: PersonJson = {
-				"@context": "http://schema.org",
-				"@type": "Person",
-				"@id": name,
-				name: "John Doe"
+				'@context': 'http://schema.org',
+				'@type': 'Person',
+				'@id': name,
+				name: 'John Doe'
 			};
 			const correctlySignedToken = signProfileToken(personJson, privateKey);
-			const incorrectToken = signProfileToken({ ...personJson, ...{ "@type": undefined } }, privateKey);
+			const incorrectToken = signProfileToken({ ...personJson, ...{ '@type': undefined } }, privateKey);
 			const unsignedToken = createUnsecuredToken(personJson);
 
 			nock('https://gaia.blockstack.org')
@@ -180,11 +183,17 @@ describe('zoneFile.ts', () => {
 
 			// TODO: Revisit these when the other functions throw better errors
 			chai.expect(resolveZoneFileToPerson('', '')).to.eventually.be.rejectedWith(DidNotSatisfyJsonSchemaError);
-			chai.expect(resolveZoneFileToPerson(zoneFile, 'some wrong key')).to.eventually.be.rejectedWith(InvalidProfileTokenError);
-			chai.expect(resolveZoneFileToPerson(zoneFileWithInvalidTokenFile, publicKey)).to.eventually.be.rejectedWith(InvalidProfileTokenError);
+			chai
+				.expect(resolveZoneFileToPerson(zoneFile, 'some wrong key'))
+				.to.eventually.be.rejectedWith(InvalidProfileTokenError);
+			chai
+				.expect(resolveZoneFileToPerson(zoneFileWithInvalidTokenFile, publicKey))
+				.to.eventually.be.rejectedWith(InvalidProfileTokenError);
 			// chai.expect(resolveZoneFileToPerson(zoneFileWithEmptyToken, publicKey)).to.eventually.be.rejectedWith(InvalidProfileTokenError);
 			// chai.expect(resolveZoneFileToPerson(zoneFileWithIncorrectToken, publicKey)).to.eventually.be.rejectedWith(InvalidProfileTokenError);
-			chai.expect(resolveZoneFileToPerson(zoneFileWithUnsignedToken, publicKey)).to.eventually.be.rejectedWith(InvalidProfileTokenError);
+			chai
+				.expect(resolveZoneFileToPerson(zoneFileWithUnsignedToken, publicKey))
+				.to.eventually.be.rejectedWith(InvalidProfileTokenError);
 		});
 	});
 
@@ -204,10 +213,10 @@ describe('zoneFile.ts', () => {
 			const tokenFileUrl = 'https://gaia.blockstack.org/hub/1111111111111111111114oLvT2/0/profile.json';
 
 			const profileJson: ProfileJson = {
-				"@context": "http://schema.org",
-				"@type": "Person",
-				"@id": name,
-				name: "John Doe"
+				'@context': 'http://schema.org',
+				'@type': 'Person',
+				'@id': name,
+				name: 'John Doe'
 			};
 			const signedToken = signProfileToken(profileJson, privateKey);
 

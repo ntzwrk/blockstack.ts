@@ -23,8 +23,8 @@ export function makeProfileZoneFile(origin: string, tokenFileUrl: string): strin
 	// TODO: Implement passing multiple URLs
 
 	try {
-		new URL(tokenFileUrl);
-	} catch(error) {
+		const url = new URL(tokenFileUrl);
+	} catch (error) {
 		throw new InvalidParameterError(
 			'tokenFileUrl',
 			'The given token file URL is no valid URL (due the `url` package)',
@@ -100,7 +100,7 @@ export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddr
 		let legacyProfileJson: PersonLegacyJson;
 		try {
 			legacyProfileJson = JSON.parse(zoneFile) as PersonLegacyJson;
-		} catch(error) {
+		} catch (error) {
 			throw new DidNotSatisfyJsonSchemaError('PersonLegacy.json', zoneFile);
 		}
 		return Person.fromLegacyFormat(legacyProfileJson).toJSON();
@@ -112,7 +112,7 @@ export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddr
 	let profileTokenJson: ProfileTokenJson;
 	try {
 		profileTokenJson = JSON.parse(response) as ProfileTokenJson;
-	} catch(error) {
+	} catch (error) {
 		throw new InvalidProfileTokenError(response);
 	}
 

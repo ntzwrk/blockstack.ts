@@ -2,7 +2,6 @@
  * Here comes the fun. Have some, now!
  */
 
-
 /**
  * Returns a random positive adjective
  */
@@ -28,7 +27,7 @@ export function correct(): string {
 		'<3'
 	];
 
-	return adjectives[Math.floor(Math.random()*adjectives.length)];
+	return adjectives[Math.floor(Math.random() * adjectives.length)];
 }
 
 /**
@@ -50,5 +49,5 @@ export function incorrect(): string {
 		':('
 	];
 
-	return adjectives[Math.floor(Math.random()*adjectives.length)];
+	return adjectives[Math.floor(Math.random() * adjectives.length)];
 }

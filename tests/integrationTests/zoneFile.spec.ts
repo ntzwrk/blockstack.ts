@@ -26,13 +26,14 @@ describe('zoneFile.ts', () => {
 			this.timeout(6000);
 			this.retries(3);
 
-			const zoneFile = '$ORIGIN vsund.id\n$TTL 3600\n_http._tcp URI 5 1 \"https://gaia.blockstack.org/hub/15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f/0/profile.json\"\n'
+			const zoneFile =
+				'$ORIGIN vsund.id\n$TTL 3600\n_http._tcp URI 5 1 "https://gaia.blockstack.org/hub/15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f/0/profile.json"\n';
 			const address = '15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f';
 
 			const personJson: PersonJson = await resolveZoneFileToPerson(zoneFile, address);
 
-			chai.expect(personJson["@context"]).to.equal('http://schema.org');
-			chai.expect(personJson["@type"]).to.equal('Person');
+			chai.expect(personJson['@context']).to.equal('http://schema.org');
+			chai.expect(personJson['@type']).to.equal('Person');
 			chai.expect(personJson.name).to.equal('vsund');
 		});
 
@@ -51,13 +52,14 @@ describe('zoneFile.ts', () => {
 			this.timeout(6000);
 			this.retries(3);
 
-			const zoneFile = '$ORIGIN vsund.id\n$TTL 3600\n_http._tcp URI 5 1 \"https://gaia.blockstack.org/hub/15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f/0/profile.json\"\n'
+			const zoneFile =
+				'$ORIGIN vsund.id\n$TTL 3600\n_http._tcp URI 5 1 "https://gaia.blockstack.org/hub/15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f/0/profile.json"\n';
 			const address = '15DrW8LfoZecCzQZxKuKQkzMQrUjC1SC2f';
 
 			const profileJson: ProfileJson = await resolveZoneFileToProfile(zoneFile, address);
 
-			chai.expect(profileJson["@context"]).to.equal('http://schema.org');
-			chai.expect(profileJson["@type"]).to.equal('Person');
+			chai.expect(profileJson['@context']).to.equal('http://schema.org');
+			chai.expect(profileJson['@type']).to.equal('Person');
 			chai.expect(profileJson.name).to.equal('vsund');
 		});
 
