@@ -47,7 +47,7 @@
     "schema-inspector": "^1.6.8",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2",
-    "uri-js": "^3.0.2",
+    "uri-js": "^4.2.0",
     "zone-file": "^0.2.3"
   },
   "devDependencies": {
