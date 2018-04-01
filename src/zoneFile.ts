@@ -1,21 +1,36 @@
+import { URL } from 'url';
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
 import { DebugType, Logger } from './debug';
-import { InvalidTokenFileUrlError, MissingOriginError } from './error';
+import { DidNotSatisfyJsonSchemaError, InvalidParameterError, InvalidProfileTokenError } from './error';
 import { extractProfile } from './profile/jwt';
 import { Person } from './profile/Person';
 import { PersonJson } from './profile/schema/Person.json';
+import { PersonLegacyJson } from './profile/schema/PersonLegacy.json';
 import { ProfileJson } from './profile/schema/Profile.json';
+import { ProfileTokenJson } from './profile/schema/ProfileToken.json';
 
-export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
-	if (tokenFileUrl.indexOf('://') < 0) {
-		throw new InvalidTokenFileUrlError(tokenFileUrl);
+/**
+ * Creates an RFC1035-compliant zone file for a profile
+ *
+ * @param origin The zone file's origin, usually a Blockstack name
+ * @param tokenFileUrl The zone file's token file URL, usually pointing to a profile
+ * @returns An RFC1035-compliant zone file
+ * @throws InvalidParameterError When the given token file URL is invalid
+ */
+export function makeProfileZoneFile(origin: string, tokenFileUrl: string): string {
+	// TODO: Validate origin
+	// TODO: Implement passing multiple URLs
+
+	try {
+		new URL(tokenFileUrl);
+	} catch(error) {
+		throw new InvalidParameterError(
+			'tokenFileUrl',
+			'The given token file URL is no valid URL (due the `url` package)',
+			tokenFileUrl
+		);
 	}
-
-	const urlScheme = tokenFileUrl.split('://')[0];
-	const urlParts = tokenFileUrl.split('://')[1].split('/');
-	const domain = urlParts[0];
-	const pathname = `/${urlParts.slice(1).join('/')}`;
 
 	const zoneFile: JsonZoneFile = {
 		$origin: origin,
@@ -24,7 +39,7 @@ export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 			{
 				name: '_http._tcp',
 				priority: 10,
-				target: `${urlScheme}://${domain}${pathname}`,
+				target: tokenFileUrl,
 				weight: 1
 			}
 		]
@@ -35,136 +50,94 @@ export function makeProfileZoneFile(origin: string, tokenFileUrl: string) {
 	return makeZoneFile(zoneFile, zoneFileTemplate);
 }
 
-export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string | undefined {
-	if (!zoneFileJson.hasOwnProperty('uri')) {
-		return undefined;
+/**
+ * Extracts a token file URL from a given zone file
+ *
+ * @param zoneFileJson The zone file to extract the URL from
+ * @returns The token file URL from the zone file
+ * @throws InvalidParameterError When the zone file has no attribute `uri`
+ * @throws InvalidParameterError When the zone file's `uri` attribute is empty
+ */
+export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string {
+	if (zoneFileJson.uri === undefined) {
+		throw new InvalidParameterError('zoneFileJson', 'Attribute "uri" does not exist', zoneFileJson);
 	}
-	if (!Array.isArray(zoneFileJson.uri)) {
-		return undefined;
+	if (zoneFileJson.uri.length === 0) {
+		throw new InvalidParameterError('zoneFileJson', 'Attribute "uri" has no elements', zoneFileJson);
 	}
-	if (zoneFileJson.uri.length < 1) {
-		return undefined;
-	}
-	const firstUriRecord = zoneFileJson.uri[0];
 
-	if (!firstUriRecord.hasOwnProperty('target')) {
-		return undefined;
-	}
-	let tokenFileUrl = firstUriRecord.target;
+	let tokenFileUrl = zoneFileJson.uri[0].target;
 
-	if (tokenFileUrl.startsWith('https')) {
-		// pass
-	} else if (tokenFileUrl.startsWith('http')) {
-		// pass
-	} else {
+	// TODO: This probably still works incorrectly with '://' in GET parameters
+	// (if it's allowed in the specification to pass these unencoded)
+	if (!tokenFileUrl.includes('://')) {
 		tokenFileUrl = `https://${tokenFileUrl}`;
 	}
 
 	return tokenFileUrl;
 }
 
-// TODO: Should this return ProfileJson or PersonJson?
-export function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string): Promise<PersonJson | null> {
-	return new Promise((resolve, reject) => {
-		let zoneFileJson = null;
+/**
+ * Resolves a zone file to a profile JSON object
+ *
+ * @param zoneFile The zone file to resolve
+ * @param publicKeyOrAddress The public key or address who owns it
+ * @returns A promise containing `ProfileJson`.
+ *          Resolves to a profile JSON object on success.
+ *          Rejects with an `DidNotSatisfyJsonSchemaError`:
+ *          1) When the retrieved JSON seems to be a [[Person]] but does not satisfy the corresponding JSON schema.
+ *          2) When the retrieved JSON seems to be a [[PersonLegacy]] but does not satisfy the corresponding JSON schema.
+ *          Rejects with an `InvalidProfileTokenError`:
+ *          1) When the profile token has no elements,
+ *          2) When the first element of the profile token has no "token" attribute.
+ *
+ * Please note that this function uses `fetch` and therefore can also reject with errors from there.
+ */
+export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string): Promise<ProfileJson> {
+	const zoneFileJson: JsonZoneFile = parseZoneFile(zoneFile);
+
+	if (zoneFileJson.$origin === undefined) {
+		let legacyProfileJson: PersonLegacyJson;
 		try {
-			zoneFileJson = parseZoneFile(zoneFile);
-			if (!zoneFileJson.hasOwnProperty('$origin')) {
-				zoneFileJson = null;
-			}
-		} catch (e) {
-			reject(e);
+			legacyProfileJson = JSON.parse(zoneFile) as PersonLegacyJson;
+		} catch(error) {
+			throw new DidNotSatisfyJsonSchemaError('PersonLegacy.json', zoneFile);
 		}
+		return Person.fromLegacyFormat(legacyProfileJson).toJSON();
+	}
 
-		let tokenFileUrl: string | undefined;
-		if (zoneFileJson && Object.keys(zoneFileJson).length > 0) {
-			tokenFileUrl = getTokenFileUrl(zoneFileJson);
-		} else {
-			let profile = null;
-			try {
-				profile = JSON.parse(zoneFile);
-				profile = Person.fromLegacyFormat(profile).toJSON();
-			} catch (error) {
-				reject(error);
-			}
-			resolve(profile);
-			return;
-		}
+	const tokenFileUrl = getTokenFileUrl(zoneFileJson);
+	const response = await (await fetch(tokenFileUrl)).text();
 
-		if (tokenFileUrl) {
-			fetch(tokenFileUrl)
-				.then(response => response.text())
-				.then(responseText => JSON.parse(responseText))
-				.then(responseJson => {
-					const tokenRecords = responseJson;
-					const profile = extractProfile(tokenRecords[0].token, publicKeyOrAddress);
-					resolve(profile);
-					return;
-				})
-				.catch(error => {
-					Logger.log(DebugType.error, `resolveZoneFileToProfile: error fetching token file ${tokenFileUrl}`, error);
-					reject(error);
-				});
-		} else {
-			Logger.log(DebugType.error, 'Token file url not found. Resolving to blank profile.');
-			resolve(null);
-			return;
-		}
-	});
+	let profileTokenJson: ProfileTokenJson;
+	try {
+		profileTokenJson = JSON.parse(response) as ProfileTokenJson;
+	} catch(error) {
+		throw new InvalidProfileTokenError(response);
+	}
+
+	if (profileTokenJson.length === 0) {
+		throw new InvalidProfileTokenError(profileTokenJson, 'The profile token has no elements');
+	}
+	if (profileTokenJson[0].token === undefined) {
+		throw new InvalidProfileTokenError(
+			profileTokenJson,
+			'The first element of the profile token has no "token" attrbute'
+		);
+	}
+
+	return extractProfile(profileTokenJson[0].token, publicKeyOrAddress);
 }
 
-export function resolveZoneFileToPerson(
-	zoneFile: string,
-	publicKeyOrAddress: string,
-	callback: (profile: PersonJson | null) => any
-) {
-	let zoneFileJson = null;
-	try {
-		zoneFileJson = parseZoneFile(zoneFile);
-		if (!zoneFileJson.hasOwnProperty('$origin')) {
-			// TODO: This probably couldn't happen anymore with typed zone files
-			throw new MissingOriginError(zoneFileJson);
-		}
-	} catch (e) {
-		zoneFileJson = null;
-		Logger.log(DebugType.error, 'Could not parse zone file', e);
-	}
-
-	let tokenFileUrl = null;
-	if (zoneFileJson && Object.keys(zoneFileJson).length > 0) {
-		tokenFileUrl = getTokenFileUrl(zoneFileJson);
-	} else {
-		let profile = null;
-		try {
-			// TODO: What's this and why?
-			profile = JSON.parse(zoneFile);
-			const person = Person.fromLegacyFormat(profile);
-			profile = person.toJSON();
-		} catch (error) {
-			Logger.log(DebugType.error, 'Could not parse legacy zone file', error);
-		}
-		callback(profile);
-		return;
-	}
-
-	if (tokenFileUrl) {
-		fetch(tokenFileUrl)
-			.then(response => response.text())
-			.then(responseText => JSON.parse(responseText))
-			.then(responseJson => {
-				const tokenRecords = responseJson;
-				const token = tokenRecords[0].token;
-				const profile = extractProfile(token, publicKeyOrAddress);
-
-				callback(profile);
-				return;
-			})
-			.catch(error => {
-				Logger.log(DebugType.error, 'Could not extract profile', error);
-			});
-	} else {
-		Logger.log(DebugType.warn, 'Token file url not found');
-		callback(null);
-		return;
-	}
+/**
+ * Resolves a zone file to a person JSON object
+ *
+ * @param zoneFile The zone file to resolve
+ * @param publicKeyOrAddress The public key or address who owns it
+ * @returns A promise containing `PersonJson`
+ *
+ * Please note that this function uses [[resolveZoneFileToProfile]] and therefore rejects with the same errors.
+ */
+export async function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: string): Promise<PersonJson> {
+	return (await resolveZoneFileToProfile(zoneFile, publicKeyOrAddress)) as PersonJson;
 }
