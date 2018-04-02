@@ -1,8 +1,8 @@
 export class InvalidProofUrlError extends Error {
 	public readonly name: string = 'InvalidProofUrlError';
 	public readonly message: string;
-	public readonly proofUrl: string;
-	public readonly service: string;
+	public readonly proofUrl: string | undefined;
+	public readonly service: string | undefined;
 
 	constructor(proofUrl?: string, service?: string) {
 		super();

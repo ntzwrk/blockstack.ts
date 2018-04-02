@@ -3,7 +3,7 @@ import { JWT } from 'jsontokens';
 export class TokenVerificationFailedError extends Error {
 	public readonly name: string = 'TokenVerificationFailedError';
 	public readonly message: string;
-	public readonly token: string | JWT;
+	public readonly token: string | JWT | undefined;
 
 	constructor(token?: string | JWT) {
 		super();

@@ -1,7 +1,7 @@
 export class SigningAlgorithmNotSupportedError extends Error {
 	public readonly name: string = 'SigningAlgorithmNotSupportedError';
 	public readonly message: string;
-	public readonly signingAlgorithm: string;
+	public readonly signingAlgorithm: string | undefined;
 
 	constructor(signingAlgorithm?: string) {
 		super();

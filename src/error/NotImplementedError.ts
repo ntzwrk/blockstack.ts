@@ -1,7 +1,7 @@
 export class NotImplementedError extends Error {
 	public readonly name: string = 'NotImplementedError';
 	public readonly message: string;
-	public readonly operation: string;
+	public readonly operation: string | undefined;
 
 	constructor(operation?: string, reason?: string) {
 		super();
