@@ -1,3 +1,4 @@
+import { extractProfile } from './jwt';
 import { Profile } from './Profile';
 import { AccountJson } from './schema/components/Account.json';
 import { BasicJson } from './schema/components/Basic.json';
@@ -22,6 +23,11 @@ export class Person extends Profile implements PersonJson {
 
 	public static fromJSON(personJson: PersonJson): Person {
 		return new Person(personJson['@id']);
+	}
+
+	public static fromToken(token: string, publicKeyOrAddress?: string): Person {
+		const profile: PersonJson = extractProfile(token, publicKeyOrAddress);
+		return Person.fromJSON(profile);
 	}
 
 	private static formatAccount(
