@@ -1,34 +1,35 @@
-import * as BigInteger from 'bigi';
-import { ECPair } from 'bitcoinjs-lib';
-import { parse as uriParse } from 'uri-js';
-
-import { config } from './config';
-import { BLOCKSTACK_HANDLER } from './constants';
-import { InvalidParameterError } from './error';
+import { parse as uriParse, URIComponents } from 'uri-js';
 
 /**
- * Time
- * @private
+ * Returns a date that's one year from now
  */
-
-export function nextYear() {
+export function nextYear(): Date {
 	return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
 }
 
-export function nextMonth() {
+/**
+ * Returns a date that's one month from now
+ */
+export function nextMonth(): Date {
 	return new Date(new Date().setMonth(new Date().getMonth() + 1));
 }
 
-export function nextHour() {
+/**
+ * Returns a date that's one hour from now
+ */
+export function nextHour(): Date {
 	return new Date(new Date().setHours(new Date().getHours() + 1));
 }
 
 /**
- * Query Strings
- * @private
+ * Updates a query parameter of a URI
+ *
+ * @param uri The URI to update
+ * @param key The key to update
+ * @param value The value to update
+ * @returns The updated URI
  */
-
-export function updateQueryStringParameter(uri: string, key: string, value: string) {
+export function updateQueryStringParameter(uri: string, key: string, value: string): string {
 	const re = new RegExp(`([?&])${key}=.*?(&|$)`, 'i');
 	const separator = uri.indexOf('?') !== -1 ? '&' : '?';
 	if (uri.match(re)) {
@@ -39,13 +40,13 @@ export function updateQueryStringParameter(uri: string, key: string, value: stri
 }
 
 /**
- * Versioning
- * @param {string} v1 - the left half of the version inequality
- * @param {string} v2 - right half of the version inequality
- * @returns {bool} iff v1 >= v2
- * @private
+ * Compare two version tuples
+ *
+ * @param v1 The left half of the version comparison
+ * @param v2 The right half of the version comparison
+ * @returns True if v1 >= v2, false otherwise
  */
-export function isLaterVersion(v1: string, v2: string) {
+export function isLaterVersion(v1: string, v2: string): boolean {
 	const v1tuple = v1.split('.').map(x => parseInt(x, 10));
 	const v2tuple = v2.split('.').map(x => parseInt(x, 10));
 
@@ -60,47 +61,12 @@ export function isLaterVersion(v1: string, v2: string) {
 	return true;
 }
 
-export function hexStringToECPair(skHex: string) {
-	const ecPairOptions = {
-		compressed: true,
-		network: config.network.layer1
-	};
-	if (skHex.length === 66) {
-		if (skHex.slice(64) !== '01') {
-			throw new InvalidParameterError(
-				'skHex',
-				'Improperly formatted private-key hex string. 66-length hex usually indicates compressed key, but last byte must be == 1',
-				skHex
-			);
-		}
-		return new ECPair(BigInteger.fromHex(skHex.slice(0, 64)), undefined, ecPairOptions);
-	} else if (skHex.length === 64) {
-		ecPairOptions.compressed = false;
-		return new ECPair(BigInteger.fromHex(skHex), undefined, ecPairOptions);
-	} else {
-		throw new InvalidParameterError(
-			'skHex',
-			'Improperly formatted private-key hex string: length should be 64 or 66',
-			skHex
-		);
-	}
-}
-
-export function ecPairToHexString(secretKey: ECPair) {
-	const ecPointHex = secretKey.d.toHex();
-	if (secretKey.compressed) {
-		return `${ecPointHex}01`;
-	} else {
-		return ecPointHex;
-	}
-}
-
 /**
- * UUIDs
- * @private
+ * Generates a UUID4 (see https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
+ *
+ * @returns The generated UUID4
  */
-
-export function makeUUID4() {
+export function makeUUID4(): string {
 	let d = new Date().getTime();
 	if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
 		d += performance.now(); // use high-precision timer if available
@@ -114,29 +80,34 @@ export function makeUUID4() {
 
 /**
  * Checks if both urls pass the same origin check & are absolute
- * @param  {[type]}  uri1 first uri to check
- * @param  {[type]}  uri2 second uri to check
- * @return {Boolean} true if they pass the same origin check
- * @private
+ *
+ * @param uri1 First uri to compare
+ * @param uri2 Second uri to compare
+ * @returns True if they are considered the same, false otherwise
  */
-export function isSameOriginAbsoluteUrl(uri1: string, uri2: string) {
+export function isSameOriginAbsoluteUrl(uri1: string, uri2: string): boolean {
 	const parsedUri1 = uriParse(uri1);
 	const parsedUri2 = uriParse(uri2);
 
-	// TODO: Refactor this with a helper function
-	const port1FromParsing = typeof parsedUri1.port === 'string' ? parseInt(parsedUri1.port, 10) : parsedUri1.port;
-	const port1FromScheme = parsedUri1.scheme === 'https' ? 443 : 80;
-	const port1 = port1FromParsing !== undefined ? port1FromParsing : port1FromScheme;
-	const port2FromParsing = typeof parsedUri2.port === 'string' ? parseInt(parsedUri2.port, 10) : parsedUri2.port;
-	const port2FromScheme = parsedUri2.scheme === 'https' ? 443 : 80;
-	const port2 = port2FromParsing !== undefined ? port2FromParsing : port2FromScheme;
+	return (
+		parsedUri1.scheme === parsedUri2.scheme &&
+		parsedUri1.host === parsedUri2.host &&
+		extractPort(parsedUri1) === extractPort(parsedUri2) &&
+		parsedUri1.reference === 'absolute' &&
+		parsedUri2.reference === 'absolute'
+	);
+}
 
-	const match = {
-		absolute: parsedUri1.reference === 'absolute' && parsedUri2.reference === 'absolute',
-		hostname: parsedUri1.host === parsedUri2.host,
-		port: port1 === port2,
-		scheme: parsedUri1.scheme === parsedUri2.scheme
-	};
+/**
+ * Extracts the port from a parsed uri
+ *
+ * @param uri The uri to extract from (parsed by `uri-js`)
+ * @returns The extracted port
+ */
+function extractPort(uri: URIComponents): number {
+	if(uri.port !== undefined) {
+		return typeof uri.port === 'string' ? parseInt(uri.port, 10) : uri.port;
+	}
 
-	return match.scheme && match.hostname && match.port && match.absolute;
+	return uri.scheme === 'https' ? 443 : 80;
 }

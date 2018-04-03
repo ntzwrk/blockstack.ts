@@ -2,7 +2,7 @@ import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
 import { InvalidAmountError, InvalidParameterError, NoUTXOFoundError } from '../error';
-import { hexStringToECPair } from '../utils';
+import { hexStringToECPair } from '../encryption';
 import { IUTXO } from './network/interfaces/IUTXO';
 import { IUTXOWithValue } from './network/interfaces/IUTXOWithValue';
 import {
