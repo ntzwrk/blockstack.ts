@@ -14,7 +14,7 @@
   "scripts": {
     "prettify": "prettier --write \"{src,tests}/**/*.ts\"",
     "lint": "yarn run prettify && tslint --project ./",
-    "build": "yarn run generate-json-interfaces && tsc",
+    "build": "yarn run generate-json-interfaces && tsc && cp -r ./src/auth/schema ./dist/auth/schema && cp -r ./src/profile/schema ./dist/profile/schema",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf ./dist/ ./src/{auth,profile}/schema/**/*.d.ts",
     "test": "yarn run build && mocha --require ts-node/register 'tests/unitTests/**/*.spec.ts'",
