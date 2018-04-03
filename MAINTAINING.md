@@ -16,3 +16,15 @@ yarn publish                                                    # Publish the re
 ```
 
 Also don't forget to [add a new release](https://github.com/ntzwrk/blockstack.ts/releases/new) in the repository itself.
+
+
+### Release checklist
+
+* [ ] Builds successfully
+* [ ] Tests (and integration tests) run through
+* [ ] Generated documentation
+* [ ] Updated the changelog
+* [ ] Checked/updated old ressources (examples, tutorials, etc)
+* [ ] Pushed version to NPM
+* [ ] Added new release on GitHub
+* [ ] Closed issues resolved by this release
