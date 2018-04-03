@@ -126,7 +126,7 @@ export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddr
 		);
 	}
 
-	return extractProfile(profileTokenJson[0].token, publicKeyOrAddress);
+	return extractProfile(profileTokenJson[0].token as string, publicKeyOrAddress);
 }
 
 /**
