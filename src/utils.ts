@@ -105,7 +105,7 @@ export function isSameOriginAbsoluteUrl(uri1: string, uri2: string): boolean {
  * @returns The extracted port
  */
 function extractPort(uri: URIComponents): number {
-	if(uri.port !== undefined) {
+	if (uri.port !== undefined) {
 		return typeof uri.port === 'string' ? parseInt(uri.port, 10) : uri.port;
 	}
 

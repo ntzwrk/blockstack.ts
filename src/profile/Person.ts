@@ -214,7 +214,7 @@ export class Person extends Profile implements PersonJson {
 		}
 
 		const avatarImage = this.image.find(image => image.name === 'avatar');
-		if(avatarImage !== undefined) {
+		if (avatarImage !== undefined) {
 			return avatarImage.contentUrl;
 		}
 	}
