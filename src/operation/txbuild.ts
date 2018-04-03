@@ -1,8 +1,8 @@
 import * as bitcoinjs from 'bitcoinjs-lib';
 
 import { config } from '../config';
+import { hexStringToECPair } from '../crypto';
 import { InvalidAmountError, InvalidParameterError, NoUTXOFoundError } from '../error';
-import { hexStringToECPair } from '../encryption';
 import { IUTXO } from './network/interfaces/IUTXO';
 import { IUTXOWithValue } from './network/interfaces/IUTXOWithValue';
 import {

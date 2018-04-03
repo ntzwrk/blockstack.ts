@@ -1,6 +1,6 @@
 import { loadUserData } from '../auth';
+import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../crypto';
 import { DebugType, Logger } from '../debug';
-import { decryptECIES, encryptECIES, getPublicKeyFromPrivate, ICipherObject } from '../encryption';
 import { NotImplementedError, RemoteServiceError } from '../error';
 import { lookupProfile } from '../profile';
 import { getBucketUrl, getFullReadUrl, getOrSetLocalGaiaHubConnection, uploadToGaiaHub } from './hub';

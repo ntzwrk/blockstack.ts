@@ -11,8 +11,8 @@ import {
 	DEFAULT_BLOCKSTACK_HOST,
 	DEFAULT_SCOPE
 } from '../constants';
+import { makeECPrivateKey } from '../crypto';
 import { DebugType, Logger } from '../debug';
-import { makeECPrivateKey } from '../encryption';
 import { extractProfile } from '../profile';
 import { isLaterVersion } from '../utils';
 import { decryptPrivateKey, makeAuthRequest } from './messages';

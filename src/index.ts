@@ -1,5 +1,5 @@
 export * from './auth';
-export * from './encryption';
+export * from './crypto';
 export * from './operation';
 export * from './profile';
 export * from './storage';

@@ -1,9 +1,9 @@
 import { SECP256K1Client, TokenSigner } from 'jsontokens';
 
 import { DEFAULT_SCOPE } from '../constants';
+import { decryptECIES, encryptECIES, publicKeyToAddress } from '../crypto';
 import { DebugType, Logger } from '../debug';
 import { makeDIDFromAddress } from '../dids';
-import { decryptECIES, encryptECIES, publicKeyToAddress } from '../encryption';
 import { ProfileJson } from '../profile/schema/Profile.json';
 import { makeUUID4, nextHour, nextMonth } from '../utils';
 import { generateAndStoreTransitKey } from './app';
