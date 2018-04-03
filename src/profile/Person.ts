@@ -213,7 +213,10 @@ export class Person extends Profile implements PersonJson {
 			return undefined;
 		}
 
-		return this.image.find(image => image.name === 'avatar');
+		const avatarImage = this.image.find(image => image.name === 'avatar');
+		if(avatarImage !== undefined) {
+			return avatarImage.contentUrl;
+		}
 	}
 
 	public getVerifiedAccounts(verifications: IVerification[]) {
