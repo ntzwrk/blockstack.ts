@@ -12,7 +12,7 @@ export class Profile implements ProfileJson {
 		return Profile.fromJSON(profile);
 	}
 
-	public readonly '@context': string = 'http://schema.org/';
+	public readonly '@context': string = 'http://schema.org';
 	public readonly '@type': string;
 	public readonly '@id': string;
 
