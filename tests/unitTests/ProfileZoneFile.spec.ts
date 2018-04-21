@@ -16,7 +16,7 @@ import {
 	makeProfileZoneFile,
 	resolveZoneFileToPerson,
 	resolveZoneFileToProfile
-} from '../../src/zoneFile';
+} from '../../src/ProfileZoneFile';
 
 chai.use(chaiAsPromised);
 
