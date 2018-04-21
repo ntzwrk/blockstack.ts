@@ -23,7 +23,7 @@ Also don't forget to [add a new release](https://github.com/ntzwrk/blockstack.ts
 * [ ] Builds successfully
 * [ ] Tests (and integration tests) run through
 * [ ] Generated documentation
-* [ ] Updated the changelog
+* [ ] Updated the changelog (move "Unreleased" section to new version)
 * [ ] Checked/updated old ressources (examples, tutorials, etc)
 * [ ] Pushed version to NPM
 * [ ] Added new release on GitHub
