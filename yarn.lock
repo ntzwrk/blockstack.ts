@@ -124,6 +124,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/node-fetch@^1.6.8":
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-1.6.8.tgz#a59d8c75b300ddc3ca3eef23d449d677f9486c3d"
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*":
   version "9.4.7"
   resolved "http://registry.npmjs.org/@types/node/-/node-9.4.7.tgz#57d81cd98719df2c9de118f2d5f3b1120dcd7275"
@@ -278,6 +284,15 @@ bitcoinjs-lib@^3.3.2:
     typeforce "^1.11.3"
     varuint-bitcoin "^1.0.4"
     wif "^2.0.1"
+
+blockstack-core-client.ts@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/blockstack-core-client.ts/-/blockstack-core-client.ts-0.18.0.tgz#1c0a98e77c965534539ada5007aea5233670dbac"
+  dependencies:
+    "@types/node-fetch" "^1.6.8"
+    json-schema-to-typescript "^5.4.0"
+    node-fetch "^2.1.2"
+    typescript "^2.8.1"
 
 bn.js@^2.0.0:
   version "2.2.0"
@@ -1025,6 +1040,10 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
+node-fetch@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+
 nth-check@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/nth-check/-/nth-check-1.0.1.tgz#9929acdf628fc2c41098deab82ac580cf149aae4"
@@ -1371,7 +1390,7 @@ typescript@2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
 
-typescript@^2.8.3:
+typescript@^2.8.1, typescript@^2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
