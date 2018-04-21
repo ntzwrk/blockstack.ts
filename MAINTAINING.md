@@ -18,6 +18,14 @@ yarn publish                                                    # Publish the re
 Also don't forget to [add a new release](https://github.com/ntzwrk/blockstack.ts/releases/new) in the repository itself.
 
 
+### Merge checklist
+
+* [ ] Has code documentation
+* [ ] Updated related documentation
+* [ ] Has tests
+* [ ] Updated changelog (added feature to the "Unreleased" section)
+
+
 ### Release checklist
 
 * [ ] Builds successfully
