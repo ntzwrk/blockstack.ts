@@ -285,9 +285,9 @@ bitcoinjs-lib@^3.3.2:
     varuint-bitcoin "^1.0.4"
     wif "^2.0.1"
 
-blockstack-core-client.ts@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/blockstack-core-client.ts/-/blockstack-core-client.ts-0.18.0.tgz#1c0a98e77c965534539ada5007aea5233670dbac"
+blockstack-core-client.ts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/blockstack-core-client.ts/-/blockstack-core-client.ts-1.0.0.tgz#e8c56f524de431a3b03eba1de264ac7545d18e44"
   dependencies:
     "@types/node-fetch" "^1.6.8"
     json-schema-to-typescript "^5.4.0"
