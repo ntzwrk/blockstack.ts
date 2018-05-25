@@ -1,10 +1,5 @@
 <p align="center">
   <br>
-  <!-- commented out, to not use the Blockstack brand (looks too official)
-  <a href="https://blockstack.org">
-    <img src="https://media.githubusercontent.com/media/blockstack/designs/master/logo/RGB/bug/blockstack-bug-rounded-256x256.png" width=72 height=72>
-  </a>
-  -->
 
   <h3 align="center">blockstack.ts</h3>
 
@@ -25,9 +20,6 @@
     <a href="https://github.com/ntzwrk/blockstack.ts/blob/master/LICENSE.md"><img src="https://img.shields.io/npm/l/blockstack.ts.svg?style=flat-square" alt="license"></a>
     <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier"></a>
     <a href="https://semver.org"><img src="https://img.shields.io/badge/Semantic-Versioning-lightgrey.svg?style=flat-square" alt="semver"></a>
-    <!-- commented out, because it looks too official
-		<a href="https://chat.blockstack.org"><img src="https://img.shields.io/badge/join-slack-e32072.svg?style=flat-square" alt="slack"></a>
-		-->
   </p>
   <p align="center">
     <p align="center">
