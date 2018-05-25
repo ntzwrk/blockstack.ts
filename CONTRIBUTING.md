@@ -11,3 +11,9 @@ Before raising a PR, please make sure that
 Also don't forget to comment your code properly and add code documentation / tests.
 
 Thanks for contributing!
+
+
+## Best practices
+
+* Please put your classes in ClassName.ts
+* Please don't use default exports (see [this](https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html) and [this](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad))
