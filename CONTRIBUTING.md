@@ -16,6 +16,6 @@ Thanks for contributing!
 ## Best practices
 
 * Please put your classes in ClassName.ts
-* Please don't use default exports (see [this](https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html) and [this](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad))
 * If you're implementing something changelog-worthy, please add it to the upcoming [changelog](https://github.com/ntzwrk/blockstack.ts/blob/develop/CHANGELOG.md)
+* Please don't use default exports (see [this](https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html) and [this](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad))
 * Bonus points: Make the methods/classes you add fun and easy to use :tada:
