@@ -1,5 +1,9 @@
-import { resolveZoneFileToProfile } from '../ProfileZoneFile';
-import { PersonJson } from './schema/Person.json';
+import { BlockstackCoreClient } from 'blockstack-core-client.ts';
+
+import { config } from '../config';
+import { NameZoneFile } from '../NameZoneFile';
+import { Profile } from './Profile';
+import { ProfileJson } from './schema/Person.json';
 
 /**
  * Look up a user profile by blockstack ID
@@ -9,7 +13,7 @@ import { PersonJson } from './schema/Person.json';
  * to use for zonefile lookup
  * @returns {Promise} that resolves to a profile object
  */
-export function lookupProfile(
+/*export function lookupProfile(
 	username: string,
 	zoneFileLookupURL: string = 'https://core.blockstack.org/v1/names/'
 ): Promise<PersonJson | null> {
@@ -21,7 +25,7 @@ export function lookupProfile(
 				.then(responseText => JSON.parse(responseText))
 				.then(responseJSON => {
 					if (responseJSON.hasOwnProperty('zonefile') && responseJSON.hasOwnProperty('address')) {
-						resolve(resolveZoneFileToProfile(responseJSON.zonefile, responseJSON.address));
+						resolve(NameZoneFile.fromString(responseJSON.zonefile).resolveToProfile(responseJSON.address));
 					} else {
 						reject();
 					}
@@ -33,4 +37,20 @@ export function lookupProfile(
 			reject(e);
 		}
 	});
+}*/
+
+export async function lookupProfile(
+	name: string,
+	zoneFileLookupURL: string = 'https://core.blockstack.org/v1/names/'
+): Promise<ProfileJson> {
+	let coreClient: BlockstackCoreClient;
+	if (zoneFileLookupURL !== undefined) {
+		const url = new URL(zoneFileLookupURL);
+		coreClient = new BlockstackCoreClient(url.hostname, parseInt(url.port), url.protocol);
+	} else {
+		coreClient = config.coreClient;
+	}
+
+	const zoneFile = await NameZoneFile.lookupByName(name, coreClient);
+	return Profile.fromZoneFile(zoneFile);
 }
