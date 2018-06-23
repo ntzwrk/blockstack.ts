@@ -67,6 +67,14 @@ _Please note that the version on NPM is **just a placeholder** and doesn't conta
 ### Storage
 `@todo`
 
+### Zone files
+```typescript
+import { NameZoneFile } from 'blockstack.ts';
+const zoneFile = await NameZoneFile.lookupByName('vsund.id');
+console.log(zoneFile.profileTokenUrl);
+```
+<sub>[Full reference for `NameZoneFile`](@todo)</sub>
+
 For more examples see [`examples/`](https://github.com/ntzwrk/blockstack.ts/blob/master/examples/).
 
 
