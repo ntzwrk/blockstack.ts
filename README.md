@@ -77,7 +77,15 @@ _Please note that this code reference represents the state of the last release. 
 
 
 ## Contributing
-See [`CONTRIBUTING.md`](https://github.com/ntzwrk/blockstack.ts/blob/master/CONTRIBUTING.md) for a guide on how to contribute to this library.
+You're want to contribute something? Thanks for considering!
+
+You're looking for something to contribute on? Please review the [issues labeled with `help-wanted`](https://github.com/ntzwrk/blockstack.ts/labels/help-wanted).
+
+You're wanting to contribute functionality? Have a look at the [requested features](https://github.com/ntzwrk/blockstack.ts/projects/3). Though please open an issue before starting to write code; would be a pity to throw away carefully written code just because of misunderstandings.
+
+You're not sure yet what to contribute but definitely want to help with something? Add [this repository on Code Triage](https://www.codetriage.com/ntzwrk/blockstack.ts).
+
+See [`CONTRIBUTING.md`](https://github.com/ntzwrk/blockstack.ts/blob/master/CONTRIBUTING.md) for a more complete guide on how to contribute to this library.
 
 
 ## Maintaining
