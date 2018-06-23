@@ -16,13 +16,48 @@ export interface IVerification {
 }
 
 export class Person extends Profile implements PersonJson {
+	'@context': string;
+	'@type': string;
+	'@id': string;
+	name?: string;
+	givenName?: string;
+	familyName?: string;
+	description?: string;
+	image?: ImageJson[];
+	website?: WebSiteJson[];
+	account?: AccountJson[];
+	knows?: BasicJson[];
+	worksFor?: BasicJson[];
+	address?: PostalAddressJson;
+	birthDate?: string;
+	taxID?: string;
+	apps?: {
+		[k: string]: string;
+	};
+
 	public static fromLegacyFormat(legacyProfileJson: PersonLegacyJson) {
 		const profileJson = Person.getPersonFromLegacyFormat(legacyProfileJson);
 		return Person.fromJSON(profileJson);
 	}
 
 	public static fromJSON(personJson: PersonJson): Person {
-		return new Person(personJson['@id']);
+		const person = new Person(
+			personJson['@id'],
+			personJson.name,
+			personJson.givenName,
+			personJson.familyName,
+			personJson.description,
+			personJson.image,
+			personJson.website,
+			personJson.account,
+			personJson.worksFor,
+			personJson.knows,
+			personJson.address,
+			personJson.birthDate,
+			personJson.taxID,
+			personJson.apps
+		);
+		return { ...person, ...personJson } as Person;
 	}
 
 	public static fromToken(token: string, publicKeyOrAddress?: string): Person {
@@ -149,20 +184,35 @@ export class Person extends Profile implements PersonJson {
 
 	constructor(
 		id: string,
-		public name?: string,
-		public givenName?: string,
-		public familyName?: string,
-		public description?: string,
-		public image?: ImageJson[],
-		public website?: WebSiteJson[],
-		public account?: AccountJson[],
-		public worksFor?: BasicJson[],
-		public knows?: BasicJson[],
-		public address?: PostalAddressJson,
-		public birthDate?: string,
-		public taxID?: string
+		name?: string,
+		givenName?: string,
+		familyName?: string,
+		description?: string,
+		image?: ImageJson[],
+		website?: WebSiteJson[],
+		account?: AccountJson[],
+		worksFor?: BasicJson[],
+		knows?: BasicJson[],
+		address?: PostalAddressJson,
+		birthDate?: string,
+		taxID?: string,
+		apps?: { [k: string]: string }
 	) {
 		super(id, 'Person');
+
+		this.name = name;
+		this.givenName = givenName;
+		this.familyName = familyName;
+		this.description = description;
+		this.image = image;
+		this.website = website;
+		this.account = account;
+		this.worksFor = worksFor;
+		this.knows = knows;
+		this.address = address;
+		this.birthDate = birthDate;
+		this.taxID = taxID;
+		this.apps = apps;
 	}
 
 	public toJSON(): PersonJson {
