@@ -15,6 +15,7 @@ Thanks for contributing!
 
 ## Best practices
 
+* Use `git-flow` to develop a `feature` or a `fix` branch
 * Please put your classes in ClassName.ts
 * If you're implementing something changelog-worthy, please add it to the upcoming [changelog](https://github.com/ntzwrk/blockstack.ts/blob/develop/CHANGELOG.md)
 * Please don't use default exports (see [this](https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html) and [this](https://blog.neufund.org/why-we-have-banned-default-exports-and-you-should-do-the-same-d51fdc2cf2ad))
