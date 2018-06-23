@@ -18,7 +18,7 @@
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf ./dist/ ./src/{auth,profile}/schema/**/*.d.ts",
     "test": "yarn run build && mocha --require ts-node/register 'tests/unitTests/**/*.spec.ts'",
-    "integration-test": "echo '\nWelcome to the integration tests!\n=================================\n\nThe integration tests are doing live requests to assure that the current code\nworks with the deployed environment. So you are expected to bring an internet\nconnection and some time.\nAlso note that they may fail due to issues with your specific environment\nthat might not affect the real ecosystem.\n' && yarn run build && mocha --require ts-node/register 'tests/integrationTests/**/*.spec.ts'",
+    "integration-test": "echo '\nWelcome to the integration tests!\n=================================\n\nThe integration tests are doing live requests to assure that the current code\nworks with the deployed environment. So you are expected to bring an internet\nconnection and some time.\nAlso please note that they may fail due to issues with your specific environment\nthat might not affect the real ecosystem.\n' && yarn run build && mocha --require ts-node/register 'tests/integrationTests/**/*.spec.ts'",
     "document": "typedoc --out ./docs/code/ ./src/ --sourcefile-url-prefix https://github.com/ntzwrk/blockstack.ts/blob/master/src/",
     "generate-json-interfaces": "cd ./src/auth/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd - && cd ./src/profile/schema/ && find ./ -name \"*.json\" -exec json2ts --style.useTabs --style.singleQuote --input {} --output {}.d.ts \\; && cd -"
   },
