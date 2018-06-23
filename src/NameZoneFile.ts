@@ -1,143 +1,156 @@
+import { BlockstackCoreClient } from 'blockstack-core-client.ts';
 import { URL } from 'url';
 import { JsonZoneFile, makeZoneFile, parseZoneFile } from 'zone-file';
 
-import { DebugType, Logger } from './debug';
-import { DidNotSatisfyJsonSchemaError, InvalidParameterError, InvalidProfileTokenError } from './error';
-import { extractProfile } from './profile/jwt';
-import { Person } from './profile/Person';
-import { PersonJson } from './profile/schema/Person.json';
-import { PersonLegacyJson } from './profile/schema/PersonLegacy.json';
-import { ProfileJson } from './profile/schema/Profile.json';
-import { ProfileTokenJson } from './profile/schema/ProfileToken.json';
+import { config } from './config';
+import { InvalidParameterError } from './error';
 
 /**
- * Creates an RFC1035-compliant zone file for a profile
- *
- * @param origin The zone file's origin, usually a Blockstack name
- * @param tokenFileUrl The zone file's token file URL, usually pointing to a profile
- * @returns An RFC1035-compliant zone file
- * @throws InvalidParameterError When the given token file URL is invalid
+ * Class for a zone file that is used to store (routing) information about a Blockstack name
+ * (currently only able to store profile token URLs)
  */
-export function makeProfileZoneFile(origin: string, tokenFileUrl: string): string {
-	// TODO: Validate origin
-	// TODO: Implement passing multiple URLs
+export class NameZoneFile {
+	// @TODO: fromJSON() and fromString() don't necessarily pick up all information of the zone file
+	//        (everything other than $origin, $ttl and the first URI entry gets dropped)
+	//        Idea: Introduce an attribute that holds the original data the zone file is based on
 
-	try {
-		const url = new URL(tokenFileUrl);
-	} catch (error) {
-		throw new InvalidParameterError(
-			'tokenFileUrl',
-			'The given token file URL is no valid URL (due the `url` package)',
-			tokenFileUrl
-		);
-	}
-
-	const zoneFile: JsonZoneFile = {
-		$origin: origin,
-		$ttl: 3600,
-		uri: [
-			{
-				name: '_http._tcp',
-				priority: 10,
-				target: tokenFileUrl,
-				weight: 1
-			}
-		]
-	};
-
-	const zoneFileTemplate = '{$origin}\n{$ttl}\n{uri}\n';
-
-	return makeZoneFile(zoneFile, zoneFileTemplate);
-}
-
-/**
- * Extracts a token file URL from a given zone file
- *
- * @param zoneFileJson The zone file to extract the URL from
- * @returns The token file URL from the zone file
- * @throws InvalidParameterError When the zone file has no attribute `uri`
- * @throws InvalidParameterError When the zone file's `uri` attribute is empty
- */
-export function getTokenFileUrl(zoneFileJson: JsonZoneFile): string {
-	if (zoneFileJson.uri === undefined) {
-		throw new InvalidParameterError('zoneFileJson', 'Attribute "uri" does not exist', zoneFileJson);
-	}
-	if (zoneFileJson.uri.length === 0) {
-		throw new InvalidParameterError('zoneFileJson', 'Attribute "uri" has no elements', zoneFileJson);
-	}
-
-	let tokenFileUrl = zoneFileJson.uri[0].target;
-
-	// TODO: This probably still works incorrectly with '://' in GET parameters
-	// (if it's allowed in the specification to pass these unencoded)
-	if (!tokenFileUrl.includes('://')) {
-		tokenFileUrl = `https://${tokenFileUrl}`;
-	}
-
-	return tokenFileUrl;
-}
-
-/**
- * Resolves a zone file to a profile JSON object
- *
- * @param zoneFile The zone file to resolve
- * @param publicKeyOrAddress The public key or address who owns it
- * @returns A promise containing `ProfileJson`.
- *          Resolves to a profile JSON object on success.
- *          Rejects with an `DidNotSatisfyJsonSchemaError`:
- *          1) When the retrieved JSON seems to be a [[Person]] but does not satisfy the corresponding JSON schema.
- *          2) When the retrieved JSON seems to be a [[PersonLegacy]] but does not satisfy the corresponding JSON schema.
- *          Rejects with an `InvalidProfileTokenError`:
- *          1) When the profile token has no elements,
- *          2) When the first element of the profile token has no "token" attribute.
- *
- * Please note that this function uses `fetch` and therefore can also reject with errors from there.
- */
-export async function resolveZoneFileToProfile(zoneFile: string, publicKeyOrAddress: string): Promise<ProfileJson> {
-	const zoneFileJson: JsonZoneFile = parseZoneFile(zoneFile);
-
-	if (zoneFileJson.$origin === undefined) {
-		let legacyProfileJson: PersonLegacyJson;
-		try {
-			legacyProfileJson = JSON.parse(zoneFile) as PersonLegacyJson;
-		} catch (error) {
-			throw new DidNotSatisfyJsonSchemaError('PersonLegacy.json', zoneFile);
+	/**
+	 * Creates a new [[NameZoneFile]] from JSON
+	 *
+	 * @param json The JSON to create from
+	 * @throws [[InvalidParameterError]] when the given JSON has no `$origin` attribute
+	 * @throws [[InvalidParameterError]] when the given JSON has no `uri` attribute
+	 * @throws [[InvalidParameterError]] when the given JSON has an empty `uri` attribute
+	 */
+	public static fromJSON(json: JsonZoneFile): NameZoneFile {
+		if (json.$origin === undefined) {
+			throw new InvalidParameterError('json', 'Attribute `$origin` does not exist', json);
 		}
-		return Person.fromLegacyFormat(legacyProfileJson).toJSON();
+
+		if (json.uri === undefined) {
+			throw new InvalidParameterError('json', 'Attribute `uri` does not exist', json);
+		}
+
+		if (json.uri.length === 0) {
+			throw new InvalidParameterError('json', 'Attribute `uri` has no elements', json);
+		}
+
+		return new NameZoneFile(json.$origin, json.uri[0].target);
 	}
 
-	const tokenFileUrl = getTokenFileUrl(zoneFileJson);
-	const response = await (await fetch(tokenFileUrl)).text();
-
-	let profileTokenJson: ProfileTokenJson;
-	try {
-		profileTokenJson = JSON.parse(response) as ProfileTokenJson;
-	} catch (error) {
-		throw new InvalidProfileTokenError(response);
+	/**
+	 * Creates a new [[NameZoneFile]] from an RFC1035-compliant zone file
+	 *
+	 * @param str The string to create from (should be RFC1035-compliant)
+	 */
+	public static fromString(str: string): NameZoneFile {
+		return NameZoneFile.fromJSON(parseZoneFile(str));
 	}
 
-	if (profileTokenJson.length === 0) {
-		throw new InvalidProfileTokenError(profileTokenJson, 'The profile token has no elements');
-	}
-	if (profileTokenJson[0].token === undefined) {
-		throw new InvalidProfileTokenError(
-			profileTokenJson,
-			'The first element of the profile token has no "token" attrbute'
-		);
+	/**
+	 * Looks up the current zone file for a given Blockstack name (please note that this method blindly trusts the connected Blockstack Core node, so make sure it's a trusted one)
+	 *
+	 * @param name The Blockstack name to lookup the zone file for
+	 * @param coreClient The [`BlockstackCoreClient`](https://github.com/ntzwrk/blockstack-core-client.ts) to use, defaults to the one set in ./config
+	 * @returns A promise that resolves to the name's zone file on success and otherwise rejects with an [[Error]] when the profile token has no elements
+	 *
+	 * Please note that this function uses `BlockstackCoreClient.getZoneFile` and [[fromString]], and therefore can also reject with errors from there.
+	 */
+	public static async lookupByName(
+		name: string,
+		coreClient: BlockstackCoreClient = config.coreClient
+	): Promise<NameZoneFile> {
+		const response = await coreClient.getZoneFile(name);
+
+		// TODO: `blockstack-core-client.ts` should handle this (throw an error)
+		//       Needs proper error responses from Blockstack Core first
+		if (response.zonefile === undefined) {
+			throw new Error('Could not find a zone file in response');
+		}
+
+		return NameZoneFile.fromString(response.zonefile);
 	}
 
-	return extractProfile(profileTokenJson[0].token as string, publicKeyOrAddress);
-}
+	/**
+	 * The Blockstack name this zone file was created for
+	 */
+	public readonly name: string;
 
-/**
- * Resolves a zone file to a person JSON object
- *
- * @param zoneFile The zone file to resolve
- * @param publicKeyOrAddress The public key or address who owns it
- * @returns A promise containing `PersonJson`
- *
- * Please note that this function uses [[resolveZoneFileToProfile]] and therefore rejects with the same errors.
- */
-export async function resolveZoneFileToPerson(zoneFile: string, publicKeyOrAddress: string): Promise<PersonJson> {
-	return (await resolveZoneFileToProfile(zoneFile, publicKeyOrAddress)) as PersonJson;
+	/**
+	 * The profile token URL this zone file was created with
+	 */
+	public readonly profileTokenUrl: string;
+
+	/**
+	 * Creates a new [[NameZoneFile]] from a Blockstack name and a profile token URL
+	 *
+	 * @param name The Blockstack name to create this zone file for (will be the zone file's `$origin`)
+	 * @param profileTokenUrl The profile token URL to create this zone file with (will be the `target` of a `uri` element)
+	 * @throws [[InvalidParameterError]] when the given name seems to be invalid (does not include a ".")
+	 * @throws [[InvalidParameterError]] when the given token file URL is invalid
+	 */
+	constructor(name: string, profileTokenUrl: string) {
+		// TODO: This should be able to take multiple profile token URLs
+
+		if (!name.includes('.')) {
+			throw new InvalidParameterError(
+				'name',
+				'The given name is no valid Blockstack name (does not include a ".")',
+				name
+			);
+		}
+
+		/*
+		 * This small check is for zone files that have a profile token url without scheme.
+		 * There was a small time period where `blockstack.js` created these zone files, so
+		 * this check might be necessary until they are all revised.
+		 * It probably doesn't work with checking for '://', since it's maybe allowed to use
+		 * it in GET parameters(?).
+		 */
+		if (!profileTokenUrl.includes('://')) {
+			profileTokenUrl = `https://${profileTokenUrl}`;
+		}
+
+		try {
+			const url = new URL(profileTokenUrl);
+			if (!url.hostname.includes('.')) {
+				throw new Error();
+			}
+		} catch (error) {
+			throw new InvalidParameterError(
+				'profileTokenUrl',
+				'The given profile token URL is no valid URL (says the `url` package)',
+				profileTokenUrl
+			);
+		}
+
+		this.name = name;
+		this.profileTokenUrl = profileTokenUrl;
+	}
+
+	/**
+	 * Returns a JSON object representing the zone file
+	 */
+	public toJSON(): JsonZoneFile {
+		return {
+			$origin: this.name,
+			$ttl: 3600,
+			uri: [
+				{
+					name: '_http._tcp',
+					priority: 10,
+					target: this.profileTokenUrl,
+					weight: 1
+				}
+			]
+		};
+	}
+
+	/**
+	 * Returns a RFC1035-compliant zone file
+	 */
+	public toString(): string {
+		const zoneFileTemplate = '{$origin}\n{$ttl}\n{uri}\n';
+		return makeZoneFile(this.toJSON(), zoneFileTemplate);
+	}
 }
