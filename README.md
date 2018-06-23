@@ -19,14 +19,15 @@
     <a href="https://www.npmjs.com/package/blockstack.ts"><img src="https://img.shields.io/npm/v/blockstack.ts.svg?style=flat-square" alt="npm"></a>
     <a href="https://github.com/ntzwrk/blockstack.ts/blob/master/LICENSE.md"><img src="https://img.shields.io/npm/l/blockstack.ts.svg?style=flat-square" alt="license"></a>
     <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier"></a>
-    <a href="https://semver.org"><img src="https://img.shields.io/badge/Semantic-Versioning-lightgrey.svg?style=flat-square" alt="semver"></a>
+    <a href="https://semver.org"><img src="https://img.shields.io/badge/sem-ver-lightgrey.svg?style=flat-square" alt="semver"></a>
+    <a href="https://saythanks.io/to/vsund"><img src="https://img.shields.io/badge/say-thanks-1EAEDB.svg?style=flat-square" alt="say-thanks"></a>
   </p>
   <p align="center">
     <p align="center">
       <b>develop</b>
       <br>
    	  <a href="https://travis-ci.org/ntzwrk/blockstack.ts"><img src="https://img.shields.io/travis/ntzwrk/blockstack.ts/develop.svg?style=flat-square" alt="build for develop"></a>
-    	<a href="https://david-dm.org/ntzwrk/blockstack.ts/develop"><img src="https://img.shields.io/david/ntzwrk/blockstack.ts/develop.svg?style=flat-square" alt="depencencies for develop"></a>
+      <a href="https://david-dm.org/ntzwrk/blockstack.ts/develop"><img src="https://img.shields.io/david/ntzwrk/blockstack.ts/develop.svg?style=flat-square" alt="dependencies for develop"></a>
     </p>
   </p>
   <p align="center">
