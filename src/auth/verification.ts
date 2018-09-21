@@ -1,7 +1,7 @@
 import { decodeToken, TokenVerifier } from 'jsontokens';
 
 import { publicKeyToAddress } from '../crypto';
-import { getAddressFromDID } from '../dids';
+import { DecentralizedID } from '../DecentralizedID';
 import { MultiplePublicKeysNotSupportedError } from '../error';
 import { isSameOriginAbsoluteUrl } from '../utils';
 import { fetchAppManifest } from './provider';
@@ -49,7 +49,7 @@ export function doSignaturesMatchPublicKeys(token: string) {
 export function doPublicKeysMatchIssuer(token: string) {
 	const payload = decodeToken(token).payload;
 	const publicKeys = payload.public_keys;
-	const addressFromIssuer = getAddressFromDID(payload.iss);
+	const addressFromIssuer = DecentralizedID.fromString(payload.iss).getAddress();
 
 	if (publicKeys.length === 1) {
 		const addressFromPublicKeys = publicKeyToAddress(publicKeys[0]);
@@ -105,7 +105,7 @@ export function doPublicKeysMatchUsername(token: string, nameLookupURL: string) 
 				.then(responseJSON => {
 					if (responseJSON.hasOwnProperty('address')) {
 						const nameOwningAddress = responseJSON.address;
-						const addressFromIssuer = getAddressFromDID(payload.iss);
+						const addressFromIssuer = DecentralizedID.fromString(payload.iss).getAddress();
 						if (nameOwningAddress === addressFromIssuer) {
 							resolve(true);
 						} else {
