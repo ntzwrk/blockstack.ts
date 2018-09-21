@@ -1,7 +1,7 @@
 import { decodeToken, TokenVerifier } from 'jsontokens';
 
 import { publicKeyToAddress } from '../crypto';
-import { DecentralizedID } from '../dids';
+import { DecentralizedID } from '../DecentralizedID';
 import { MultiplePublicKeysNotSupportedError } from '../error';
 import { isSameOriginAbsoluteUrl } from '../utils';
 import { fetchAppManifest } from './provider';

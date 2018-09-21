@@ -3,7 +3,7 @@ import { SECP256K1Client, TokenSigner } from 'jsontokens';
 import { DEFAULT_SCOPE } from '../constants';
 import { decryptECIES, encryptECIES, publicKeyToAddress } from '../crypto';
 import { DebugType, Logger } from '../debug';
-import { DecentralizedID } from '../dids';
+import { DecentralizedID } from '../DecentralizedID';
 import { ProfileJson } from '../profile/schema/Profile.json';
 import { makeUUID4, nextHour, nextMonth } from '../utils';
 import { generateAndStoreTransitKey } from './app';
