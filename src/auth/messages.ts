@@ -3,7 +3,7 @@ import { SECP256K1Client, TokenSigner } from 'jsontokens';
 import { DEFAULT_SCOPE } from '../constants';
 import { decryptECIES, encryptECIES, publicKeyToAddress } from '../crypto';
 import { DebugType, Logger } from '../debug';
-import { makeDIDFromAddress } from '../dids';
+import { DecentralizedID } from '../dids';
 import { ProfileJson } from '../profile/schema/Profile.json';
 import { makeUUID4, nextHour, nextMonth } from '../utils';
 import { generateAndStoreTransitKey } from './app';
@@ -66,7 +66,7 @@ export function makeAuthRequest(
 	const publicKey = SECP256K1Client.derivePublicKey(transitPrivateKey);
 	payload.public_keys = [publicKey];
 	const address = publicKeyToAddress(publicKey);
-	payload.iss = makeDIDFromAddress(address);
+	payload.iss = DecentralizedID.fromAddress(address).toString();
 
 	/* Sign and return the token */
 	const tokenSigner = new TokenSigner('ES256k', transitPrivateKey);
@@ -164,7 +164,7 @@ export function makeAuthResponse(
 		core_token: coreTokenPayload,
 		exp: Math.floor(expiresAt / 1000), // JWT times are in seconds
 		iat: Math.floor(new Date().getTime() / 1000), // JWT times are in seconds
-		iss: makeDIDFromAddress(address),
+		iss: DecentralizedID.fromAddress(address).toString(),
 		jti: makeUUID4(),
 		private_key: privateKeyPayload,
 		profile,
