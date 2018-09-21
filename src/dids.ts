@@ -1,32 +1,51 @@
-import { InvalidDIDError } from './error';
+import { InvalidDIDError, InvalidDIDTypeError } from './error';
 
-export function makeDIDFromAddress(address: string) {
-	return `did:btc-addr:${address}`;
-}
-
-export function makeDIDFromPublicKey(publicKey: string) {
-	return `did:ecdsa-pub:${publicKey}`;
-}
-
-export function getDIDType(decentralizedID: string) {
-	const didParts = decentralizedID.split(':');
-
-	if (didParts.length !== 3) {
-		throw new InvalidDIDError(decentralizedID, 'Decentralized IDs must have 3 parts');
+export class DecentralizedID {
+	public static fromAddress(address: string): DecentralizedID {
+		return new DecentralizedID('btc-addr', address);
 	}
 
-	if (didParts[0].toLowerCase() !== 'did') {
-		throw new InvalidDIDError(decentralizedID, 'Decentralized IDs must start with "did"');
+	public static fromPublicKey(publicKey: string): DecentralizedID {
+		return new DecentralizedID('ecdsa-pub', publicKey);
 	}
 
-	return didParts[1].toLowerCase();
-}
+	public static fromString(str: string): DecentralizedID {
+		const didParts = str.split(':');
 
-export function getAddressFromDID(decentralizedID: string) {
-	const didType = getDIDType(decentralizedID);
-	if (didType === 'btc-addr') {
-		return decentralizedID.split(':')[2];
-	} else {
-		return null;
+		if (didParts.length !== 3) {
+			throw new InvalidDIDError(str, 'Decentralized IDs must have 3 parts');
+		}
+
+		if (didParts[0].toLowerCase() !== 'did') {
+			throw new InvalidDIDError(str, 'Decentralized IDs must start with "did"');
+		}
+
+		const type = didParts[1];
+		const identifier = didParts[2];
+		return new DecentralizedID(type, identifier);
+	}
+
+	private readonly type: string;
+	private readonly identifier: string;
+
+	public constructor(type: string, identifier: string) {
+		this.type = type;
+		this.identifier = identifier;
+	}
+
+	public getAddress() {
+		if(this.type == 'btc-addr') {
+			return this.identifier;
+		} else {
+			throw new InvalidDIDTypeError(this.type, 'btc-addr');
+		}
+	}
+
+	public getType(): string {
+		return this.type;
+	}
+
+	public toString(): string {
+		return `did:${this.type}:${this.identifier}`;
 	}
 }
